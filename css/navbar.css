@@ -4,6 +4,7 @@ ul.navbar{
     margin: auto;
     background-color:burlywood;
     display: inline-flex;
+    border-radius: 0px 0px 30px 30px;
 }
 
 ul.navbar li a{
@@ -15,4 +16,9 @@ ul.navbar li a{
     text-decoration: underline;
     text-decoration-style: wavy;
     text-decoration-color: salmon;
+}
+
+ul.navbar li a:hover{
+    background-color: sandybrown;
+    border-radius: 0px 0px 30px 30px;
 }

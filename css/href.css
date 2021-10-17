@@ -1,5 +1,20 @@
+body {
+    background-color: black;
+    color:lawngreen; 
+    max-width:960px; 
+    margin: auto;
+    text-align: justify;
+}
+
 a{
     color: blanchedalmond;
+}
+
+a:hover{
+    color: salmon;
+    text-decoration: underline;
+    text-decoration-style: wavy;
+    text-decoration-color: red;
 }
 
 h2 {
@@ -13,4 +28,20 @@ h2 {
 #navbar-hr {
     width: 40%;
     border: 3px solid rebeccapurple;
+}
+
+.glow {
+    color: #fff;
+    text-align: center;
+    animation: glow 1s ease-in-out infinite alternate;
+  }
+  
+@-webkit-keyframes glow {
+from {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+}
+
+to {
+    text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+}
 }
