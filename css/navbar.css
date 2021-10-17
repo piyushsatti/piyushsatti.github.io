@@ -1,0 +1,15 @@
+ul.navbar{
+    list-style-type: none;
+    padding-inline: auto;
+    margin: auto;
+    background-color:burlywood;
+    display: inline-flex;
+}
+
+ul.navbar li a{
+    float: left;
+    color: black;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-right: 1px solid black;
+}
