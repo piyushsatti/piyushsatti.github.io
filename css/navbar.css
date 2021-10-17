@@ -12,4 +12,7 @@ ul.navbar li a{
     padding: 10px 15px;
     text-decoration: none;
     border-right: 1px solid black;
+    text-decoration: underline;
+    text-decoration-style: wavy;
+    text-decoration-color: salmon;
 }

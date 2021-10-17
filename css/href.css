@@ -1,3 +1,16 @@
 a{
     color: blanchedalmond;
 }
+
+h2 {
+    text-align: center;
+    color:cadetblue;
+    text-decoration: underline;
+    text-decoration-color:cornsilk;
+    text-decoration-style: dotted;
+}
+
+#navbar-hr {
+    width: 40%;
+    border: 3px solid rebeccapurple;
+}
