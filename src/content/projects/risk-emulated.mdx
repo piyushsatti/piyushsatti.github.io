@@ -1,26 +1,32 @@
 ---
 title: "Risk-Emulated (Spring Boot + GraphQL)"
 date: "2024-08-01"
-summary: "Playable RISK board game. Backend with typed GraphQL schema, State/Strategy engine, and CI gates."
-tags: ["Java", "Spring Boot", "GraphQL", "DDD", "Docker"]
+summary: "Playable RISK backend using Spring Boot + GraphQL with a typed schema (createGame, reinforce, attack, gameStatus), map validator, State/Strategy engine, audit MoveLog, and CI gates."
+tags: ["Java", "Spring Boot", "GraphQL", "DDD", "Docker", "PostgreSQL", "Testing"]
 repo: "https://github.com/piyushsatti/risk-emulated"
 demo: ""
 tldr:
-  - "Typed schema: createGame, reinforce, attack, gameStatus"
-  - "Map builder/validator for legal, connected maps"
-  - "Audit MoveLog; Checkstyle/Spotless; coverage gates"
+  - "Typed GraphQL schema: createGame, reinforce, attack, gameStatus"
+  - "Map builder/validator ensures legal, connected maps"
+  - "Audit MoveLog + Checkstyle/Spotless + coverage gates"
 ---
 
-import { Image } from 'astro:assets';
-
 ## Overview
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum. Cras venenatis euismod malesuada.
+A backend-only, rules-accurate **RISK** implementation. It exposes a **typed GraphQL API** for map creation and turn phases while isolating game logic behind domain services. The focus: correctness, testability, and reproducibility.
 
-### Problem & Context
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+## Problem → Solution → Impact
+- **Problem.** Represent turn-based board-game mechanics (setup, reinforce, attack, fortify) as safe, testable server operations.
+- **Solution.** **DDD** entities (`Game`, `Player`, `Territory`, `Continent`, `Card`, `MoveLog`), a phase/state engine (State pattern), and pluggable combat/reinforcement policies (Strategy). A graph-based validator enforces connected maps and continent bonuses.
+- **Impact.** Deterministic turns (audit via `MoveLog`), fast iteration on rules, and clean boundaries for future UI.
 
-### Solution & Trade-offs
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+## API (examples)
+- Queries/Mutations: `createGame`, `reinforce`, `attack`, `fortify`, `gameStatus`.
+- Strongly-typed I/O via GraphQL, ideal for future UI or bots.
 
-### Learning Outcomes
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+## Testing & CI
+Style gates (**Checkstyle/Spotless**), coverage checks, and GitHub Actions workflows. Observability via MoveLog enables step-by-step replay.
+
+## Next steps
+- Add rate-limited public sandbox
+- Extend schema for map editors and variants
+- More coverage on edge combat cases

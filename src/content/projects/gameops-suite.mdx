@@ -1,26 +1,30 @@
 ---
-title: "GameOps Suite"
-date: "2023-05-15"
-summary: "ETL pipelines for Discord game servers, providing analytics and moderation tools."
-tags: ["Python", "ETL", "MongoDB", "Discord API"]
-repo: "https://github.com/piyushsatti/gameops-suite"
+title: "GameOps Suite (FastAPI + ETL + Discord)"
+date: "2025-03-01"
+summary: "End-to-end ops platform: Discord event ETL → MongoDB; FastAPI REST with authZ; containers on DigitalOcean; Redis; ~200 ms E2E typical actions; dashboard for player statistics."
+tags: ["Python", "FastAPI", "ETL", "Discord", "MongoDB", "Docker", "Redis", "DigitalOcean", "AuthZ"]
+repo: "https://github.com/piyushsatti/nonagon"
 demo: ""
 tldr:
-  - "Real-time event processing from Discord gateways."
-  - "Data aggregation into MongoDB for analytics."
-  - "Automated moderation actions based on user behavior."
+  - "Event-driven ETL from Discord → MongoDB documents"
+  - "FastAPI REST with role-based authorization"
+  - "Containers on DigitalOcean; ~200 ms E2E for common flows"
 ---
 
-import { Image } from 'astro:assets';
-
 ## Overview
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum. Cras venenatis euismod malesuada.
+A production-leaning backend for **game sign-ups and telemetry**. Discord is the ops surface; the system ingests messages via events, normalizes them into MongoDB documents, and serves data through **FastAPI** endpoints.
 
-### Problem & Context
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+## Pipeline
+- **Ingest.** Discord event hooks → ETL workers → MongoDB collections.
+- **Serve.** Role-based **FastAPI** endpoints for CRUD + analytics.
+- **Deploy.** Containerized services on DigitalOcean droplets.
 
-### Solution & Trade-offs
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+## Impact
+- Real-time announcements and sign-ups
+- Low-latency (~200 ms typical action path)
+- Foundation for analytics dashboards and AI assistants
 
-### Learning Outcomes
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+## Next steps
+- Async stream processing for spikes
+- Public read-only endpoints with cached projections
+- Data contracts for dashboard widgets

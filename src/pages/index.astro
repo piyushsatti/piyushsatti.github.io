@@ -1,81 +1,53 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import PostCard from "../components/PostCard.astro";
-import { getCollection } from "astro:content";
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import { getCollection } from 'astro:content';
 
-const posts = (await getCollection("blog")).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
-);
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
+
+// Blog posts (theme expects 'posts')
+const posts = (await getCollection('posts'))
+  .filter(p => !p.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+// Projects (custom collection)
+const projects = (await getCollection('projects'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 2);
 ---
 
-<BaseLayout
-  title="Piyush Satti — Software Developer"
-  description="Personal portfolio for Piyush Satti, a Software Developer showcasing projects, research, and blog posts."
->
-  <div class="container">
-    <!-- Hero Section -->
-    <div class="hero">
-      <h1>Piyush Satti</h1>
-      <p>Software Developer</p>
-      <div class="buttons">
-        <a href="/projects" class="button">View Projects</a>
-        <a
-          href="/resume.pdf"
-          class="button"
-          target="_blank"
-          rel="noopener noreferrer">Download Resume</a
-        >
-      </div>
-    </div>
+<BaseLayout title="Terminal">
+  <div class="index-content framed">
+    <h1 id="hello-there">Piyush Satti</h1>
+    <p>Backend Developer &amp; M.Sc. — Java • Spring Boot • GraphQL • FastAPI</p>
+    <p>I build typed, testable backends, clean domain models, and fast feedback loops.</p>
+    <p>
+      <a href={`${base}projects`}>Projects</a> ::
+      <a href={`${base}research`}>Research</a> ::
+      <a href={`${base}blog`}>Blog</a> ::
+      <a href={`${base}resume.pdf`} target="_blank" rel="noopener noreferrer">Resume</a>
+    </p>
+  </div>
 
-    <!-- Featured Projects -->
-    <div class="section">
-      <h2>Featured Projects</h2>
-      <div class="grid">
-        <PostCard
-          title="Risk-Emulated"
-          summary="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed doeiusmod tempor incididunt ut labore et dolore magna aliqua."
-          tags={["Java", "Spring Boot", "GraphQL", "DDD", "Docker"]}
-          url="/projects/risk-emulated"
-        />
-        <PostCard
-          title="GameOps Suite"
-          summary="Ut enim ad minim veniam, quis nostrud exercitation ullamco laborisnisi ut aliquip ex ea commodo consequat."
-          tags={["Python", "ETL", "MongoDB", "Discord API"]}
-          url="/projects/gameops-suite"
-        />
-      </div>
-    </div>
+  <div class="posts">
+    <h2 class="posts-title">Featured Projects</h2>
+    <ul>
+      {projects.map(p => (
+        <li>
+          <a href={`${base}projects/${p.id}/`}>{p.data.title}</a>
+          <span> — {p.data.summary}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
 
-    <!-- Selected Writing -->
-    <div class="section">
-      <h2>Selected Writing</h2>
-      <div class="grid">
-        {
-          posts
-            .slice(0, 3)
-            .map((post) => (
-              <PostCard {...post.data} url={`/blog/${post.slug}`} />
-            ))
-        }
-      </div>
-    </div>
-
-    <!-- About Me -->
-    <div class="section">
-      <h2>About Me</h2>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-        velit esse cillum dolore eu fugiat nulla pariatur.
-      </p>
-      <h3>Key Skills</h3>
-      <p>
-        Java, Python, Spring Boot, GraphQL, Docker, Kubernetes, CI/CD, Agile
-        Methodologies
-      </p>
-    </div>
+  <div class="posts">
+    <h2 class="posts-title">Latest Posts</h2>
+    {posts.length === 0 ? (
+      <p>No posts yet. Check back soon!</p>
+    ) : (
+      posts.map((post) => <PostCard post={post} />)
+    )}
   </div>
 </BaseLayout>

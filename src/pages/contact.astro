@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : import.meta.env.BASE_URL + '/';
+---
+
+<BaseLayout title="Contact">
+  <!-- Use the same wrapper your other pages use so the CSS applies identically -->
+  <div class="index-content framed">
+    <h1>Contact</h1>
+
+    <p><strong>Email:</strong> <a href="mailto:piyushsatti@gmail.com">piyushsatti@gmail.com</a></p>
+
+    <!-- Keep markup simple so theme's global form styles apply -->
+    <form action="https://formspree.io/f/REPLACE_WITH_ID" method="POST">
+      <label>Your email<br /><input type="email" name="email" required /></label><br />
+      <label>Your message<br /><textarea name="message" required></textarea></label><br />
+      <button type="submit" class="button">Send</button>
+    </form>
+
+    <p style="margin-top: 1rem;">
+      <a href="https://github.com/piyushsatti" target="_blank" rel="noopener noreferrer">GitHub</a> ::
+      <a href="https://www.linkedin.com/in/piyush-satti/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    </p>
+  </div>
+</BaseLayout>
