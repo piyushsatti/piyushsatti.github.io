@@ -1,9 +1,9 @@
 ---
-title: 'Rich Content'
-description: 'Examples of embedded media content'
+title: "Rich Content"
+description: "Examples of embedded media content"
 pubDate: 2019-03-10
-author: 'Terminal Theme Authors'
-tags: ['media', 'embeds', 'video']
+author: "Terminal Theme Authors"
+tags: ["media", "embeds", "video"]
 ---
 
 This page demonstrates how to embed various types of media content in the Astro Terminal theme, including YouTube videos, Vimeo players, and GitHub code snippets.

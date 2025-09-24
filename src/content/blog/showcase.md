@@ -1,8 +1,8 @@
 ---
-title: 'Showcase'
-description: 'This article offers a sample of basic Markdown syntax that can be used in Astro content files, also it shows whether basic HTML elements are decorated with CSS in the Astro Terminal theme.'
+title: "Showcase"
+description: "This article offers a sample of basic Markdown syntax that can be used in Astro content files, also it shows whether basic HTML elements are decorated with CSS in the Astro Terminal theme."
 pubDate: 2019-03-11
-author: 'Hugo Authors, Radek'
+author: "Hugo Authors, Radek"
 tags: []
 ---
 
@@ -13,10 +13,15 @@ This article offers a sample of basic Markdown syntax that can be used in Astro 
 The following HTML `<h1>`—`<h6>` elements represent six levels of section headings. `<h1>` is the highest section level while `<h6>` is the lowest.
 
 # H1
+
 ## H2
+
 ### H3
+
 #### H4
+
 ##### H5
+
 ###### H6
 
 ## Paragraph
@@ -45,11 +50,11 @@ The blockquote element represents content that is quoted from another source, op
 ### Blockquote without attribution
 
 > Tiam, ad mint andaepu dandae nostion secatur sequo quae.
-> **Note** that you can use *Markdown syntax* within a blockquote.
+> **Note** that you can use _Markdown syntax_ within a blockquote.
 
 ### Blockquote with attribution
 
-> Don't communicate by sharing memory, share memory by communicating.  
+> Don't communicate by sharing memory, share memory by communicating.
 > — <cite>Rob Pike[^1]</cite>
 
 [^1]: The above quote is excerpted from Rob Pike's [talk](https://www.youtube.com/watch?v=PAAkCSZUG1c) during Gopherfest, November 18, 2015.
@@ -65,16 +70,16 @@ Tables aren't part of the core Markdown spec, but Astro supports them out-of-the
 
 ### Basic Table
 
-| Name | Age |
-| ---- | --- |
-| Bob | 27 |
-| Alice | 23 |
+| Name  | Age |
+| ----- | --- |
+| Bob   | 27  |
+| Alice | 23  |
 
 ### Inline Markdown within tables
 
-| Italics | Bold | Code |
-| ------- | ---- | ---- |
-| *italics* | **bold** | `code` |
+| Italics   | Bold     | Code   |
+| --------- | -------- | ------ |
+| _italics_ | **bold** | `code` |
 
 ## Forms
 
@@ -99,15 +104,15 @@ Tables aren't part of the core Markdown spec, but Astro supports them out-of-the
 ### Code block with backticks
 
 ```html
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Example HTML5 Document</title>
-</head>
-<body>
-  <p>Test</p>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <title>Example HTML5 Document</title>
+  </head>
+  <body>
+    <p>Test</p>
+  </body>
 </html>
 ```
 
@@ -123,19 +128,19 @@ For more examples for different programming languages, please go to [code showca
 
 ### Unordered List
 
-* List item
-* Another item
-* And another item
+- List item
+- Another item
+- And another item
 
 ### Nested list
 
-* Fruit
-  * Apple
-  * Orange
-  * Banana
-* Dairy
-  * Milk
-  * Cheese
+- Fruit
+  - Apple
+  - Orange
+  - Banana
+- Dairy
+  - Milk
+  - Cheese
 
 ## Other Elements — abbr, sub, sup, kbd, mark
 
