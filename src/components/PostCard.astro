@@ -1,62 +1,152 @@
 ---
-import FormattedDate from './FormattedDate.astro';
+import FormattedDate from "./FormattedDate.astro";
 
-export interface Props {
-  post: {
-    slug: string;
-    data: {
-      title: string;
-      description?: string;
-      pubDate: Date;
-      author?: string;
-      tags?: string[];
-      image?: string;
-      externalLink?: string;
-    };
+/** BLOG */
+interface BlogEntry {
+  slug: string;
+  data: {
+    title: string;
+    description?: string;
+    pubDate: string;
+    author?: string;
+    tags?: string[];
+    image?: string;
+    externalLink?: string;
   };
 }
 
-const { post } = Astro.props;
-const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
-const postUrl = post.data.externalLink || `${base}posts/${post.slug}/`;
-const isExternal = !!post.data.externalLink;
+/** PROJECTS */
+interface ProjectEntry {
+  slug: string;
+  data: {
+    title: string;
+    summary: string;          // from config.ts
+    startDate: string;
+    endDate?: string;
+    tags?: string[];
+    image?: string;
+    repo?: string;
+    demo?: string;
+  };
+}
+
+/** RESEARCH */
+interface ResearchEntry {
+  slug: string;
+  data: {
+    title: string;
+    journal: string;
+    pubDate: string;
+    summary: string;
+    tags?: string[];
+    image?: string;
+    paper: string;            // DOI or paper URL
+    repo?: string;
+    slides?: string;
+  };
+}
+
+type CardEntry = BlogEntry | ProjectEntry | ResearchEntry;
+
+export interface Props {
+  /** Preferred: pass the entry and which collection it came from */
+  entry?: CardEntry;
+  variant?: "blog" | "projects" | "research";
+
+  /** Back-compat with old usage: <PostCard post={post} /> for blog */
+  post?: BlogEntry;
+}
+
+const base = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : import.meta.env.BASE_URL + "/"; // works with config.base on GitHub Pages. :contentReference[oaicite:1]{index=1}
+
+/* normalize props (support old 'post' prop) */
+const incoming = (Astro.props.entry ?? Astro.props.post) as CardEntry;
+let variant = Astro.props.variant as Props["variant"] | undefined;
+
+/* Infer variant if not provided */
+if (!variant) {
+  if ("journal" in incoming.data && "paper" in incoming.data) variant = "research";
+  else if ("startDate" in incoming.data) variant = "projects";
+  else variant = "blog";
+}
+
+/* Build URL and display fields */
+let url = "";
+let title = incoming.data.title;
+let image: string | undefined = (incoming as any).data.image;
+let tags: string[] | undefined = (incoming as any).data.tags;
+
+/* common meta for display */
+let primaryDate: Date | undefined;
+let secondaryMeta: string | undefined;   // author, journal, or date range
+let blurb: string | undefined;           // description/summary
+
+if (variant === "blog") {
+  const e = incoming as BlogEntry;
+  primaryDate = new Date(e.data.pubDate);
+  secondaryMeta = e.data.author;
+  blurb = e.data.description;
+  const external = e.data.externalLink;
+  url = external || `${base}blog/${e.slug}/`; // route under /blog
+} else if (variant === "projects") {
+  const e = incoming as ProjectEntry;
+  primaryDate = e.data.endDate ? new Date(e.data.endDate) : new Date(e.data.startDate); // show most recent
+  const range = e.data.endDate
+    ? `${e.data.startDate} → ${e.data.endDate}`
+    : `${e.data.startDate} → Present`;
+  secondaryMeta = range;
+  blurb = e.data.summary;
+  url = `${base}projects/${e.slug}/`;
+} else {
+  const e = incoming as ResearchEntry;
+  primaryDate = new Date(e.data.pubDate);
+  secondaryMeta = e.data.journal;
+  blurb = e.data.summary;
+  url = `${base}research/${e.slug}/`;
+}
+const isExternal = variant === "blog" && "externalLink" in (incoming as any).data && !!(incoming as any).data.externalLink;
 ---
 
 <article class="post on-list">
   <h2 class="post-title">
-    <a href={postUrl} target={isExternal ? "_blank" : undefined} rel={isExternal ? "noopener" : undefined}>
-      {post.data.title}
+    <a href={url} target={isExternal ? "_blank" : undefined} rel={isExternal ? "noopener" : undefined}>
+      {title}
     </a>
   </h2>
+
   <div class="post-meta">
-    <time class="post-date">
-      <FormattedDate date={post.data.pubDate} />
-    </time>
-    {post.data.author && (
-      <span class="post-author">{post.data.author}</span>
+    {primaryDate && (
+      <time class="post-date"><FormattedDate date={primaryDate} /></time>
     )}
+    {secondaryMeta && <span class="post-author">{secondaryMeta}</span>}
   </div>
-  {post.data.tags && post.data.tags.length > 0 && (
+
+  {tags && tags.length > 0 && (
     <span class="post-tags">
-      {post.data.tags.map((tag, index) => (
+      {tags.map((tag, i) => (
         <>
-          <a href={`${base}tags/${tag}/`}>{tag}</a>{post.data.tags && index < post.data.tags.length - 1 && ', '}
+          <a href={`${base}tags/${tag}/`}>{tag}</a>{i < tags.length - 1 && ", "}
         </>
       ))}
     </span>
   )}
-  {post.data.image && (
+
+  {image && (
     <figure class="post-cover">
-      <img src={post.data.image} alt={post.data.title} />
+      <img src={image} alt={title} />
     </figure>
   )}
-  {post.data.description && (
+
+  {blurb && (
     <div class="post-content">
-      <p>{post.data.description}</p>
+      <p>{blurb}</p>
     </div>
   )}
+
   <div>
-    <a href={postUrl} class="read-more button inline" target={isExternal ? "_blank" : undefined} rel={isExternal ? "noopener" : undefined}>
+    <a href={url} class="read-more button inline" target={isExternal ? "_blank" : undefined} rel={isExternal ? "noopener" : undefined}>
       [Read more]
     </a>
   </div>

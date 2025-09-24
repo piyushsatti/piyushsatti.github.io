@@ -1,8 +1,9 @@
 ---
 title: "What Clicked: Spring Boot + GraphQL While Rebuilding RISK"
-date: "2025-09-01"
 description: "Notes from building a typed GraphQL backend: schema design, phases as State, and testability wins."
+pubDate: "2025-09-01"
 tags: ["Java", "Spring Boot", "GraphQL", "DDD", "Testing"]
+image: ""
 ---
 
 > A backend-first walkthrough of choices that made the project maintainable.

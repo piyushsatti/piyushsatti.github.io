@@ -1,14 +1,11 @@
 ---
 title: "GameOps Suite (FastAPI + ETL + Discord)"
-date: "2025-03-01"
+startDate: "2025-03-01"
+endDate: "2025-06-01"
 summary: "End-to-end ops platform: Discord event ETL → MongoDB; FastAPI REST with authZ; containers on DigitalOcean; Redis; ~200 ms E2E typical actions; dashboard for player statistics."
 tags: ["Python", "FastAPI", "ETL", "Discord", "MongoDB", "Docker", "Redis", "DigitalOcean", "AuthZ"]
+image: ""
 repo: "https://github.com/piyushsatti/nonagon"
-demo: ""
-tldr:
-  - "Event-driven ETL from Discord → MongoDB documents"
-  - "FastAPI REST with role-based authorization"
-  - "Containers on DigitalOcean; ~200 ms E2E for common flows"
 ---
 
 ## Overview

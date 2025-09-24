@@ -1,14 +1,11 @@
 ---
 title: "Risk-Emulated (Spring Boot + GraphQL)"
-date: "2024-08-01"
+startDate: "2024-08-01"
+endDate: "2024-11-01"
 summary: "Playable RISK backend using Spring Boot + GraphQL with a typed schema (createGame, reinforce, attack, gameStatus), map validator, State/Strategy engine, audit MoveLog, and CI gates."
 tags: ["Java", "Spring Boot", "GraphQL", "DDD", "Docker", "PostgreSQL", "Testing"]
+image: ""
 repo: "https://github.com/piyushsatti/risk-emulated"
-demo: ""
-tldr:
-  - "Typed GraphQL schema: createGame, reinforce, attack, gameStatus"
-  - "Map builder/validator ensures legal, connected maps"
-  - "Audit MoveLog + Checkstyle/Spotless + coverage gates"
 ---
 
 ## Overview

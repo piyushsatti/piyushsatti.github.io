@@ -1,8 +1,9 @@
 ---
-title: "Building a Discord → MongoDB ETL for Real-Time Ops"
-date: "2025-09-01"
-description: "Event-driven ingestion, schema design, and keeping E2E latency near 200 ms."
+title: "Lessons in Domain Modelling by Building Nonagon"
+description: "How a ETL pipeline for Discord messages shaped my approach to schema design."
+pubDate: "2024-09-20"
 tags: ["Python", "FastAPI", "ETL", "MongoDB", "Discord", "Observability"]
+image: ""
 ---
 
 **Goal:** turn noisy chat into structured, actionable data with minimal lag.
