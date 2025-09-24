@@ -1,8 +1,9 @@
 ---
 title: "My Coding Heroes"
 description: "A tribute to the developers and thinkers who have shaped my technical philosophy."
-date: "2024-09-20"
+pubDate: "2024-09-20"
 tags: ["philosophy", "inspiration"]
+image: ""
 ---
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eget tortor risus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.

@@ -3,9 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../components/PostCard.astro';
 import { getCollection } from 'astro:content';
 
-const posts = (await getCollection('posts'))
-  .filter(post => !post.data.draft)
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const posts = (await getCollection("blog"))
 ---
 
 <BaseLayout title="Posts">
@@ -14,7 +12,7 @@ const posts = (await getCollection('posts'))
     {posts.length === 0 ? (
       <p>No posts yet. Check back soon!</p>
     ) : (
-      posts.map((post) => <PostCard post={post} />)
+      posts.map((p) => <PostCard entry={p} variant="blog" />)
     )}
   </div>
 </BaseLayout>

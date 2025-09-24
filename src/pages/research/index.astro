@@ -4,7 +4,7 @@ import { getCollection } from 'astro:content';
 
 const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
 const items = (await getCollection('research')).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+  (a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime()
 );
 ---
 
@@ -15,7 +15,7 @@ const items = (await getCollection('research')).sort(
       {items.map(r => (
         <li>
           <a href={`${base}research/${r.id}/`}>{r.data.title}</a>
-          <span> — {r.data.venue}</span>
+          <span> — {r.data.journal}</span>
           <span> — <a href={r.data.paper} target="_blank" rel="noopener noreferrer">DOI</a></span>
         </li>
       ))}
