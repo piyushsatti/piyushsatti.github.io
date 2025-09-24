@@ -1,36 +1,66 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
 ---
 
-<BaseLayout title="About">
-  <div class="page">
-    <h1>About</h1>
+<BaseLayout title="About Me">
+  <div class="index-content framed">
+    <h1>About Me</h1>
+    <p>I'm a backend-leaning developer with an M.Sc. I care about typed schemas, clean boundaries, and tests that read like specs.</p>
     <p>
-      This is the Astro Terminal theme, a port of the fantastic
-      <a href="https://github.com/panr/hugo-theme-terminal" target="_blank" rel="noopener">Hugo Terminal theme</a>
-      created by <a href="https://github.com/panr" target="_blank" rel="noopener">panr</a>.
-    </p>
-    
-    <p>
-      The Astro version maintains all the great features of the original theme whilst using Astro's modern 
-      static site generation capabilities.
-    </p>
-    
-    <p>
-      The theme features syntax highlighting with Shiki, customisable colour schemes via
-      <a href="https://panr.github.io/terminal-css/" target="_blank" rel="noopener">Terminal.css</a>,
-      Fira Code monospace font, and a beautiful retro terminal aesthetic.
-    </p>
-    
-    <p>
-      Ported to Astro by <a href="https://github.com/dennisklappe" target="_blank" rel="noopener">Dennis Klappe</a>.
+      <a href="https://github.com/piyushsatti" target="_blank" rel="noopener noreferrer">GitHub</a> ::
+      <a href="https://www.linkedin.com/in/piyush-satti/" target="_blank" rel="noopener noreferrer">LinkedIn</a> ::
+      <a href="https://scholar.google.ca/citations?user=eR10c10AAAAJ&hl=en" target="_blank" rel="noopener noreferrer">Scholar</a>
     </p>
   </div>
-</BaseLayout>
 
-<style>
-  .page {
-    max-width: 760px;
-    margin: 0 auto;
-  }
-</style>
+    <div>
+    <h2>Technical Skills:</h2>
+    <table>
+      <thead><tr><th>Category</th><th>Skills</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Languages</td>
+          <td>Python, Java, JavaScript/TypeScript, Ruby, HTML/CSS, C/C++, SQL, MATLAB, Bash, LaTeX</td>
+        </tr>
+        <tr>
+          <td>Cloud & DevOps</td>
+          <td>Git/GitHub, Docker, DigitalOcean, Vercel, Supabase, GitHub Actions</td>
+        </tr>
+        <tr>
+          <td>Databases</td>
+          <td>PostgreSQL, MongoDB, Redis</td>
+        </tr>
+        <tr>
+          <td>Additional</td>
+          <td>Kafka, Nginx, Elasticsearch, Postman, Jira / Trello</td>
+        </tr>
+        <tr>
+          <td>Frontend</td>
+          <td>Astro, Next.js, Tailwind CSS</td>
+        </tr>
+        <tr>
+          <td>Backend</td>
+          <td>Flask, FastAPI, Spring Boot, Express.js / Node.js</td>
+        </tr>
+        <tr>
+          <td>Patterns</td>
+          <td>Monolithic, Microservices, Serverless</td>
+        </tr>
+        <tr>
+          <td>Agentic</td>
+          <td>LangGraph, Retrieval-Augmented Generation (RAG)</td>
+        </tr>
+        <tr>
+          <td>Data Science</td>
+          <td>Apache Spark, NumPy, Pandas</td>
+        </tr>
+        <tr>
+          <td>Machine Learning</td>
+          <td>PyTorch, Scikit-learn, NLTK, Speechbrain, Matplotlib, Seaborn</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</BaseLayout>

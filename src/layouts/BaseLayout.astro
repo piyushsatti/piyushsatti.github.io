@@ -104,56 +104,11 @@ const base = import.meta.env.BASE_URL.endsWith("/")
         <nav class="navigation-menu">
           <ul class="navigation-menu__inner menu--desktop">
             <li><a href={base}>Home</a></li>
-            <li>
-              <a
-                href={`${base}resume.pdf`}
-                target="_blank"
-                rel="noopener noreferrer">Resume</a
-              >
-            </li>
-            <li>
-              <ul class="menu">
-                <li class="menu__trigger">
-                  <a href={`${base}projects`}>Projects</a> ▾
-                </li>
-                <li>
-                  <ul class="menu__dropdown">
-                    <li>
-                      <a href={`${base}projects/risk-emulated`}>Risk-Emulated</a
-                      >
-                    </li>
-                    <li>
-                      <a href={`${base}projects/gameops-suite`}>GameOps Suite</a
-                      >
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <ul class="menu">
-                <li class="menu__trigger">
-                  <a href={`${base}research`}>Research</a> ▾
-                </li>
-                <li>
-                  <ul class="menu__dropdown">
-                    <li><a href={`${base}research/mmapf`}>MMAPF</a></li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <ul class="menu">
-                <li class="menu__trigger">
-                  <a href={`${base}blog`}>Blog</a> ▾
-                </li>
-                <li>
-                  <ul class="menu__dropdown">
-                    <li><a href={`${base}blog/heroes`}>Heroes</a></li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
+            <li><a href={`${base}about`}>whoami</a></li>
+            <li><a href={`${base}resume.pdf`} target="_blank" rel="noopener noreferrer">Resume</a></li>
+            <li><a href={`${base}projects`}>Projects</a></li>
+            <li><a href={`${base}research`}>Research</a></li>
+            <li><a href={`${base}blog`}>Blog</a></li>
             <li><a href={`${base}hobbies`}>Hobbies</a></li>
             <li><a href={`${base}contact`}>Contact</a></li>
           </ul>
@@ -186,18 +141,12 @@ const base = import.meta.env.BASE_URL.endsWith("/")
           >
         </div>
         <div class="copyright">
-          <span
-            >© {new Date().getFullYear()} Powered by <a
-              href="https://astro.build">Astro</a
-            ></span
-          >
+          <span>
+              © {new Date().getFullYear()} Powered by <a href="https://astro.build" target="_blank">Astro</a>
+          </span>
           <span class="separator">::</span>
-          <span
-            >Theme made by <a
-              href="https://github.com/panr/hugo-theme-terminal"
-              target="_blank">panr</a
-            ></span
-          >
+          <span>Theme made by <a href="https://github.com/panr/hugo-theme-terminal" target="_blank">panr</a>
+          </span>
         </div>
       </div>
     </footer>

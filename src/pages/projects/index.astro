@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
+const items = (await getCollection('projects')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<BaseLayout title="Projects">
+  <div class="posts">
+    <h1 class="posts-title">Projects</h1>
+    {items.length === 0 ? (
+      <p>No projects yet.</p>
+    ) : (
+      <ul>
+        {items.map(p => (
+          <li>
+            <a href={`${base}projects/${p.id}/`}>{p.data.title}</a>
+            <span> — {p.data.summary}</span>
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .posts-title {
+    position: relative;
+    color: var(--accent);
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 15px;
+    border-bottom: 3px dotted var(--accent);
+  }
+
+  .posts-title::after {
+    content: "";
+    position: absolute;
+    bottom: 2px;
+    display: block;
+    width: 100%;
+    border-bottom: 3px dotted var(--accent);
+  }
+</style>

@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
+---
+
+<BaseLayout title="Hobbies">
+  <div class="index-content framed">
+    <h1>Hobbies</h1>
+    <p>
+      When I'm not coding, I enjoy hiking, photography, and playing the guitar. These activities help me relax and recharge, allowing me to return to my work with a fresh perspective.
+    </p>
+  </div>
+</BaseLayout>

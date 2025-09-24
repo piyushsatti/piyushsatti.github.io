@@ -1,39 +1,46 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection, z } from "astro:content";
 
-const projects = defineCollection({
-  type: 'content',
+const posts = defineCollection({
+  type: "content",
   schema: z.object({
     title: z.string(),
-    date: z.string(), // ISO date string
-    summary: z.string().max(280),
+    description: z.string(),
+    pubDate: z.date(),
+    updatedDate: z.date().optional(),
+    author: z.string().optional(),
     tags: z.array(z.string()).default([]),
-    repo: z.string().url().optional(),
-    demo: z.string().url().optional(),
-    // optional fields
-    tldr: z.array(z.string()).max(3).optional(),
-    cover: z.string().optional(), // path to image in /public
+    image: z.string().optional(),
+    draft: z.boolean().default(false)
   })
 });
 
-const blog = defineCollection({
-  type: 'content',
+const projects = defineCollection({
+  type: "content",
   schema: z.object({
     title: z.string(),
-    date: z.string(),
-    description: z.string(),
+    summary: z.string().max(280),
+    pubDate: z.date(),
+    updatedDate: z.date().optional(),
     tags: z.array(z.string()).default([]),
+    image: z.string().optional(),
+    repo: z.string().url().optional(),
+    demo: z.string().url().optional(),
+    tldr: z.array(z.string()).max(5).optional()
   })
 });
 
 const research = defineCollection({
-  type: 'content',
+  type: "content",
   schema: z.object({
     title: z.string(),
     venue: z.string(),
-    doi: z.string().url(),
     summary: z.string(),
-    pdf: z.string().url().optional()
+    pubDate: z.date(),
+    tags: z.array(z.string()).default([]),
+    paper: z.string().url(),     // DOI or paper link
+    image: z.string().optional(),
+    tldr: z.array(z.string()).max(5).optional()
   })
 });
 
-export const collections = { projects, blog, research };
+export const collections = { posts, projects, research };
