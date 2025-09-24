@@ -1,7 +1,8 @@
 ---
 import FormattedDate from './FormattedDate.astro';
 
-export interface Props {
+// Support both legacy post object format and new flat props format
+type LegacyProps = {
   post: {
     slug: string;
     data: {
@@ -14,49 +15,94 @@ export interface Props {
       externalLink?: string;
     };
   };
+};
+
+type FlatProps = {
+  title: string;
+  summary: string;
+  tags: string[];
+  url: string;
+};
+
+export type Props = LegacyProps | FlatProps;
+
+const props = Astro.props;
+
+// Check if we're using the legacy format or the new flat format
+const isLegacyFormat = 'post' in props;
+
+// Extract values based on format
+let title: string;
+let summary: string | undefined;
+let tags: string[] | undefined;
+let url: string;
+let pubDate: Date | undefined;
+let author: string | undefined;
+let image: string | undefined;
+
+if (isLegacyFormat) {
+  const { post } = props as LegacyProps;
+  const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
+  
+  title = post.data.title;
+  summary = post.data.description;
+  tags = post.data.tags;
+  url = post.data.externalLink || `${base}posts/${post.slug}/`;
+  pubDate = post.data.pubDate;
+  author = post.data.author;
+  image = post.data.image;
+} else {
+  const flatProps = props as FlatProps;
+  title = flatProps.title;
+  summary = flatProps.summary;
+  tags = flatProps.tags;
+  url = flatProps.url;
+  // These are not available in flat format
+  pubDate = undefined;
+  author = undefined;
+  image = undefined;
 }
 
-const { post } = Astro.props;
-const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
-const postUrl = post.data.externalLink || `${base}posts/${post.slug}/`;
-const isExternal = !!post.data.externalLink;
+const isExternal = url.startsWith('http');
 ---
 
 <article class="post on-list">
   <h2 class="post-title">
-    <a href={postUrl} target={isExternal ? "_blank" : undefined} rel={isExternal ? "noopener" : undefined}>
-      {post.data.title}
+    <a href={url} target={isExternal ? "_blank" : undefined} rel={isExternal ? "noopener" : undefined}>
+      {title}
     </a>
   </h2>
   <div class="post-meta">
-    <time class="post-date">
-      <FormattedDate date={post.data.pubDate} />
-    </time>
-    {post.data.author && (
-      <span class="post-author">{post.data.author}</span>
+    {pubDate && (
+      <time class="post-date">
+        <FormattedDate date={pubDate} />
+      </time>
+    )}
+    {author && (
+      <span class="post-author">{author}</span>
     )}
   </div>
-  {post.data.tags && post.data.tags.length > 0 && (
+  {tags && tags.length > 0 && (
     <span class="post-tags">
-      {post.data.tags.map((tag, index) => (
+      {tags.map((tag, index) => (
         <>
-          <a href={`${base}tags/${tag}/`}>{tag}</a>{post.data.tags && index < post.data.tags.length - 1 && ', '}
+          <a href={isLegacyFormat ? `${(import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/')}tags/${tag}/` : `#${tag}`}>{tag}</a>{tags && index < tags.length - 1 && ', '}
         </>
       ))}
     </span>
   )}
-  {post.data.image && (
+  {image && (
     <figure class="post-cover">
-      <img src={post.data.image} alt={post.data.title} />
+      <img src={image} alt={title} />
     </figure>
   )}
-  {post.data.description && (
+  {summary && (
     <div class="post-content">
-      <p>{post.data.description}</p>
+      <p>{summary}</p>
     </div>
   )}
   <div>
-    <a href={postUrl} class="read-more button inline" target={isExternal ? "_blank" : undefined} rel={isExternal ? "noopener" : undefined}>
+    <a href={url} class="read-more button inline" target={isExternal ? "_blank" : undefined} rel={isExternal ? "noopener" : undefined}>
       [Read more]
     </a>
   </div>
