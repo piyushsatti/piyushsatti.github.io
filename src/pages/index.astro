@@ -10,10 +10,10 @@ const posts = (await getCollection('posts'))
 
 <BaseLayout title="Terminal">
   <div class="index-content framed">
-    <h1 id="hello-there">Hello there!</h1>
+    <h1 id="hello-world">Hello World</h1>
     <p>Welcome to the Astro Terminal theme! This is a port of the popular Hugo Terminal theme by panr, bringing the same retro terminal aesthetic to Astro.</p>
     <p>
-      You can customise the colour scheme using panr's <a href="https://panr.github.io/terminal-css/"><strong>Terminal.css</strong></a> 
+      You can customise the colour scheme using panr's <a href="https://panr.github.io/terminal-css/"><strong>Terminal.css</strong></a>
       generator - all generated schemes are fully compatible with this theme.
     </p>
     <p>
@@ -22,7 +22,7 @@ const posts = (await getCollection('posts'))
       </a>
     </p>
   </div>
-  
+
   <div class="posts">
     {posts.map((post) => <PostCard post={post} />)}
   </div>
