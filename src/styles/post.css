@@ -267,3 +267,106 @@ sup[data-footnote-ref] a:hover {
   margin-left: 5px;
   font-size: 0.9em;
 }
+
+/* Post component layout */
+.post-full {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.post-full__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.post-full__variant {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.75rem;
+  color: var(--accent);
+  margin: 0;
+}
+
+.post-full__header h1 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.2;
+}
+
+.post-full__description {
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+.post-full__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.post-full__meta-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.post-full__links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.post-full__links a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.post-full__links a:hover {
+  text-decoration: underline;
+}
+
+.post-full__divider {
+  opacity: 0.6;
+}
+
+.post-full__cover img {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--accent);
+}
+
+.post-full__summary {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.post-full__tldr ul {
+  margin: 0.75rem 0 0;
+}
+
+.post-full__content :global(p) {
+  line-height: 1.7;
+}
+
+.post-full__tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.5rem 0 0;
+}
+
+.post-full__tag a {
+  color: inherit;
+}
+
+.post-full__tags-divider {
+  margin: 0 0.25rem;
+  opacity: 0.6;
+}

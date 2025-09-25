@@ -1,0 +1,57 @@
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Core palette based on Terminal CSS dark theme */
+  --color-bg: #1a170f;
+  --color-surface: #221d14;
+  --color-surface-elevated: #2b2418;
+  --color-text: #eceae5;
+  --color-text-muted: #c7c2b7;
+  --color-border: #3b3221;
+  --color-border-strong: color-mix(in srgb, var(--color-accent) 35%, transparent);
+  --color-accent: #eec35e;
+  --color-accent-soft: #f4d677;
+
+  /* Derived tokens consumed throughout the site */
+  --background: var(--color-bg);
+  --foreground: var(--color-text);
+  --accent: var(--color-accent);
+  --accent-soft: var(--color-accent-soft);
+  --muted-text: var(--color-text-muted);
+  --surface: var(--color-surface);
+  --surface-elevated: var(--color-surface-elevated);
+  --border-color: var(--color-border);
+  --border-color-strong: var(--color-border-strong);
+  --card-bg: color-mix(in srgb, var(--surface-elevated) 80%, transparent);
+  --card-border: var(--border-color-strong);
+  --text-color: var(--foreground);
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  /* Light palette inspired by Terminal CSS accents */
+  --color-bg: #f4efe4;
+  --color-surface: #ffffff;
+  --color-surface-elevated: #f0e4cf;
+  --color-text: #272011;
+  --color-text-muted: #5b4f39;
+  --color-border: #cabd9f;
+  --color-border-strong: color-mix(in srgb, var(--color-accent) 45%, transparent);
+  --color-accent: #d38a08;
+  --color-accent-soft: #f3b54b;
+
+  --background: var(--color-bg);
+  --foreground: var(--color-text);
+  --accent: var(--color-accent);
+  --accent-soft: var(--color-accent-soft);
+  --muted-text: var(--color-text-muted);
+  --surface: var(--color-surface);
+  --surface-elevated: var(--color-surface-elevated);
+  --border-color: var(--color-border);
+  --border-color-strong: var(--color-border-strong);
+  --card-bg: color-mix(in srgb, var(--surface-elevated) 92%, transparent);
+  --card-border: var(--color-border-strong);
+  --text-color: var(--foreground);
+}

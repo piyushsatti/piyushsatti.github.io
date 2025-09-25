@@ -19,27 +19,42 @@ const { navItems } = Astro.props;
         <div class="logo">Terminal&gt;&gt;Pi(π)</div>
       </a>
     </div>
-    <!-- Menu for mobile -->
-    <ul class="menu menu--mobile">
-      <li class="menu__trigger">Menu ▾</li>
-      <li>
-        <ul class="menu__dropdown">
-          {
-            navItems.map((item) => (
-              <li>
-                <a
-                  href={item.href}
-                  target={item.external ? "_blank" : undefined}
-                  rel={item.external ? "noopener noreferrer" : undefined}
-                >
-                  {item.label}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </li>
-    </ul>
+    <div class="header__actions">
+      <button
+        class="theme-toggle"
+        type="button"
+        aria-label="Switch to light theme"
+      >
+        <span
+          class="theme-toggle__icon theme-toggle__icon--sun"
+          aria-hidden="true">☀</span
+        >
+        <span
+          class="theme-toggle__icon theme-toggle__icon--moon"
+          aria-hidden="true">☾</span
+        >
+      </button>
+      <ul class="menu menu--mobile">
+        <li class="menu__trigger">Menu ▾</li>
+        <li>
+          <ul class="menu__dropdown">
+            {
+              navItems.map((item) => (
+                <li>
+                  <a
+                    href={item.href}
+                    target={item.external ? "_blank" : undefined}
+                    rel={item.external ? "noopener noreferrer" : undefined}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </li>
+      </ul>
+    </div>
   </div>
   <!-- Menu for desktop -->
   <nav class="navigation-menu">
@@ -61,10 +76,75 @@ const { navItems } = Astro.props;
   </nav>
 </header>
 
-<script>
+<script is:inline lang="ts">
   (() => {
     const header = document.currentScript?.previousElementSibling;
-    if (!header) return;
+    if (!(header instanceof HTMLElement)) return;
+
+    type Theme = "light" | "dark";
+
+    const STORAGE_KEY = "terminal-theme-preference";
+    const root = document.documentElement;
+    const toggle = header.querySelector<HTMLButtonElement>(".theme-toggle");
+    const prefersDark = window.matchMedia?.("(prefers-color-scheme: dark)");
+
+    const getStoredTheme = (): Theme | null => {
+      try {
+        const value = localStorage.getItem(STORAGE_KEY);
+        return value === "light" || value === "dark" ? (value as Theme) : null;
+      } catch (error) {
+        console.warn("Unable to read theme from storage", error);
+        return null;
+      }
+    };
+
+    const setStoredTheme = (value: Theme) => {
+      try {
+        localStorage.setItem(STORAGE_KEY, value);
+      } catch (error) {
+        console.warn("Unable to persist theme in storage", error);
+      }
+    };
+
+    const updateToggleLabel = (theme: Theme) => {
+      if (!toggle) return;
+      const nextTheme: Theme = theme === "dark" ? "light" : "dark";
+      toggle.setAttribute("aria-label", `Switch to ${nextTheme} theme`);
+    };
+
+    const applyTheme = (theme: Theme, persist = true): Theme => {
+      const normalized: Theme = theme === "light" ? "light" : "dark";
+      root.setAttribute("data-theme", normalized);
+      if (persist) {
+        setStoredTheme(normalized);
+      }
+      updateToggleLabel(normalized);
+      return normalized;
+    };
+
+    const initialTheme: Theme =
+      getStoredTheme() ?? (prefersDark?.matches ? "dark" : "light");
+
+    applyTheme(initialTheme, false);
+
+    toggle?.addEventListener("click", () => {
+      const current = (root.getAttribute("data-theme") as Theme) ?? "dark";
+      const next: Theme = current === "dark" ? "light" : "dark";
+      applyTheme(next);
+    });
+
+    if (prefersDark) {
+      const handleMatchMedia = (event: MediaQueryListEvent) => {
+        if (getStoredTheme()) return;
+        applyTheme(event.matches ? "dark" : "light", false);
+      };
+
+      if (typeof prefersDark.addEventListener === "function") {
+        prefersDark.addEventListener("change", handleMatchMedia);
+      } else if (typeof prefersDark.addListener === "function") {
+        prefersDark.addListener(handleMatchMedia);
+      }
+    }
 
     const menus = Array.from(header.querySelectorAll(".menu")).filter(
       (menu) => menu instanceof HTMLElement

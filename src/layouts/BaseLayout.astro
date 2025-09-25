@@ -36,8 +36,6 @@ const navItems = [
 ];
 ---
 
----
-
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -64,6 +62,30 @@ const navItems = [
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     {image && <meta name="twitter:image" content={new URL(image, Astro.url)} />}
+
+    <script is:inline>
+      (() => {
+        const storageKey = "terminal-theme-preference";
+        const root = document.documentElement;
+
+        try {
+          const stored = localStorage.getItem(storageKey);
+          if (stored === "light" || stored === "dark") {
+            root.setAttribute("data-theme", stored);
+            return;
+          }
+
+          if (
+            window.matchMedia &&
+            window.matchMedia("(prefers-color-scheme: light)").matches
+          ) {
+            root.setAttribute("data-theme", "light");
+          }
+        } catch (error) {
+          console.warn("Unable to synchronise theme preference", error);
+        }
+      })();
+    </script>
 
     <link rel="sitemap" href={`${base}sitemap.xml`} />
     <link
@@ -105,16 +127,20 @@ const navItems = [
 <style is:global>
   /* Import all CSS files in the correct order */
   @import "../styles/terminal.css";
+  @import "../styles/theme.css";
   @import "../styles/fonts.css";
   @import "../styles/main.css";
+  @import "../styles/home.css";
   @import "../styles/header.css";
   @import "../styles/menu.css";
   @import "../styles/footer.css";
   @import "../styles/buttons.css";
+  @import "../styles/listing-card.css";
   @import "../styles/post.css";
   @import "../styles/pagination.css";
   @import "../styles/code.css";
   @import "../styles/syntax.css";
   @import "../styles/gist.css";
   @import "../styles/terms.css";
+  @import "../styles/pages.css";
 </style>
