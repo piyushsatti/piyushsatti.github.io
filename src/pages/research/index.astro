@@ -15,29 +15,9 @@ const researchEntries = await getCollection("research");
         <p>No research posts yet.</p>
       ) : (
         researchEntries.map((entry) => (
-            <PostCard entry={entry} variant="research" />
+          <PostCard entry={entry} variant="research" />
         ))
       )
     }
   </div>
 </BaseLayout>
-
-<style>
-  .posts-title {
-    position: relative;
-    color: var(--accent);
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    padding-bottom: 15px;
-    border-bottom: 3px dotted var(--accent);
-  }
-
-  .posts-title::after {
-    content: "";
-    position: absolute;
-    bottom: 2px;
-    display: block;
-    width: 100%;
-    border-bottom: 3px dotted var(--accent);
-  }
-</style>

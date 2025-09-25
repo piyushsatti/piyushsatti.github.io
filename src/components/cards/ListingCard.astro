@@ -1,0 +1,116 @@
+---
+import FormattedDate from "../FormattedDate.astro";
+
+export interface ActionLink {
+  label: string;
+  href: string;
+  external?: boolean;
+}
+
+type MetaEntry =
+  | string
+  | number
+  | { kind: "date"; value: Date }
+  | { kind: "text"; value: string };
+
+export interface Props {
+  title: string;
+  href: string;
+  external?: boolean;
+  summary?: string;
+  meta?: MetaEntry[];
+  tags?: string[];
+  actions?: ActionLink[];
+  ctaLabel?: string;
+}
+
+const {
+  title,
+  href,
+  external = false,
+  summary,
+  meta = [],
+  tags = [],
+  actions = [],
+  ctaLabel = "View details →",
+} = Astro.props as Props;
+---
+
+<article class="listing-card">
+  <header class="listing-card__header">
+    <h3 class="listing-card__title">
+      <a
+        href={href}
+        target={external ? "_blank" : undefined}
+        rel={external ? "noopener" : undefined}
+      >
+        {title}
+      </a>
+    </h3>
+
+    {
+      meta.length > 0 && (
+        <div class="listing-card__meta">
+          {meta.map((item) => (
+            <span class="listing-card__meta-item">
+              {typeof item === "string" || typeof item === "number" ? (
+                item
+              ) : item.kind === "date" ? (
+                <FormattedDate date={item.value} />
+              ) : (
+                item.value
+              )}
+            </span>
+          ))}
+        </div>
+      )
+    }
+  </header>
+
+  {
+    tags.length > 0 && (
+      <div class="listing-card__tags">
+        <b>Tags:</b> {tags.join(" • ")}
+      </div>
+    )
+  }
+
+  {
+    summary && (
+      <p class="listing-card__summary">
+        <b>Summary:</b> {summary}
+      </p>
+    )
+  }
+
+  <footer class="listing-card__footer">
+    <a
+      href={href}
+      class="listing-card__cta"
+      target={external ? "_blank" : undefined}
+      rel={external ? "noopener" : undefined}
+    >
+      {ctaLabel}
+    </a>
+    {
+      actions.length > 0 && (
+        <span class="listing-card__links">
+          {actions.map((link, index) => (
+            <>
+              <a
+                href={link.href}
+                target={link.external ? "_blank" : undefined}
+                rel={link.external ? "noopener" : undefined}
+              >
+                {link.label}
+              </a>
+              {index < actions.length - 1 && (
+                <span class="listing-card__divider">·</span>
+              )}
+            </>
+          ))}
+        </span>
+      )
+    }
+  </footer>
+</article>

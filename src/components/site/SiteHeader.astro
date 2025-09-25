@@ -1,0 +1,199 @@
+---
+export interface NavItem {
+  label: string;
+  href: string;
+  external?: boolean;
+}
+
+export interface Props {
+  navItems: NavItem[];
+}
+
+const { navItems } = Astro.props;
+---
+
+<header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href={navItems[0]?.href ?? "/"}>
+        <div class="logo">Terminal&gt;&gt;Pi(π)</div>
+      </a>
+    </div>
+    <div class="header__actions">
+      <button
+        class="theme-toggle"
+        type="button"
+        aria-label="Switch to light theme"
+      >
+        <span
+          class="theme-toggle__icon theme-toggle__icon--sun"
+          aria-hidden="true">☀</span
+        >
+        <span
+          class="theme-toggle__icon theme-toggle__icon--moon"
+          aria-hidden="true">☾</span
+        >
+      </button>
+      <ul class="menu menu--mobile">
+        <li class="menu__trigger">Menu ▾</li>
+        <li>
+          <ul class="menu__dropdown">
+            {
+              navItems.map((item) => (
+                <li>
+                  <a
+                    href={item.href}
+                    target={item.external ? "_blank" : undefined}
+                    rel={item.external ? "noopener noreferrer" : undefined}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!-- Menu for desktop -->
+  <nav class="navigation-menu">
+    <ul class="navigation-menu__inner menu--desktop">
+      {
+        navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              target={item.external ? "_blank" : undefined}
+              rel={item.external ? "noopener noreferrer" : undefined}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</header>
+
+<script is:inline>
+  (() => {
+    const header = document.currentScript?.previousElementSibling;
+    if (!(header instanceof HTMLElement)) return;
+
+    const STORAGE_KEY = "terminal-theme-preference";
+    const root = document.documentElement;
+    const toggle = header.querySelector(".theme-toggle");
+    const prefersDark = window.matchMedia?.("(prefers-color-scheme: dark)");
+
+    const getStoredTheme = () => {
+      try {
+        const value = localStorage.getItem(STORAGE_KEY);
+        return value === "light" || value === "dark" ? value : null;
+      } catch (error) {
+        console.warn("Unable to read theme from storage", error);
+        return null;
+      }
+    };
+
+    const setStoredTheme = (value) => {
+      try {
+        localStorage.setItem(STORAGE_KEY, value);
+      } catch (error) {
+        console.warn("Unable to persist theme in storage", error);
+      }
+    };
+
+    const updateToggleLabel = (theme) => {
+      if (!toggle) return;
+      const nextTheme = theme === "dark" ? "light" : "dark";
+      toggle.setAttribute("aria-label", `Switch to ${nextTheme} theme`);
+    };
+
+    const applyTheme = (theme, persist = true) => {
+      const normalized = theme === "light" ? "light" : "dark";
+      root.setAttribute("data-theme", normalized);
+      if (persist) {
+        setStoredTheme(normalized);
+      }
+      updateToggleLabel(normalized);
+      return normalized;
+    };
+
+    const initialTheme =
+      getStoredTheme() ?? (prefersDark?.matches ? "dark" : "light");
+
+    applyTheme(initialTheme, false);
+
+    toggle?.addEventListener("click", () => {
+      const current =
+        root.getAttribute("data-theme") === "light" ? "light" : "dark";
+      const next = current === "dark" ? "light" : "dark";
+      applyTheme(next);
+    });
+
+    if (prefersDark) {
+      const handleMatchMedia = (event) => {
+        if (getStoredTheme()) return;
+        applyTheme(event.matches ? "dark" : "light", false);
+      };
+
+      if (typeof prefersDark.addEventListener === "function") {
+        prefersDark.addEventListener("change", handleMatchMedia);
+      } else if (typeof prefersDark.addListener === "function") {
+        prefersDark.addListener(handleMatchMedia);
+      }
+    }
+
+    const menus = Array.from(header.querySelectorAll(".menu")).filter(
+      (menu) => menu instanceof HTMLElement
+    );
+
+    const closeMenus = () => {
+      menus.forEach((menu) => menu.classList.remove("open"));
+    };
+
+    document.addEventListener("click", (event) => {
+      const target = event.target;
+      if (target instanceof Node && !header.contains(target)) {
+        closeMenus();
+      }
+    });
+
+    window.addEventListener("resize", closeMenus);
+
+    menus.forEach((menu) => {
+      const trigger = menu.querySelector(".menu__trigger");
+      const dropdown = menu.querySelector(".menu__dropdown");
+
+      if (
+        !(trigger instanceof HTMLElement) ||
+        !(dropdown instanceof HTMLElement)
+      ) {
+        return;
+      }
+
+      trigger.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const isOpen = menu.classList.toggle("open");
+        if (!isOpen) {
+          dropdown.removeAttribute("style");
+          return;
+        }
+
+        const menuRect = dropdown.getBoundingClientRect();
+        const headerRect = header.getBoundingClientRect();
+
+        if (menuRect.right > headerRect.right) {
+          dropdown.style.left = "auto";
+          dropdown.style.right = "0";
+        } else {
+          dropdown.style.left = "";
+          dropdown.style.right = "";
+        }
+      });
+    });
+  })();
+</script>
