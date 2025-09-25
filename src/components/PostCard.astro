@@ -1,5 +1,5 @@
 ---
-import FormattedDate from "./FormattedDate.astro";
+import ListingCard from "./cards/ListingCard.astro";
 
 /** BLOG */
 interface BlogEntry {
@@ -20,7 +20,7 @@ interface ProjectEntry {
   slug: string;
   data: {
     title: string;
-    summary: string; // from config.ts
+    summary: string;
     startDate: string;
     endDate?: string;
     tags?: string[];
@@ -40,7 +40,7 @@ interface ResearchEntry {
     summary: string;
     tags?: string[];
     image?: string;
-    paper: string; // DOI or paper URL
+    paper: string;
     repo?: string;
     slides?: string;
   };
@@ -48,12 +48,11 @@ interface ResearchEntry {
 
 type CardEntry = BlogEntry | ProjectEntry | ResearchEntry;
 
+type MetaItem = { kind: "date"; value: Date } | { kind: "text"; value: string };
+
 export interface Props {
-  /** Preferred: pass the entry and which collection it came from */
   entry?: CardEntry;
   variant?: "blog" | "projects" | "research";
-
-  /** Back-compat with old usage: <PostCard post={post} /> for blog */
   post?: BlogEntry;
 }
 
@@ -61,28 +60,29 @@ const base = import.meta.env.BASE_URL.endsWith("/")
   ? import.meta.env.BASE_URL
   : import.meta.env.BASE_URL + "/";
 
-/* normalize props (support old 'post' prop) */
-const incoming = (Astro.props.entry ?? Astro.props.post) as CardEntry;
+const incoming = (Astro.props.entry ?? Astro.props.post) as
+  | CardEntry
+  | undefined;
 let variant = Astro.props.variant as Props["variant"] | undefined;
 
 if (!incoming) {
   throw new Error("PostCard requires an entry or post prop");
 }
 
-/* Infer variant if not provided */
 if (!variant) {
-  if ("journal" in incoming.data && "paper" in incoming.data)
+  if ("journal" in incoming.data && "paper" in incoming.data) {
     variant = "research";
-  else if ("startDate" in incoming.data) variant = "projects";
-  else variant = "blog";
+  } else if ("startDate" in incoming.data) {
+    variant = "projects";
+  } else {
+    variant = "blog";
+  }
 }
 
-/* Build URL and display fields */
 let url = "";
 const title = incoming.data.title;
-const tags: string[] | undefined = (incoming as any).data.tags;
+const tags = ((incoming as any).data.tags as string[] | undefined) ?? [];
 
-/* shared display helpers */
 let primaryDate: Date | undefined;
 let secondaryMeta: string | undefined;
 let blurb: string | undefined;
@@ -90,206 +90,71 @@ const actionLinks: Array<{ label: string; href: string; external?: boolean }> =
   [];
 
 if (variant === "blog") {
-  const e = incoming as BlogEntry;
-  primaryDate = new Date(e.data.pubDate);
-  secondaryMeta = e.data.author;
-  blurb = e.data.description;
-  const external = e.data.externalLink;
-  url = external || `${base}blog/${e.slug}/`;
-  if (external) {
-    actionLinks.push({ label: "Original", href: external, external: true });
+  const data = (incoming as BlogEntry).data;
+  primaryDate = new Date(data.pubDate);
+  secondaryMeta = data.author;
+  blurb = data.description;
+  url = data.externalLink || `${base}blog/${incoming.slug}/`;
+  if (data.externalLink) {
+    actionLinks.push({
+      label: "Original",
+      href: data.externalLink,
+      external: true,
+    });
   }
 } else if (variant === "projects") {
-  const e = incoming as ProjectEntry;
-  primaryDate = e.data.endDate
-    ? new Date(e.data.endDate)
-    : new Date(e.data.startDate);
-  secondaryMeta = e.data.endDate
-    ? `${e.data.startDate} → ${e.data.endDate}`
-    : `${e.data.startDate} → Present`;
-  blurb = e.data.summary;
-  url = `${base}projects/${e.slug}/`;
-  if (e.data.repo)
-    actionLinks.push({ label: "Repo", href: e.data.repo, external: true });
-  if (e.data.demo)
-    actionLinks.push({ label: "Demo", href: e.data.demo, external: true });
+  const data = (incoming as ProjectEntry).data;
+  primaryDate = data.endDate
+    ? new Date(data.endDate)
+    : new Date(data.startDate);
+  secondaryMeta = data.endDate
+    ? `${data.startDate} → ${data.endDate}`
+    : `${data.startDate} → Present`;
+  blurb = data.summary;
+  url = `${base}projects/${incoming.slug}/`;
+  if (data.repo)
+    actionLinks.push({ label: "Repo", href: data.repo, external: true });
+  if (data.demo)
+    actionLinks.push({ label: "Demo", href: data.demo, external: true });
 } else {
-  const e = incoming as ResearchEntry;
-  primaryDate = new Date(e.data.pubDate);
-  secondaryMeta = e.data.journal;
-  blurb = e.data.summary;
-  url = `${base}research/${e.slug}/`;
-  if (e.data.paper)
-    actionLinks.push({ label: "Paper", href: e.data.paper, external: true });
-  if (e.data.repo)
-    actionLinks.push({ label: "Repo", href: e.data.repo, external: true });
-  if (e.data.slides)
-    actionLinks.push({ label: "Slides", href: e.data.slides, external: true });
+  const data = (incoming as ResearchEntry).data;
+  primaryDate = new Date(data.pubDate);
+  secondaryMeta = data.journal;
+  blurb = data.summary;
+  url = `${base}research/${incoming.slug}/`;
+  if (data.paper)
+    actionLinks.push({ label: "Paper", href: data.paper, external: true });
+  if (data.repo)
+    actionLinks.push({ label: "Repo", href: data.repo, external: true });
+  if (data.slides)
+    actionLinks.push({ label: "Slides", href: data.slides, external: true });
 }
 
 const isExternalPrimary =
   variant === "blog" &&
   "externalLink" in (incoming as any).data &&
   !!(incoming as any).data.externalLink;
+
+const metaItems: MetaItem[] = [];
+
+if (primaryDate) {
+  metaItems.push({ kind: "date", value: primaryDate });
+}
+
+if (secondaryMeta) {
+  metaItems.push({ kind: "text", value: secondaryMeta });
+}
+
+const ctaLabel = isExternalPrimary ? "Read original →" : undefined;
 ---
 
-<article class="post-card">
-  <header class="post-card__header">
-    <h3 class="post-card__title">
-      <a
-        href={url}
-        target={isExternalPrimary ? "_blank" : undefined}
-        rel={isExternalPrimary ? "noopener" : undefined}
-      >
-        {title}
-      </a>
-    </h3>
-
-    {
-      (primaryDate || secondaryMeta) && (
-        <div class="post-card__meta">
-          {primaryDate && (
-            <span class="post-card__meta-item">
-              <FormattedDate date={primaryDate} />
-            </span>
-          )}
-          {secondaryMeta && (
-            <span class="post-card__meta-item">{secondaryMeta}</span>
-          )}
-        </div>
-      )
-    }
-  </header>
-
-  {
-    tags && tags.length > 0 && (
-      <div class="post-card__tags"><b>Tags:</b> {tags.join(" • ")}</div>
-    )
-  }
-
-  {blurb && <p class="post-card__summary"><b>Summary:</b> {blurb}</p>}
-
-  <footer class="post-card__footer">
-    <a
-      href={url}
-      class="post-card__cta"
-      target={isExternalPrimary ? "_blank" : undefined}
-      rel={isExternalPrimary ? "noopener" : undefined}
-    >
-      View details →
-    </a>
-    {
-      actionLinks.length > 0 && (
-        <span class="post-card__links">
-          {actionLinks.map((link, index) => (
-            <>
-              <a
-                href={link.href}
-                target={link.external ? "_blank" : undefined}
-                rel={link.external ? "noopener" : undefined}
-              >
-                {link.label}
-              </a>
-              {index < actionLinks.length - 1 && (
-                <span class="post-card__divider">·</span>
-              )}
-            </>
-          ))}
-        </span>
-      )
-    }
-  </footer>
-</article>
-
-<style>
-  .post-card {
-    border: 1px solid var(--accent);
-    border-radius: 6px;
-    padding: 1rem 1.25rem;
-    margin-bottom: 1.5rem;
-    background: rgba(0, 0, 0, 0.25);
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .post-card__title {
-    font-size: 1.25rem;
-    margin: 0;
-  }
-
-  .post-card__title a {
-    text-decoration: none;
-  }
-
-  .post-card__meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    font-size: 0.85rem;
-    color: var(--muted-text, #ccc);
-  }
-
-  .post-card__summary {
-    margin: 0;
-    font-size: 0.95rem;
-    line-height: 1.5;
-  }
-
-  .post-card__tags {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.35rem 0.6rem;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .post-card__tags a {
-    color: var(--accent);
-    text-decoration: none;
-  }
-
-  .post-card__footer {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.5rem 1rem;
-    font-size: 0.85rem;
-  }
-
-  .post-card__cta {
-    color: var(--accent);
-    text-decoration: none;
-    font-weight: 600;
-  }
-
-  .post-card__links a {
-    color: var(--text-color, #fff);
-    text-decoration: none;
-  }
-
-  .post-card__links a:hover,
-  .post-card__cta:hover,
-  .post-card__tags a:hover {
-    text-decoration: underline;
-  }
-
-  .post-card__divider {
-    margin: 0 0.25rem;
-    opacity: 0.6;
-  }
-
-  @media (max-width: 640px) {
-    .post-card {
-      padding: 0.85rem 1rem;
-    }
-
-    .post-card__title {
-      font-size: 1.1rem;
-    }
-  }
-</style>
+<ListingCard
+  title={title}
+  href={url}
+  external={isExternalPrimary}
+  summary={blurb}
+  tags={tags}
+  meta={metaItems}
+  actions={actionLinks}
+  ctaLabel={ctaLabel}
+/>

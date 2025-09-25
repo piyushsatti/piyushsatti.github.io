@@ -1,0 +1,119 @@
+---
+export interface NavItem {
+  label: string;
+  href: string;
+  external?: boolean;
+}
+
+export interface Props {
+  navItems: NavItem[];
+}
+
+const { navItems } = Astro.props;
+---
+
+<header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href={navItems[0]?.href ?? "/"}>
+        <div class="logo">Terminal&gt;&gt;Pi(π)</div>
+      </a>
+    </div>
+    <!-- Menu for mobile -->
+    <ul class="menu menu--mobile">
+      <li class="menu__trigger">Menu ▾</li>
+      <li>
+        <ul class="menu__dropdown">
+          {
+            navItems.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  target={item.external ? "_blank" : undefined}
+                  rel={item.external ? "noopener noreferrer" : undefined}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <!-- Menu for desktop -->
+  <nav class="navigation-menu">
+    <ul class="navigation-menu__inner menu--desktop">
+      {
+        navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              target={item.external ? "_blank" : undefined}
+              rel={item.external ? "noopener noreferrer" : undefined}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</header>
+
+<script>
+  (() => {
+    const header = document.currentScript?.previousElementSibling;
+    if (!header) return;
+
+    const menus = Array.from(header.querySelectorAll(".menu")).filter(
+      (menu) => menu instanceof HTMLElement
+    );
+
+    const closeMenus = () => {
+      menus.forEach((menu) => menu.classList.remove("open"));
+    };
+
+    document.addEventListener("click", (event) => {
+      if (!header.contains(event.target as Node)) {
+        closeMenus();
+      }
+    });
+
+    window.addEventListener("resize", closeMenus);
+
+    menus.forEach((menu) => {
+      const trigger = menu.querySelector(".menu__trigger");
+      const dropdown = menu.querySelector(".menu__dropdown");
+
+      if (
+        !(trigger instanceof HTMLElement) ||
+        !(dropdown instanceof HTMLElement)
+      ) {
+        return;
+      }
+
+      trigger.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const isOpen = menu.classList.toggle("open");
+        if (!isOpen) {
+          dropdown.removeAttribute("style");
+          return;
+        }
+
+        const menuRect = dropdown.getBoundingClientRect();
+        const headerRect = header.getBoundingClientRect();
+
+        if (menuRect.right > headerRect.right) {
+          dropdown.style.left = "auto";
+          dropdown.style.right = "0";
+        } else {
+          dropdown.style.left = "";
+          dropdown.style.right = "";
+        }
+      });
+    });
+  })();
+</script>

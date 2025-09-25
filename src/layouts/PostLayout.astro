@@ -1,16 +1,30 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
-import FormattedDate from "../components/FormattedDate.astro";
+import Post from "../components/Post.astro";
+
+export interface LinkProps {
+  label: string;
+  href: string;
+  external?: boolean;
+}
+
+export interface MetaProps {
+  label: string;
+  value: string;
+}
 
 export interface Props {
   title: string;
   description?: string;
-  pubDate: Date;
-  updatedDate?: Date;
+  summary?: string;
+  variant?: "blog" | "projects" | "research";
+  pubDate?: Date | string;
+  updatedDate?: Date | string;
   author?: string;
   image?: string;
   tags?: string[];
-  // Project & Research specific props
+  links?: LinkProps[];
+  meta?: MetaProps[];
   repo?: string;
   demo?: string;
   paper?: string;
@@ -20,156 +34,48 @@ export interface Props {
 const {
   title,
   description,
+  summary = description,
+  variant = "blog",
   pubDate,
   updatedDate,
   author,
   image,
   tags = [],
+  links = [],
+  meta = [],
   repo,
   demo,
   paper,
   tldr,
-} = Astro.props;
-const base = import.meta.env.BASE_URL.endsWith("/")
-  ? import.meta.env.BASE_URL
-  : import.meta.env.BASE_URL + "/";
+} = Astro.props as Props;
+
+const aggregatedLinks = [
+  ...links,
+  ...(repo ? [{ label: "Repo", href: repo, external: true }] : []),
+  ...(demo ? [{ label: "Demo", href: demo, external: true }] : []),
+  ...(paper ? [{ label: "Paper", href: paper, external: true }] : []),
+];
+
+const aggregatedMeta = [
+  ...(author ? [{ label: "Author", value: author }] : []),
+  ...meta,
+];
 ---
 
 <BaseLayout title={title} description={description} image={image}>
-  <article>
-    <h1 class="post-title">{title}</h1>
-
-    <div class="post-meta">
-      <time>
-        <FormattedDate date={pubDate} />
-      </time>
-      {author && <span class="post-author">{author}</span>}
-      {
-        updatedDate && (
-          <span class="post-updated">
-            Updated: <FormattedDate date={updatedDate} />
-          </span>
-        )
-      }
-      {
-        tags.length > 0 && (
-          <span class="post-tags">
-            {tags.map((tag) => (
-              <a href={`${base}tags/${tag}/`}>{tag}</a>
-            ))}
-          </span>
-        )
-      }
-      <!-- Links for Projects and Research -->
-      {
-        repo && (
-          <a
-            href={repo}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="post-link"
-          >
-            Repo
-          </a>
-        )
-      }
-      {
-        demo && (
-          <a
-            href={demo}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="post-link"
-          >
-            Demo
-          </a>
-        )
-      }
-      {
-        paper && (
-          <a
-            href={paper}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="post-link"
-          >
-            Paper
-          </a>
-        )
-      }
-    </div>
-
-    <!-- TL;DR Section -->
-    {
-      tldr && tldr.length > 0 && (
-        <div class="tldr">
-          <h2>TL;DR</h2>
-          <ul>
-            {tldr.map((item) => (
-              <li>{item}</li>
-            ))}
-          </ul>
-        </div>
-      )
-    }
-
-    {
-      image && (
-        <figure class="post-cover">
-          <img src={image} alt={title} />
-        </figure>
-      )
-    }
-
-    <div class="post-content">
-      <slot />
-    </div>
-  </article>
-
-  <script>
-    // Code copy functionality
-    document.addEventListener("DOMContentLoaded", () => {
-      const codeBlocks = document.querySelectorAll("pre.astro-code");
-
-      codeBlocks.forEach((block) => {
-        const wrapper = document.createElement("div");
-        wrapper.className = "highlight";
-        block.parentNode?.insertBefore(wrapper, block);
-        wrapper.appendChild(block);
-
-        const lang = block.getAttribute("data-language") || "text";
-
-        const titleDiv = document.createElement("div");
-        titleDiv.className = "code-title";
-        titleDiv.textContent = lang;
-
-        if (navigator.clipboard) {
-          const button = document.createElement("button");
-          button.className = "copy-button";
-          button.textContent = "Copy";
-
-          button.addEventListener("click", async () => {
-            const code = block.textContent || "";
-            try {
-              await navigator.clipboard.writeText(code);
-              button.textContent = "Copied";
-              setTimeout(() => {
-                button.textContent = "Copy";
-              }, 1000);
-            } catch (err) {
-              console.error("Failed to copy:", err);
-            }
-          });
-
-          titleDiv.appendChild(button);
-        }
-
-        wrapper.insertBefore(titleDiv, block);
-      });
-    });
-  </script>
-
-  <!-- Twitter embed script -->
-  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"
-  ></script>
+  <Post
+    title={title}
+    description={description}
+    summary={summary}
+    variant={variant}
+    heroImage={image}
+    pubDate={pubDate}
+    updatedDate={updatedDate}
+    tags={tags}
+    links={aggregatedLinks}
+    meta={aggregatedMeta}
+    tldr={tldr}
+  >
+    <slot />
+  </Post>
 </BaseLayout>
