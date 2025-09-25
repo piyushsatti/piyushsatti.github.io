@@ -1,22 +1,23 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostCard from "../../components/PostCard.astro";
+import { getCollection } from "astro:content";
 
-const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
-const items = (await getCollection('research'));
+const researchEntries = await getCollection("research");
 ---
 
 <BaseLayout title="Research">
   <div class="posts">
     <h1 class="posts-title">Research</h1>
+    <p></p>
     {
-      items.map(r => (
-          <p>
-            <a href={`${base}research/${r.id}/`}>{r.data.title}</a>
-            <span> — {r.data.journal}</span>
-            <span> — <a href={r.data.paper} target="_blank" rel="noopener noreferrer">DOI</a></span>
-          </p>
-      ))
+      researchEntries.length === 0 ? (
+        <p>No research posts yet.</p>
+      ) : (
+        researchEntries.map((entry) => (
+            <PostCard entry={entry} variant="research" />
+        ))
+      )
     }
   </div>
 </BaseLayout>

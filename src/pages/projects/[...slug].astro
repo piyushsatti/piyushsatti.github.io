@@ -1,49 +1,108 @@
 ---
-import { getCollection } from 'astro:content';
-import PostLayout from '../../layouts/PostLayout.astro';
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Post from "../../components/Post.astro";
 
 export async function getStaticPaths() {
-  const posts = (await getCollection('posts'))
-    .filter(post => !post.data.draft)
-    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  const entries = (await getCollection("projects")).sort(
+    (a, b) =>
+      new Date(b.data.endDate ?? b.data.startDate).valueOf() -
+      new Date(a.data.endDate ?? a.data.startDate).valueOf()
+  );
 
-  return posts.map((post, index) => ({
-    params: { slug: post.slug },
+  return entries.map((entry, index) => ({
+    params: { slug: entry.slug },
     props: {
-      post,
-      prevPost: index < posts.length - 1 ? posts[index + 1] : null,
-      nextPost: index > 0 ? posts[index - 1] : null,
+      entry,
+      prevEntry: index < entries.length - 1 ? entries[index + 1] : null,
+      nextEntry: index > 0 ? entries[index - 1] : null,
     },
   }));
 }
 
-const { post, prevPost, nextPost } = Astro.props;
-const { Content } = await post.render();
-const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
+interface ProjectEntryData {
+  title: string;
+  summary: string;
+  startDate: string;
+  endDate?: string;
+  tags?: string[];
+  image?: string;
+  repo?: string;
+  demo?: string;
+  role?: string;
+  stack?: string[] | string;
+  tldr?: string[];
+}
+
+const { entry, prevEntry, nextEntry } = Astro.props;
+const { Content } = await entry.render();
+const data = entry.data as ProjectEntryData;
+const base = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : import.meta.env.BASE_URL + "/";
+
+const timeline = data.endDate
+  ? `${data.startDate} → ${data.endDate}`
+  : `${data.startDate} → Present`;
+
+const meta = [{ label: "Timeline", value: timeline }];
+if (data.role) meta.push({ label: "Role", value: data.role });
+if (data.stack) {
+  const tech = Array.isArray(data.stack) ? data.stack.join(", ") : data.stack;
+  meta.push({ label: "Tech", value: tech });
+}
+
+const links = [] as Array<{ label: string; href: string; external?: boolean }>;
+if (data.repo) links.push({ label: "Repo", href: data.repo, external: true });
+if (data.demo) links.push({ label: "Demo", href: data.demo, external: true });
+
+const tags = data.tags ?? [];
+const tldr = data.tldr ?? [];
 ---
 
-<PostLayout {...post.data}>
-  <Content />
+<BaseLayout title={data.title} description={data.summary} image={data.image}>
+  <Post
+    title={data.title}
+    description={data.summary}
+    variant="projects"
+    summary={data.summary}
+    heroImage={data.image}
+    tags={tags}
+    meta={meta}
+    tldr={tldr}
+    links={links}
+    Content={Content}
+  />
 
   <div class="pagination">
     <div class="pagination__title">
-      <span class="pagination__title-h">Read other posts</span>
+      <span class="pagination__title-h">Explore other projects</span>
       <hr />
     </div>
     <div class="pagination__buttons">
-      {prevPost && (
-        <>
-          <a href={`${base}posts/${prevPost.slug}/`} class="button inline prev">
-            &lt; [<span class="button__text">{prevPost.data.title}</span>]
+      {
+        prevEntry && (
+          <>
+            <a
+              href={`${base}projects/${prevEntry.slug}/`}
+              class="button inline prev"
+            >
+              &lt; [<span class="button__text">{prevEntry.data.title}</span>]
+            </a>
+            {prevEntry && nextEntry && <span>::</span>}
+          </>
+        )
+      }
+      {
+        nextEntry && (
+          <a
+            href={`${base}projects/${nextEntry.slug}/`}
+            class="button inline next"
+          >
+            [<span class="button__text">{nextEntry.data.title}</span>] &gt;
           </a>
-          {prevPost && nextPost && <span>::</span>}
-        </>
-      )}
-      {nextPost && (
-        <a href={`${base}posts/${nextPost.slug}/`} class="button inline next">
-          [<span class="button__text">{nextPost.data.title}</span>] &gt;
-        </a>
-      )}
+        )
+      }
     </div>
   </div>
-</PostLayout>
+</BaseLayout>

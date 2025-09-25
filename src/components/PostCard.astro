@@ -20,7 +20,7 @@ interface ProjectEntry {
   slug: string;
   data: {
     title: string;
-    summary: string;          // from config.ts
+    summary: string; // from config.ts
     startDate: string;
     endDate?: string;
     tags?: string[];
@@ -40,7 +40,7 @@ interface ResearchEntry {
     summary: string;
     tags?: string[];
     image?: string;
-    paper: string;            // DOI or paper URL
+    paper: string; // DOI or paper URL
     repo?: string;
     slides?: string;
   };
@@ -59,29 +59,35 @@ export interface Props {
 
 const base = import.meta.env.BASE_URL.endsWith("/")
   ? import.meta.env.BASE_URL
-  : import.meta.env.BASE_URL + "/"; // works with config.base on GitHub Pages. :contentReference[oaicite:1]{index=1}
+  : import.meta.env.BASE_URL + "/";
 
 /* normalize props (support old 'post' prop) */
 const incoming = (Astro.props.entry ?? Astro.props.post) as CardEntry;
 let variant = Astro.props.variant as Props["variant"] | undefined;
 
+if (!incoming) {
+  throw new Error("PostCard requires an entry or post prop");
+}
+
 /* Infer variant if not provided */
 if (!variant) {
-  if ("journal" in incoming.data && "paper" in incoming.data) variant = "research";
+  if ("journal" in incoming.data && "paper" in incoming.data)
+    variant = "research";
   else if ("startDate" in incoming.data) variant = "projects";
   else variant = "blog";
 }
 
 /* Build URL and display fields */
 let url = "";
-let title = incoming.data.title;
-let image: string | undefined = (incoming as any).data.image;
-let tags: string[] | undefined = (incoming as any).data.tags;
+const title = incoming.data.title;
+const tags: string[] | undefined = (incoming as any).data.tags;
 
-/* common meta for display */
+/* shared display helpers */
 let primaryDate: Date | undefined;
-let secondaryMeta: string | undefined;   // author, journal, or date range
-let blurb: string | undefined;           // description/summary
+let secondaryMeta: string | undefined;
+let blurb: string | undefined;
+const actionLinks: Array<{ label: string; href: string; external?: boolean }> =
+  [];
 
 if (variant === "blog") {
   const e = incoming as BlogEntry;
@@ -89,65 +95,201 @@ if (variant === "blog") {
   secondaryMeta = e.data.author;
   blurb = e.data.description;
   const external = e.data.externalLink;
-  url = external || `${base}blog/${e.slug}/`; // route under /blog
+  url = external || `${base}blog/${e.slug}/`;
+  if (external) {
+    actionLinks.push({ label: "Original", href: external, external: true });
+  }
 } else if (variant === "projects") {
   const e = incoming as ProjectEntry;
-  primaryDate = e.data.endDate ? new Date(e.data.endDate) : new Date(e.data.startDate); // show most recent
-  const range = e.data.endDate
+  primaryDate = e.data.endDate
+    ? new Date(e.data.endDate)
+    : new Date(e.data.startDate);
+  secondaryMeta = e.data.endDate
     ? `${e.data.startDate} → ${e.data.endDate}`
     : `${e.data.startDate} → Present`;
-  secondaryMeta = range;
   blurb = e.data.summary;
   url = `${base}projects/${e.slug}/`;
+  if (e.data.repo)
+    actionLinks.push({ label: "Repo", href: e.data.repo, external: true });
+  if (e.data.demo)
+    actionLinks.push({ label: "Demo", href: e.data.demo, external: true });
 } else {
   const e = incoming as ResearchEntry;
   primaryDate = new Date(e.data.pubDate);
   secondaryMeta = e.data.journal;
   blurb = e.data.summary;
   url = `${base}research/${e.slug}/`;
+  if (e.data.paper)
+    actionLinks.push({ label: "Paper", href: e.data.paper, external: true });
+  if (e.data.repo)
+    actionLinks.push({ label: "Repo", href: e.data.repo, external: true });
+  if (e.data.slides)
+    actionLinks.push({ label: "Slides", href: e.data.slides, external: true });
 }
-const isExternal = variant === "blog" && "externalLink" in (incoming as any).data && !!(incoming as any).data.externalLink;
+
+const isExternalPrimary =
+  variant === "blog" &&
+  "externalLink" in (incoming as any).data &&
+  !!(incoming as any).data.externalLink;
 ---
 
-<article class="post on-list">
-  <h2 class="post-title">
-    <a href={url} target={isExternal ? "_blank" : undefined} rel={isExternal ? "noopener" : undefined}>
-      {title}
+<article class="post-card">
+  <header class="post-card__header">
+    <h3 class="post-card__title">
+      <a
+        href={url}
+        target={isExternalPrimary ? "_blank" : undefined}
+        rel={isExternalPrimary ? "noopener" : undefined}
+      >
+        {title}
+      </a>
+    </h3>
+
+    {
+      (primaryDate || secondaryMeta) && (
+        <div class="post-card__meta">
+          {primaryDate && (
+            <span class="post-card__meta-item">
+              <FormattedDate date={primaryDate} />
+            </span>
+          )}
+          {secondaryMeta && (
+            <span class="post-card__meta-item">{secondaryMeta}</span>
+          )}
+        </div>
+      )
+    }
+  </header>
+
+  {
+    tags && tags.length > 0 && (
+      <div class="post-card__tags"><b>Tags:</b> {tags.join(" • ")}</div>
+    )
+  }
+
+  {blurb && <p class="post-card__summary"><b>Summary:</b> {blurb}</p>}
+
+  <footer class="post-card__footer">
+    <a
+      href={url}
+      class="post-card__cta"
+      target={isExternalPrimary ? "_blank" : undefined}
+      rel={isExternalPrimary ? "noopener" : undefined}
+    >
+      View details →
     </a>
-  </h2>
-
-  <div class="post-meta">
-    {primaryDate && (
-      <time class="post-date"><FormattedDate date={primaryDate} /></time>
-    )}
-    {secondaryMeta && <span class="post-author">{secondaryMeta}</span>}
-  </div>
-
-  {tags && tags.length > 0 && (
-    <span class="post-tags">
-      {tags.map((tag, i) => (
-        <>
-          <a href={`${base}tags/${tag}/`}>{tag}</a>{i < tags.length - 1 && ", "}
-        </>
-      ))}
-    </span>
-  )}
-
-  {image && (
-    <figure class="post-cover">
-      <img src={image} alt={title} />
-    </figure>
-  )}
-
-  {blurb && (
-    <div class="post-content">
-      <p>{blurb}</p>
-    </div>
-  )}
-
-  <div>
-    <a href={url} class="read-more button inline" target={isExternal ? "_blank" : undefined} rel={isExternal ? "noopener" : undefined}>
-      [Read more]
-    </a>
-  </div>
+    {
+      actionLinks.length > 0 && (
+        <span class="post-card__links">
+          {actionLinks.map((link, index) => (
+            <>
+              <a
+                href={link.href}
+                target={link.external ? "_blank" : undefined}
+                rel={link.external ? "noopener" : undefined}
+              >
+                {link.label}
+              </a>
+              {index < actionLinks.length - 1 && (
+                <span class="post-card__divider">·</span>
+              )}
+            </>
+          ))}
+        </span>
+      )
+    }
+  </footer>
 </article>
+
+<style>
+  .post-card {
+    border: 1px solid var(--accent);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    background: rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .post-card__title {
+    font-size: 1.25rem;
+    margin: 0;
+  }
+
+  .post-card__title a {
+    text-decoration: none;
+  }
+
+  .post-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--muted-text, #ccc);
+  }
+
+  .post-card__summary {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .post-card__tags {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.6rem;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .post-card__tags a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .post-card__footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .post-card__cta {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .post-card__links a {
+    color: var(--text-color, #fff);
+    text-decoration: none;
+  }
+
+  .post-card__links a:hover,
+  .post-card__cta:hover,
+  .post-card__tags a:hover {
+    text-decoration: underline;
+  }
+
+  .post-card__divider {
+    margin: 0 0.25rem;
+    opacity: 0.6;
+  }
+
+  @media (max-width: 640px) {
+    .post-card {
+      padding: 0.85rem 1rem;
+    }
+
+    .post-card__title {
+      font-size: 1.1rem;
+    }
+  }
+</style>

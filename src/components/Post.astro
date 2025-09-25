@@ -1,0 +1,265 @@
+---
+import FormattedDate from "./FormattedDate.astro";
+
+export interface MetaItem {
+  label: string;
+  value: string;
+}
+
+export interface LinkItem {
+  label: string;
+  href: string;
+  external?: boolean;
+}
+
+export interface Props {
+  title: string;
+  description?: string;
+  variant: "blog" | "projects" | "research";
+  summary?: string;
+  heroImage?: string;
+  pubDate?: Date | string;
+  updatedDate?: Date | string;
+  tags?: string[];
+  meta?: MetaItem[];
+  tldr?: string[];
+  links?: LinkItem[];
+  Content?: any;
+}
+
+const {
+  title,
+  description,
+  variant,
+  summary,
+  heroImage,
+  pubDate,
+  updatedDate,
+  tags = [],
+  meta = [],
+  tldr = [],
+  links = [],
+  Content,
+} = Astro.props as Props;
+
+const toDate = (value?: Date | string) => {
+  if (!value) return undefined;
+  return value instanceof Date ? value : new Date(value);
+};
+
+const publishedAt = toDate(pubDate);
+const updatedAt = toDate(updatedDate);
+const hasMeta = meta.length > 0 || publishedAt || updatedAt;
+const base = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : import.meta.env.BASE_URL + "/";
+---
+
+<article class={`post-full post-full--${variant}`}>
+  <header class="post-full__header">
+    <p class="post-full__variant">{variant}</p>
+    <h1>{title}</h1>
+    {description && <p class="post-full__description">{description}</p>}
+
+    {
+      (hasMeta || links.length > 0) && (
+        <div class="post-full__meta">
+          <div class="post-full__meta-group">
+            {publishedAt && (
+              <span>
+                Published <FormattedDate date={publishedAt} />
+              </span>
+            )}
+            {updatedAt && (
+              <span>
+                Updated <FormattedDate date={updatedAt} />
+              </span>
+            )}
+            {meta.map((item) => (
+              <span>
+                <strong>{item.label}:</strong> {item.value}
+              </span>
+            ))}
+          </div>
+          {links.length > 0 && (
+            <div class="post-full__links">
+              {links.map((link, index) => (
+                <>
+                  <a
+                    href={
+                      link.href.startsWith("/")
+                        ? `${base}${link.href.replace(/^\//, "")}`
+                        : link.href
+                    }
+                    target={
+                      (link.external ?? link.href.startsWith("http"))
+                        ? "_blank"
+                        : undefined
+                    }
+                    rel={
+                      (link.external ?? link.href.startsWith("http"))
+                        ? "noopener"
+                        : undefined
+                    }
+                  >
+                    {link.label}
+                  </a>
+                  {index < links.length - 1 && (
+                    <span class="post-full__divider">::</span>
+                  )}
+                </>
+              ))}
+            </div>
+          )}
+        </div>
+      )
+    }
+  </header>
+
+  {
+    heroImage && (
+      <figure class="post-full__cover">
+        <img src={heroImage} alt={title} />
+      </figure>
+    )
+  }
+
+  {summary && <p class="post-full__summary">{summary}</p>}
+
+  {
+    tldr.length > 0 && (
+      <section class="post-full__tldr">
+        <h2>TL;DR</h2>
+        <ul>
+          {tldr.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  <section class="post-full__content">
+    {Content ? <Content /> : <slot />}
+  </section>
+
+  {
+    tags.length > 0 && (
+      <footer class="post-full__footer">
+        <h3>Tags</h3>
+        <ul class="post-full__tags">
+          {tags.map((tag) => (
+            <li>
+              <a href={`${base}tags/${tag}/`}>{tag}</a>
+            </li>
+          ))}
+        </ul>
+      </footer>
+    )
+  }
+</article>
+
+<style>
+  .post-full {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .post-full__variant {
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 0.75rem;
+    color: var(--accent);
+    margin: 0 0 0.5rem;
+  }
+
+  .post-full__header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+  }
+
+  .post-full__description {
+    font-size: 1.05rem;
+    margin: 0.5rem 0 0;
+  }
+
+  .post-full__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.25rem;
+    font-size: 0.9rem;
+  }
+
+  .post-full__meta-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .post-full__links {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .post-full__links a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .post-full__links a:hover {
+    text-decoration: underline;
+  }
+
+  .post-full__divider {
+    opacity: 0.6;
+  }
+
+  .post-full__cover img {
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--accent);
+  }
+
+  .post-full__summary {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .post-full__tldr ul {
+    margin: 0.75rem 0 0;
+  }
+
+  .post-full__content :global(p) {
+    line-height: 1.7;
+  }
+
+  .post-full__tags {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 0.6rem 0.8rem;
+    flex-wrap: wrap;
+    margin: 0.5rem 0 0;
+  }
+
+  .post-full__tags a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .post-full__tags a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+    .post-full__meta {
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+  }
+</style>

@@ -6,8 +6,12 @@ const blog = defineCollection({
     title: z.string(),
     description: z.string(),
     pubDate: z.string(),
+    updatedDate: z.string().optional(),
+    author: z.string().optional(),
     tags: z.array(z.string()).default([]),
     image: z.string().optional(),
+    externalLink: z.string().url().optional(),
+    tldr: z.array(z.string()).optional(),
   })
 });
 
@@ -21,7 +25,10 @@ const projects = defineCollection({
     tags: z.array(z.string()).default([]),
     image: z.string().optional(),
     repo: z.string().url().optional(),
-    demo: z.string().url().optional()
+    demo: z.string().url().optional(),
+    role: z.string().optional(),
+    stack: z.union([z.array(z.string()), z.string()]).optional(),
+    tldr: z.array(z.string()).optional()
   })
 });
 
@@ -36,7 +43,9 @@ const research = defineCollection({
     paper: z.string().url(),     // DOI or paper link
     image: z.string().optional(),
     repo: z.string().url().optional(),
-    slides: z.string().url().optional()
+    slides: z.string().url().optional(),
+    authors: z.array(z.string()).optional(),
+    tldr: z.array(z.string()).optional()
   })
 });
 

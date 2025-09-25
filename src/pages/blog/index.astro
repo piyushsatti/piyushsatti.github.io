@@ -8,7 +8,8 @@ const posts = (await getCollection("blog"))
 
 <BaseLayout title="Posts">
   <div class="posts">
-    <h1 class="posts-title">Posts</h1>
+    <h1 class="posts-title">Blog Posts</h1>
+    <p></p>
     {posts.length === 0 ? (
       <p>No posts yet. Check back soon!</p>
     ) : (
