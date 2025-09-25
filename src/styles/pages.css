@@ -2,3 +2,145 @@
   max-width: 760px;
   margin: 0 auto;
 }
+
+.contact-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 640px;
+}
+
+.contact-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.contact-subtitle {
+  margin: 0;
+  color: var(--muted-text, color-mix(in srgb, var(--foreground) 60%, transparent));
+  font-size: calc(var(--font-size) * 0.95);
+  line-height: 1.6;
+}
+
+.contact-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 16px;
+  border: 1px solid var(--border-color, var(--foreground));
+  background: color-mix(in srgb, var(--surface-elevated, var(--foreground)) 30%, transparent);
+}
+
+.contact-meta__label {
+  font-size: calc(var(--font-size) * 0.75);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted-text, color-mix(in srgb, var(--foreground) 70%, transparent));
+}
+
+.contact-meta__value {
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.contact-meta__value:hover {
+  text-decoration: underline;
+}
+
+.contact-form {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.contact-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.contact-field label {
+  font-size: calc(var(--font-size) * 0.85);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted-text, color-mix(in srgb, var(--foreground) 70%, transparent));
+}
+
+.contact-field input,
+.contact-field textarea {
+  width: 100%;
+  padding: 12px 14px;
+}
+
+.contact-field textarea {
+  min-height: 160px;
+  resize: vertical;
+}
+
+.contact-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.contact-actions .button {
+  min-width: 180px;
+}
+
+.contact-secondary {
+  color: var(--muted-text, color-mix(in srgb, var(--foreground) 70%, transparent));
+  text-decoration: none;
+  font-size: calc(var(--font-size) * 0.9);
+}
+
+.contact-secondary:hover {
+  color: var(--accent);
+}
+
+.contact-note {
+  margin: 0;
+  font-size: calc(var(--font-size) * 0.9);
+  color: var(--muted-text, color-mix(in srgb, var(--foreground) 65%, transparent));
+}
+
+.contact-links {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  font-weight: 600;
+}
+
+.contact-links a {
+  text-decoration: none;
+  color: var(--accent);
+}
+
+.contact-links a:hover {
+  text-decoration: underline;
+}
+
+.contact-separator {
+  color: var(--muted-text, color-mix(in srgb, var(--foreground) 55%, transparent));
+}
+
+@media (max-width: 640px) {
+  .contact-card {
+    gap: 1.25rem;
+  }
+
+  .contact-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .contact-actions .button {
+    width: 100%;
+  }
+
+  .contact-secondary {
+    text-align: center;
+  }
+}

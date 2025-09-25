@@ -6,53 +6,67 @@ const base = import.meta.env.BASE_URL.endsWith("/")
 ---
 
 <BaseLayout title="Contact">
-  <!-- Use the same wrapper your other pages use so the CSS applies identically -->
-  <div class="index-content framed">
+
+  <header class="contact-header">
     <h1>Contact</h1>
-
-    <p>
-      <strong>Email:</strong>
-      <a href="mailto:piyushsatti@gmail.com">piyushsatti@gmail.com</a>
+    <p class="contact-subtitle">
+      Leave a quick note and I'll get back to you shortly. Prefer email? Reach
+      out directly anytime.
     </p>
+  </header>
 
-    <form
-      id="contact-form"
-      class="contact-form"
-      action="mailto:piyushsatti@gmail.com"
-      method="POST"
-      enctype="text/plain"
-    >
-      <label>
-        Your email
-        <input type="email" name="email" required />
-      </label>
-
-      <label>
-        Your message
-        <textarea name="message" rows="6" required></textarea>
-      </label>
-
-      <button type="submit" class="button">Draft email</button>
-    </form>
-
-    <p class="contact-note">
-      Submitting opens your default mail client so you can review the message
-      before sending.
-    </p>
-
-    <p style="margin-top: 2rem;">
-      <a
-        href="https://github.com/piyushsatti"
-        target="_blank"
-        rel="noopener noreferrer">GitHub</a
-      > ::
-      <a
-        href="https://www.linkedin.com/in/piyush-satti/"
-        target="_blank"
-        rel="noopener noreferrer">LinkedIn</a
-      >
-    </p>
+  <div class="contact-meta">
+    <span class="contact-meta__label">Email</span>
+    <a class="contact-meta__value" href="mailto:piyushsatti@gmail.com">
+      piyushsatti@gmail.com
+    </a>
   </div>
+
+  <form
+    id="contact-form"
+    class="contact-form"
+    action="mailto:piyushsatti@gmail.com"
+    method="POST"
+    enctype="text/plain"
+  >
+    <div class="contact-field">
+      <label for="contact-email">Your email</label>
+      <input id="contact-email" type="email" name="email" required />
+    </div>
+
+    <div class="contact-field">
+      <label for="contact-message">Your message</label>
+      <textarea id="contact-message" name="message" rows="6" required
+      ></textarea>
+    </div>
+
+    <div class="contact-actions">
+      <button type="submit" class="button">Draft email</button>
+      <a class="contact-secondary" href="mailto:piyushsatti@gmail.com">
+        or open a blank email
+      </a>
+    </div>
+  </form>
+
+  <p class="contact-note">
+    Drafting opens your default mail client so you can review the message
+    before sending.
+  </p>
+
+  <div class="contact-links">
+    <a
+      href="https://github.com/piyushsatti"
+      target="_blank"
+      rel="noopener noreferrer">GitHub</a
+    >
+    <span aria-hidden="true" class="contact-separator">::</span>
+    <a
+      href="https://www.linkedin.com/in/piyush-satti/"
+      target="_blank"
+      rel="noopener noreferrer">LinkedIn</a
+    >
+  </div>
+
 </BaseLayout>
 
 <script is:inline>
