@@ -26,6 +26,13 @@
   --card-bg: color-mix(in srgb, var(--surface-elevated) 80%, transparent);
   --card-border: var(--border-color-strong);
   --text-color: var(--foreground);
+  --code-surface: color-mix(in srgb, var(--color-text) 6%, transparent);
+  --code-border: color-mix(in srgb, var(--color-text) 25%, transparent);
+  --code-comment: color-mix(in srgb, var(--color-text) 50%, transparent);
+  --diff-added: #66ff66;
+  --diff-added-soft: color-mix(in srgb, var(--diff-added) 16%, transparent);
+  --diff-removed: #ff6666;
+  --diff-removed-soft: color-mix(in srgb, var(--diff-removed) 16%, transparent);
 }
 
 [data-theme="light"] {
@@ -54,4 +61,11 @@
   --card-bg: color-mix(in srgb, var(--surface-elevated) 92%, transparent);
   --card-border: var(--color-border-strong);
   --text-color: var(--foreground);
+  --code-surface: color-mix(in srgb, var(--color-text) 4%, transparent);
+  --code-border: color-mix(in srgb, var(--color-text) 18%, transparent);
+  --code-comment: color-mix(in srgb, var(--color-text) 60%, transparent);
+  --diff-added: #15803d;
+  --diff-added-soft: color-mix(in srgb, var(--diff-added) 18%, transparent);
+  --diff-removed: #b91c1c;
+  --diff-removed-soft: color-mix(in srgb, var(--diff-removed) 18%, transparent);
 }

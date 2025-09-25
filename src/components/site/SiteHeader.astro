@@ -76,29 +76,27 @@ const { navItems } = Astro.props;
   </nav>
 </header>
 
-<script is:inline lang="ts">
+<script is:inline>
   (() => {
     const header = document.currentScript?.previousElementSibling;
     if (!(header instanceof HTMLElement)) return;
 
-    type Theme = "light" | "dark";
-
     const STORAGE_KEY = "terminal-theme-preference";
     const root = document.documentElement;
-    const toggle = header.querySelector<HTMLButtonElement>(".theme-toggle");
+    const toggle = header.querySelector(".theme-toggle");
     const prefersDark = window.matchMedia?.("(prefers-color-scheme: dark)");
 
-    const getStoredTheme = (): Theme | null => {
+    const getStoredTheme = () => {
       try {
         const value = localStorage.getItem(STORAGE_KEY);
-        return value === "light" || value === "dark" ? (value as Theme) : null;
+        return value === "light" || value === "dark" ? value : null;
       } catch (error) {
         console.warn("Unable to read theme from storage", error);
         return null;
       }
     };
 
-    const setStoredTheme = (value: Theme) => {
+    const setStoredTheme = (value) => {
       try {
         localStorage.setItem(STORAGE_KEY, value);
       } catch (error) {
@@ -106,14 +104,14 @@ const { navItems } = Astro.props;
       }
     };
 
-    const updateToggleLabel = (theme: Theme) => {
+    const updateToggleLabel = (theme) => {
       if (!toggle) return;
-      const nextTheme: Theme = theme === "dark" ? "light" : "dark";
+      const nextTheme = theme === "dark" ? "light" : "dark";
       toggle.setAttribute("aria-label", `Switch to ${nextTheme} theme`);
     };
 
-    const applyTheme = (theme: Theme, persist = true): Theme => {
-      const normalized: Theme = theme === "light" ? "light" : "dark";
+    const applyTheme = (theme, persist = true) => {
+      const normalized = theme === "light" ? "light" : "dark";
       root.setAttribute("data-theme", normalized);
       if (persist) {
         setStoredTheme(normalized);
@@ -122,19 +120,20 @@ const { navItems } = Astro.props;
       return normalized;
     };
 
-    const initialTheme: Theme =
+    const initialTheme =
       getStoredTheme() ?? (prefersDark?.matches ? "dark" : "light");
 
     applyTheme(initialTheme, false);
 
     toggle?.addEventListener("click", () => {
-      const current = (root.getAttribute("data-theme") as Theme) ?? "dark";
-      const next: Theme = current === "dark" ? "light" : "dark";
+      const current =
+        root.getAttribute("data-theme") === "light" ? "light" : "dark";
+      const next = current === "dark" ? "light" : "dark";
       applyTheme(next);
     });
 
     if (prefersDark) {
-      const handleMatchMedia = (event: MediaQueryListEvent) => {
+      const handleMatchMedia = (event) => {
         if (getStoredTheme()) return;
         applyTheme(event.matches ? "dark" : "light", false);
       };
@@ -155,7 +154,8 @@ const { navItems } = Astro.props;
     };
 
     document.addEventListener("click", (event) => {
-      if (!header.contains(event.target as Node)) {
+      const target = event.target;
+      if (target instanceof Node && !header.contains(target)) {
         closeMenus();
       }
     });
