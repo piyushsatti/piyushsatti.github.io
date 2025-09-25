@@ -15,56 +15,145 @@ const projects = (await getCollection("projects")).slice(0, 2);
 ---
 
 <BaseLayout title="Home" description="Welcome to my personal website">
-  <div class="index-content framed">
-    <h1 id="hello-there">Piyush Satti</h1>
-    <p>
-      I am a Software Developer with a strong foundation in computer science,
-      hands-on freelance experience, and published research in algorithm
-      development.
-    </p>
-    <p>
-      Graduated with <b
-        >M.Sc. in Applied Computer Science at Concordia University (Montreal,
-        Canada)</b
-      >. I bring a trifecta: academic rigor, engineering experience, and
-      entrepreneurial mindset.
-    </p>
+  <section class="hero">
+    <div class="left">
+      <div class="index-content framed">
+        <h1 id="hello-there">Piyush Satti</h1>
+        <p>
+          I am a Software Developer with a strong foundation in computer
+          science, hands-on freelance experience, and published research in
+          algorithm development. <br />
+          Graduated with <b
+            >M.Sc. in Applied Computer Science at Concordia University
+            (Montreal,Canada)</b
+          >. I bring a trifecta: academic rigor, engineering experience, and
+          entrepreneurial mindset.
+        </p>
 
-    <p>
-      <a href={`${base}about`}>About Me</a> ::
-      <a href={`${base}blog`}>Blog</a> ::
-      <a href={`${base}resume.pdf`} target="_blank" rel="noopener noreferrer"
-        >Resume</a
-      >
-    </p>
-  </div>
+        <p class="hero__links">
+          <a href={`${base}about`}>About Me</a> ::
+          <a href={`${base}blog`}>Blog</a> ::
+          <a
+            href={`${base}resume.pdf`}
+            target="_blank"
+            rel="noopener noreferrer">Resume</a
+          >
+        </p>
+      </div>
+    </div>
+
+    <div class="right">
+      <figure class="hero__photo">
+        <img
+          src={`${base}og-images/me.jpeg`}
+          alt="Portrait of Piyush Satti"
+          width="220"
+          height="220"
+          loading="lazy"
+        />
+      </figure>
+    </div>
+  </section>
 
   <div class="posts">
+    <br />
     <h2 class="posts-title">Featured Projects</h2>
-    <p>
+    <br />
+    <div class="posts-grid">
       {
-        projects.map((p) => (
-          <p>
-            <a href={`${base}projects/${p.id}/`}>{p.data.title}</a>
-            <span> — {p.data.summary}</span>
-          </p>
+        projects.map((project) => (
+          <PostCard
+            entry={{ slug: project.slug, data: project.data }}
+            variant="projects"
+          />
         ))
       }
-    </p>
+    </div>
   </div>
 
   <div class="posts">
     <h2 class="posts-title">Latest Posts</h2>
-    <p>
+    <br />
+    <div class="posts-grid">
       {
-        posts.map((p) => (
-          <p>
-            <a href={`${base}projects/${p.id}/`}>{p.data.title}</a>
-            <span> — {p.data.description}</span>
-          </p>
+        posts.map((post) => (
+          <PostCard
+            entry={{ slug: post.slug, data: post.data }}
+            variant="blog"
+          />
         ))
       }
-    </p>
+    </div>
   </div>
-
 </BaseLayout>
+
+<style>
+  .hero {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 2rem;
+    margin-bottom: 0rem;
+  }
+
+  .hero .left {
+    flex: 1 1 360px;
+    min-width: 0;
+    display: flex;
+  }
+
+  .hero .right {
+    flex: 0 0 300px;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+  }
+
+  .hero .index-content {
+    max-width: 750px;
+    flex: 1;
+  }
+
+  .hero__photo {
+    margin: 0;
+    margin-top: -10px;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid var(--accent);
+    padding: 10px;
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+  }
+
+  .hero__photo img {
+    display: block;
+    width: clamp(220px, 26vw, 320px);
+    height: auto;
+    border: none;
+    border-radius: 6px;
+    margin: 0 !important;
+  }
+
+  .hero__links {
+    margin: 1rem 0 0;
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero .left,
+    .hero .right {
+      flex: 1 1 auto;
+    }
+
+    .hero__links {
+      margin-top: 0rem;
+    }
+  }
+</style>

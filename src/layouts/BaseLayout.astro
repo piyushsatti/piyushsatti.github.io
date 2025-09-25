@@ -84,6 +84,7 @@ const base = import.meta.env.BASE_URL.endsWith("/")
             <li>
               <ul class="menu__dropdown">
                 <li><a href={base}>Home</a></li>
+                <li><a href={`${base}about`}>whoami</a></li>
                 <li>
                   <a
                     href={`${base}resume.pdf`}
@@ -105,7 +106,12 @@ const base = import.meta.env.BASE_URL.endsWith("/")
           <ul class="navigation-menu__inner menu--desktop">
             <li><a href={base}>Home</a></li>
             <li><a href={`${base}about`}>whoami</a></li>
-            <li><a href={`${base}resume.pdf`} target="_blank" rel="noopener noreferrer">Resume</a></li>
+            <li>
+              <a
+                href={`${base}resume.pdf`}
+                target="_blank"
+                rel="noopener noreferrer">Resume</a>
+            </li>
             <li><a href={`${base}projects`}>Projects</a></li>
             <li><a href={`${base}research`}>Research</a></li>
             <li><a href={`${base}blog`}>Blog</a></li>
@@ -114,42 +120,42 @@ const base = import.meta.env.BASE_URL.endsWith("/")
           </ul>
         </nav>
       </header>
-    <!-- main -->
-    <main class="content">
-      <slot />
-    </main>
-    <!-- Footer -->
-    <footer class="footer">
-      <div class="footer__inner">
-        <div>
-          <a
-            href="https://github.com/piyushsatti"
-            target="_blank"
-            rel="noopener noreferrer">GitHub</a
-          >
-          <span class="separator">::</span>
-          <a
-            href="https://www.linkedin.com/in/piyush-satti/"
-            target="_blank"
-            rel="noopener noreferrer">LinkedIn</a
-          >
-          <span class="separator">::</span>
-          <a
-            href="https://scholar.google.ca/citations?user=eR10c10AAAAJ&hl=en"
-            target="_blank"
-            rel="noopener noreferrer">Google Scholar</a
-          >
+      <!-- main -->
+      <main class="content">
+        <slot />
+      </main>
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="footer__inner">
+          <div>
+            <a
+              href="https://github.com/piyushsatti"
+              target="_blank"
+              rel="noopener noreferrer">GitHub</a
+            >
+            <span class="separator">::</span>
+            <a
+              href="https://www.linkedin.com/in/piyush-satti/"
+              target="_blank"
+              rel="noopener noreferrer">LinkedIn</a
+            >
+            <span class="separator">::</span>
+            <a
+              href="https://scholar.google.ca/citations?user=eR10c10AAAAJ&hl=en"
+              target="_blank"
+              rel="noopener noreferrer">Google Scholar</a
+            >
+          </div>
+          <div class="copyright">
+            <span>
+              © {new Date().getFullYear()} Powered by <a
+                href="https://astro.build"
+                target="_blank">Astro</a
+              >
+            </span>
+          </div>
         </div>
-        <div class="copyright">
-          <span>
-              © {new Date().getFullYear()} Powered by <a href="https://astro.build" target="_blank">Astro</a>
-          </span>
-          <span class="separator">::</span>
-          <span>Theme made by <a href="https://github.com/panr/hugo-theme-terminal" target="_blank">panr</a>
-          </span>
-        </div>
-      </div>
-    </footer>
+      </footer>
     </div>
 
     <script>

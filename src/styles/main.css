@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   padding: 40px;
-  max-width: 864px;
+  max-width: 1080px;
   min-height: 100vh;
   margin: 0 auto;
   border-right: 1px solid color-mix(in srgb, var(--accent) 10%, transparent);
@@ -27,11 +27,11 @@
 
 /* Index content */
 .index-content {
-  margin-bottom: 40px;
+  margin-bottom: 0px auto;
 }
 
 .index-content.framed {
-  margin-bottom: 60px;
+  margin-bottom: 0px auto;
 }
 
 /* Framed content */
@@ -43,7 +43,8 @@
 /* Figure with caption - matching Hugo theme */
 figure {
   display: inline-block;
-  margin: 25px auto;
+  margin-top: 0px !important;
+  margin: 25px auto 15px auto;
   padding: 0;
   background: transparent;
   text-align: center;
@@ -80,7 +81,7 @@ figure figcaption p {
   margin: 0 auto;
 }
 
-.page h1, 
+.page h1,
 article h1 {
   position: relative;
   color: var(--accent);
@@ -90,7 +91,7 @@ article h1 {
   border-bottom: 3px dotted var(--accent);
 }
 
-.page h1::after, 
+.page h1::after,
 article h1::after {
   content: "";
   position: absolute;
@@ -105,7 +106,7 @@ article h1::after {
   .container {
     padding: 20px;
   }
-  
+
   .content {
     margin-top: 20px;
   }
