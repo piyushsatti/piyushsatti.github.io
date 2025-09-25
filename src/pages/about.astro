@@ -1,39 +1,64 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
+import BaseLayout from "../layouts/BaseLayout.astro";
+const base = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : import.meta.env.BASE_URL + "/";
 ---
 
 <BaseLayout title="About Me">
   <div class="index-content framed">
     <h1>About Me</h1>
-    <p>I'm a backend-leaning developer with an M.Sc. I care about typed schemas, clean boundaries, and tests that read like specs.</p>
     <p>
-      <a href="https://github.com/piyushsatti" target="_blank" rel="noopener noreferrer">GitHub</a> ::
-      <a href="https://www.linkedin.com/in/piyush-satti/" target="_blank" rel="noopener noreferrer">LinkedIn</a> ::
-      <a href="https://scholar.google.ca/citations?user=eR10c10AAAAJ&hl=en" target="_blank" rel="noopener noreferrer">Scholar</a>
+      I'm a backend-leaning developer with an M.Sc. I care about typed schemas,
+      clean boundaries, and tests that read like specs.
+    </p>
+    <p>
+      <a
+        href="https://github.com/piyushsatti"
+        target="_blank"
+        rel="noopener noreferrer">GitHub</a
+      > ::
+      <a
+        href="https://www.linkedin.com/in/piyush-satti/"
+        target="_blank"
+        rel="noopener noreferrer">LinkedIn</a
+      > ::
+      <a
+        href="https://scholar.google.ca/citations?user=eR10c10AAAAJ&hl=en"
+        target="_blank"
+        rel="noopener noreferrer">Scholar</a
+      >
     </p>
   </div>
 
   <figure class="image-container captions">
     <img
-      src="../public/og-images/bacground_github.gif"
+      src={`${base}og-images/background_github.gif`}
       alt="Terminal Pi(π) Animation"
+      loading="lazy"
     />
-  <figcaption class="image-container__caption">Fueled by: diet coke, whiteclaw, and ramen.</figcaption>
+    <figcaption class="image-container__caption">
+      Fueled by: diet coke, whiteclaw, and ramen.
+    </figcaption>
   </figure>
 
-    <div>
+  <div>
     <h2>Technical Skills:</h2>
     <table>
       <thead><tr><th>Category</th><th>Skills</th></tr></thead>
       <tbody>
         <tr>
           <td>Languages</td>
-          <td>Python, Java, JavaScript/TypeScript, Ruby, HTML/CSS, C/C++, SQL, MATLAB, Bash, LaTeX</td>
+          <td
+            >Python, Java, JavaScript/TypeScript, Ruby, HTML/CSS, C/C++, SQL,
+            MATLAB, Bash, LaTeX</td
+          >
         </tr>
         <tr>
           <td>Cloud & DevOps</td>
-          <td>Git/GitHub, Docker, DigitalOcean, Vercel, Supabase, GitHub Actions</td>
+          <td
+            >Git/GitHub, Docker, DigitalOcean, Vercel, Supabase, GitHub Actions</td
+          >
         </tr>
         <tr>
           <td>Databases</td>
@@ -70,5 +95,4 @@ const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL :
       </tbody>
     </table>
   </div>
-
 </BaseLayout>
