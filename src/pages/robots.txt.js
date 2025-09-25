@@ -1,13 +1,16 @@
-export async function get() {
-  return {
-    body: `
-User-agent: *
-Allow: /
+export const prerender = true;
 
-Sitemap: https://piyushsatti.github.io/sitemap.xml
-    `.trim(),
+export async function GET({ site }) {
+  const origin = site ?? "https://piyushsatti.github.io";
+  const sitemapURL = new URL("sitemap.xml", origin).toString();
+
+  const body = [`User-agent: *`, `Allow: /`, ``, `Sitemap: ${sitemapURL}`]
+    .join("\n")
+    .trim();
+
+  return new Response(body, {
     headers: {
-      'Content-Type': 'text/plain',
+      "Content-Type": "text/plain; charset=utf-8",
     },
-  };
+  });
 }
