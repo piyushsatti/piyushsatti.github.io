@@ -1,228 +1,132 @@
----
-title: "Rich Content"
-description: "Examples of embedded media content"
-pubDate: 2019-03-10
-author: "Terminal Theme Authors"
-tags: ["media", "embeds", "video"]
----
+# Content Authoring Tutorial
 
-This page demonstrates how to embed various types of media content in the Astro Terminal theme, including YouTube videos, Vimeo players, and GitHub code snippets.
+This guide captures the day-to-day workflow for updating content on `piyushsatti.github.io`. Use it alongside the main [README](./README.md) whenever you add posts, projects, or research entries.
 
 ---
 
-## YouTube Video Embed
+## 1. Start the local preview
 
-<div class="video-wrapper">
-  <iframe src="https://www.youtube-nocookie.com/embed/jNQXAC9IVRw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
-
-<br>
-
----
-
-## Code Snippet from GitHub
-
-<script src="https://gist.github.com/spf13/7896402.js"></script>
-
-<br>
-
----
-
-## Vimeo Video Player
-
-<div class="video-wrapper">
-  <iframe src="https://player.vimeo.com/video/22439234" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
-</div>
-
-<br>
-
----
-
-## Spotify Music Player
-
-<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/4PTG3Z6ehGkBFwjybzWkR8?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-
-<br>
-
----
-
-## CodePen Interactive Demo
-
-<iframe height="400" style="width: 100%;" scrolling="no" title="Retro Terminal" src="https://codepen.io/MillerTime/embed/XgpNwb?default-tab=result&theme-id=dark" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true">
-  See the Pen <a href="https://codepen.io/MillerTime/pen/XgpNwb">Retro Terminal</a> by MillerTime (<a href="https://codepen.io/MillerTime">@MillerTime</a>) on <a href="https://codepen.io">CodePen</a>.
-</iframe>
-
-<br>
-
----
-
-## Interactive Map
-
-<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d19501.19687091392!2d6.871649076443455!3d52.21976574218451!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47b813d9079c5545%3A0x726416ab4bbec1ad!2sEnschede%2C%20Netherlands!5e0!3m2!1sen!2s!4v1635959493980!5m2!1sen!2s" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-
-<br>
-
----
-
-## SoundCloud Audio
-
-<iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/293&color=%23eec35e&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe>
-
-
----
-
----
-title: "Showcase"
-description: "This article offers a sample of basic Markdown syntax that can be used in Astro content files, also it shows whether basic HTML elements are decorated with CSS in the Astro Terminal theme."
-pubDate: 2019-03-11
-author: "Hugo Authors, Radek"
-tags: []
----
-
-This article offers a sample of basic Markdown syntax that can be used in Astro content files, also it shows whether basic HTML elements are decorated with CSS in the Astro Terminal theme.
-
-## Headings
-
-The following HTML `<h1>`—`<h6>` elements represent six levels of section headings. `<h1>` is the highest section level while `<h6>` is the lowest.
-
-# H1
-
-## H2
-
-### H3
-
-#### H4
-
-##### H5
-
-###### H6
-
-## Paragraph
-
-Xerum, quo qui aut unt expliquam qui dolut labo. Aque venitatiusda cum, voluptionse latur sitiae dolessi aut parist aut dollo enim qui voluptate ma dolestendit peritin re plis aut quas inctum laceat est volestemque commosa as cus endigna tectur, offic to cor sequas etum rerum idem sintibus eiur? Quianimin porecus evelectur, cum que nis nust voloribus ratem aut omnimi, sitatur? Quiatem. Nam, omnis sum am facea corem alique molestrunt et eos evelece arcillit ut aut eos eos nus, sin conecerem erum fuga. Ri oditatquam, ad quibus unda veliamenimin cusam et facea ipsamus es exerum sitate dolores editium rerore eost, temped molorro ratiae volorro te reribus dolorer sperchicium faceata tiustia prat.
-
-Itatur? Quiatae cullecum rem ent aut odis in re eossequodi nonsequ idebis ne sapicia is sinveli squiatum, core et que aut hariosam ex eat.
-
-## Images
-
-![Terminal Theme Preview](https://raw.githubusercontent.com/panr/hugo-theme-terminal/refs/heads/master/images/terminal-theme.png?raw=true)
-
-### Figure with a caption
-
-<figure>
-  <img src="https://raw.githubusercontent.com/panr/hugo-theme-terminal/refs/heads/master/images/terminal-theme.png?raw=true" alt="Terminal Theme Preview">
-  <figcaption>
-    <p>Terminal Theme Preview</p>
-  </figcaption>
-</figure>
-
-## Blockquotes
-
-The blockquote element represents content that is quoted from another source, optionally with a citation which must be within a `footer` or `cite` element, and optionally with in-line changes such as annotations and abbreviations.
-
-### Blockquote without attribution
-
-> Tiam, ad mint andaepu dandae nostion secatur sequo quae.
-> **Note** that you can use _Markdown syntax_ within a blockquote.
-
-### Blockquote with attribution
-
-> Don't communicate by sharing memory, share memory by communicating.
-> — <cite>Rob Pike[^1]</cite>
-
-[^1]: The above quote is excerpted from Rob Pike's [talk](https://www.youtube.com/watch?v=PAAkCSZUG1c) during Gopherfest, November 18, 2015.
-
-## Buttons and links
-
-<button>Button</button>
-<a href="#">Link</a>
-
-## Tables
-
-Tables aren't part of the core Markdown spec, but Astro supports them out-of-the-box.
-
-### Basic Table
-
-| Name  | Age |
-| ----- | --- |
-| Bob   | 27  |
-| Alice | 23  |
-
-### Inline Markdown within tables
-
-| Italics   | Bold     | Code   |
-| --------- | -------- | ------ |
-| _italics_ | **bold** | `code` |
-
-## Forms
-
-<fieldset>
-  <input type="text" placeholder="Type something"><br>
-  <input type="number" placeholder="Insert number"><br>
-  <input type="text" value="Input value"><br>
-  <select>
-    <option value="1">Option 1</option>
-    <option value="2">Option 2</option>
-    <option value="3">Option 3</option>
-  </select><br>
-  <textarea placeholder="Insert a comment..."></textarea><br>
-  <label>
-    <input type="checkbox"> I understand<br>
-  </label>
-  <button type="submit">Submit</button>
-</fieldset>
-
-## Code Blocks
-
-### Code block with backticks
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Example HTML5 Document</title>
-  </head>
-  <body>
-    <p>Test</p>
-  </body>
-</html>
+```bash
+npm run dev
 ```
 
-For more examples for different programming languages, please go to [code showcase](/blog/code-blocks-examples/).
+Open [http://localhost:4321](http://localhost:4321). Astro refreshes the page automatically whenever you save edits.
 
-## List Types
+### Helpful tips
 
-### Ordered List
+- Keep the dev server running while you write; Astro validates frontmatter immediately.
+- For production-like output run `npm run build` and `npm run preview`.
 
-1. First item
-2. Second item
-3. Third item
+---
 
-### Unordered List
+## 2. Add new content
 
-- List item
-- Another item
-- And another item
+All entries live under `src/content`. File names become the URL slug, so prefer lowercase-with-dashes.
 
-### Nested list
+### Blog post
 
-- Fruit
-  - Apple
-  - Orange
-  - Banana
-- Dairy
-  - Milk
-  - Cheese
+```
+src/content/blog/my-new-post.mdx
+```
 
-## Other Elements — abbr, sub, sup, kbd, mark
+```md
+---
+title: "What I Learned Shipping GameOps"
+description: "Operational guardrails that kept a multiplayer game online at scale."
+pubDate: 2024-03-12
+author: "Piyush Satti"
+tags: ["Observability", "Discord", "ETL"]
+image: "./cover.png" # optional hero image
+externalLink: "" # optional, leave blank to link internally
+---
 
-<abbr title="Graphics Interchange Format">GIF</abbr> is a bitmap image format.
+Your Markdown or MDX content here...
+```
 
-H<sub>2</sub>O
+### Project case study
 
-X<sup>n</sup> + Y<sup>n</sup> = Z<sup>n</sup>
+```
+src/content/projects/<slug>.md
+```
 
-Press <kbd>CTRL</kbd>+<kbd>ALT</kbd>+<kbd>Delete</kbd> to end the session.
+```md
+---
+title: "GameOps Suite"
+summary: "Automation toolkit that ingests Discord events and streams analytics dashboards."
+startDate: "2022-04-01"
+endDate: "2023-02-15" # omit if still active
+tags: ["Python", "MongoDB", "ETL"]
+repo: "https://github.com/piyushsatti/gameops-suite"
+demo: "https://demo.example.com" # optional
+image: "./architecture.png" # optional
+---
 
-Most <mark>salamanders</mark> are nocturnal, and hunt for insects, worms, and other small creatures.
+Use headings for TL;DR, architecture, lessons learned, screenshots, etc.
+```
+
+### Research summary
+
+```
+src/content/research/<slug>.md
+```
+
+```md
+---
+title: "Multi-Agent Motion Planning with Potential Fields"
+journal: "IEEE RA-L"
+pubDate: "2021-10-01"
+summary: "Potential field heuristics fused with reinforcement learning speed up cooperative routing."
+tags: ["Robotics", "Python", "Optimization"]
+paper: "https://doi.org/..."
+repo: "https://github.com/piyushsatti/mmapf" # optional
+slides: "./talk.pdf" # optional
+---
+
+Include intro, highlights, and outcomes. Link to PDFs stored under `public/` when possible.
+```
+
+### Need another collection?
+
+1. Update `src/content/config.ts` with a new `defineCollection` schema.
+2. Create a directory under `src/content/<collection>/`.
+3. Add Markdown files that match the new schema.
+4. Build or restart the dev server to regenerate types.
+
+---
+
+## 3. Use tags consistently
+
+- Tags power `/tags` and `/tags/<slug>`.
+- Stick to concise, Title Case or lowercase words (e.g., `GraphQL`, `python`).
+- Avoid duplicates; reuse existing tags when possible. Check the list on `/tags` while the dev server runs.
+
+---
+
+## 4. Embed media responsibly
+
+- Store images in the same folder as the Markdown file and reference them relatively (e.g., `image: "./cover.png"`).
+- Large diagrams can live in `public/` if reused across pages.
+- Use standard Markdown for images/video when possible; iframes are supported but keep them responsive by wrapping with `<div class="video-wrapper">` as seen in existing posts.
+
+---
+
+## 5. Publish updates
+
+1. Stop the dev server when finished (`Ctrl+C`).
+2. Run a production build to ensure frontmatter and routes are valid:
+
+   ```bash
+   npm run build
+   ```
+
+3. Commit changes and push. GitHub Pages will deploy automatically.
+
+---
+
+## 6. Troubleshooting
+
+- **Schema errors:** Astro prints the failing field and file path. Fix the frontmatter values and rebuild.
+- **Broken tag links:** Ensure the tag text is the same across entries; the slug is generated automatically.
+- **Missing images:** Confirm the path is relative to the Markdown file or use `/`-prefixed paths for items in `public/`.
+
+Happy writing!

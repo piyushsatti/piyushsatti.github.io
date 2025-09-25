@@ -1,0 +1,48 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostCard from "../../components/PostCard.astro";
+import { getAllTags, getTagBucket } from "../../lib/tags";
+
+export async function getStaticPaths() {
+  const tags = await getAllTags();
+  return tags.map((tag) => ({ params: { tag: tag.slug } }));
+}
+
+const base = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : import.meta.env.BASE_URL + "/";
+
+const params = Astro.params as { tag: string };
+const bucket = await getTagBucket(params.tag ?? "");
+
+if (!bucket) {
+  throw new Error(`Unknown tag: ${params.tag}`);
+}
+
+const title = `Tag: ${bucket.label}`;
+const description = `Articles, projects, and research that use ${bucket.label}.`;
+const entries = bucket.entries;
+---
+
+<BaseLayout title={title} description={description}>
+  <header class="terms">
+    <h1>{title}</h1>
+    <p>
+      <a href={`${base}tags/`}>← Back to all tags</a>
+    </p>
+  </header>
+
+  {
+    entries.length === 0 ? (
+      <p>No content is currently associated with this tag.</p>
+    ) : (
+      <section class="term-posts">
+        <div class="posts-grid">
+          {entries.map(({ entry, collection }) => (
+            <PostCard entry={entry} variant={collection} />
+          ))}
+        </div>
+      </section>
+    )
+  }
+</BaseLayout>

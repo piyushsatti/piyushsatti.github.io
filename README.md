@@ -1,241 +1,172 @@
-# Astro Terminal Theme
+# Piyush Satti — Terminal Portfolio
 
-I love both Astro and the Terminal theme by panr, so I decided to port this theme to Astro. This is an adaptation of the [Hugo Terminal Theme](https://github.com/panr/hugo-theme-terminal) created by [panr](https://github.com/panr). All design credit goes to the original author.
+This repository contains the source for [piyushsatti.github.io](https://piyushsatti.github.io), a personal site built with Astro and the retro terminal-inspired Astro Terminal theme. It hosts long-form writing, project case studies, research summaries, and resume links in a single static site that deploys automatically to GitHub Pages.
 
-![Terminal Theme Screenshot](https://panr.github.io/hugo-theme-terminal-demo/img/terminal-css.png)
+## ✨ Highlights
 
-- [Demo site](https://dennisklappe.github.io/astro-theme-terminal/)
-- [Terminal.css - Create your own colour scheme](https://panr.github.io/terminal-css/)
+- Astro 5 static site with light/dark terminal theming and keyboard-inspired UI
+- Content powered by Astro Content Collections (`blog`, `projects`, `research`) with type-safe frontmatter
+- Global tagging system with `/tags` index and per-tag landing pages across all collections
+- Downloadable resume, contact links, and themed components that respect the original Terminal design
+- Optimised for GitHub Pages deployment via the default Astro build output
 
-## Features
+## 🛠 Tech Stack
 
-- **Customisable colour schemes** — works with panr's [Terminal.css colour scheme generator](https://panr.github.io/terminal-css/) or choose from the default schemes available there
-- **[Fira Code](https://github.com/tonsky/FiraCode)** as default monospaced font — easily changeable
-- **nice syntax highlighting** — thanks to Astro's built-in Shiki support
-- **fully responsive** — works great on mobile and desktop
-- **tag support** — organise posts with tags and browse by tag
-- **RSS feed** — automatically generated RSS feed for your blog
+- [Astro 5](https://astro.build/) with the Astro Terminal theme
+- Astro Content Collections for structured Markdown/MDX content
+- Shiki syntax highlighting and custom CSS modules under `src/styles`
+- Continuous deployment on GitHub Pages (see `.github/workflows` if customised)
 
-## Requirements
+## 🚀 Getting Started
 
-- Astro v5.0.0 or higher
-- Node.js 18 or higher
+### Prerequisites
 
-## Installation
+- Node.js **18** or newer (Astro requirement)
+- npm (bundled with Node) or pnpm/yarn if you prefer
 
-### Clone repository
+### Install & Run Locally
 
 ```bash
-git clone https://github.com/dennisklappe/astro-theme-terminal.git your-site-name
-cd your-site-name
+git clone https://github.com/piyushsatti/piyushsatti.github.io.git
+cd piyushsatti.github.io
 npm install
-```
-
-### Use as a template
-
-You can also use this repository as a template on GitHub:
-
-1. Click the "Use this template" button on the GitHub repository
-2. Create a new repository from the template
-3. Clone your new repository and install dependencies
-
-## How to start
-
-```bash
 npm run dev
 ```
 
-## How to build
+Astro serves the site at [http://localhost:4321](http://localhost:4321) with hot module reload.
+
+### Build & Preview Production Output
 
 ```bash
 npm run build
+npm run preview
 ```
 
-## Configuration
+The build step generates static HTML in `dist/`. `npm run preview` serves that output locally to mirror production.
 
-### Site Configuration
+## 📁 Project Structure
 
-Edit `astro.config.mjs`:
-
-```js
-import { defineConfig } from 'astro/config';
-
-export default defineConfig({
-  site: 'https://your-domain.com',
-  markdown: {
-    shikiConfig: {
-      theme: 'css-variables',
-      langs: [],
-      wrap: true,
-    },
-  },
-});
+```
+├── astro.config.mjs        # Astro configuration and integrations
+├── src/
+│   ├── content/            # Content collections (blog, projects, research)
+│   ├── components/         # Reusable UI (cards, dates, layout helpers)
+│   ├── layouts/            # Base and post layouts used by pages
+│   ├── pages/              # Route definitions (index, blog, projects, research, tags)
+│   ├── lib/                # Utilities (tag aggregation helpers)
+│   └── styles/             # Theme-specific CSS modules
+└── public/                 # Static assets (resume.pdf, images, favicons)
 ```
 
-### Theme Configuration
+## ✍️ Managing Content Collections
 
-The theme uses CSS custom properties for theming. To change colours, modify the variables in `src/styles/terminal.css`:
+All content lives in [Astro Content Collections](https://docs.astro.build/en/guides/content-collections/) defined in `src/content/config.ts`. Frontmatter is type-checked at build time.
 
-```css
-:root {
-  --background: #1e2022;
-  --foreground: #d6deeb;
-  --accent: #ffa86a;
-  --secondary: #8be9fd;
-  --selection: #4c5f7a;
-  --code-border: #4c5f7a;
-  --comment: #637777;
-}
-```
-
-You can also use panr's [Terminal.css generator](https://panr.github.io/terminal-css/) to create your own colour scheme - this Astro port is fully compatible with the generated colour schemes.
-
-### Navigation Menu
-
-Edit the navigation in `src/layouts/BaseLayout.astro`. The theme includes a dropdown menu for additional pages:
-
-```astro
-<!-- Main navigation items -->
-<li><a href="/about">About</a></li>
-<li><a href="/posts/showcase">Showcase</a></li>
-
-<!-- Dropdown menu -->
-<ul class="menu__dropdown">
-  <li><a href="/posts">Posts</a></li>
-  <li><a href="/tags">Tags</a></li>
-  <li><a href="/posts/rich-content">Rich Content</a></li>
-</ul>
-```
-
-## Content
-
-### Posts
-
-Create posts in `src/content/posts/`:
+### Blog (`src/content/blog`)
 
 ```md
 ---
-title: 'My First Post'
-description: 'This is my first blog post'
-pubDate: 2024-01-01
-author: 'Your Name'
-tags: ['astro', 'terminal']
+title: "REST vs GraphQL: Lessons from Risk-Emulated"
+description: "Trade-offs discovered while evolving a Spring Boot API"
+pubDate: 2024-02-18
+author: "Piyush Satti"
+tags: ["Spring Boot", "GraphQL", "DDD"]
+image: "./cover.png" # optional
+externalLink: "https://example.com" # optional, renders CTA
 ---
 
-Your content here...
+Long-form Markdown/MDX content...
 ```
 
-### Pages
+### Projects (`src/content/projects`)
 
-Create pages in `src/pages/`:
-
-```astro
+```md
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+title: "Risk-Emulated"
+summary: "Turn-based engine that emulates the RISK board game with typed GraphQL APIs."
+startDate: "2023-06-01"
+endDate: "2024-01-15" # optional
+tags: ["Java", "Spring Boot", "GraphQL"]
+repo: "https://github.com/piyushsatti/risk-emulated"
+demo: "https://demo.example.com" # optional
+image: "./cover.png" # optional
 ---
 
-<BaseLayout title="About">
-  <div class="page">
-    <h1>About</h1>
-    <p>Your content here...</p>
-  </div>
-</BaseLayout>
+Project narrative with TL;DR, architecture notes, and media.
 ```
 
-## Syntax Highlighting
+### Research (`src/content/research`)
 
-The theme uses Astro's built-in Shiki syntax highlighter with a custom monochrome theme that matches the terminal aesthetic. Code blocks automatically get syntax highlighting:
+```md
+---
+title: "Multi-Agent Motion Planning"
+journal: "Robotics & Automation Letters"
+pubDate: "2022-09-01"
+summary: "Hybrid planner that blends potential fields with reinforcement learning."
+tags: ["Robotics", "Python", "RL"]
+paper: "https://doi.org/10.1109/LRA.2022.xxxxxx"
+repo: "https://github.com/piyushsatti/mmapf" # optional
+slides: "./deck.pdf" # optional
+image: "./diagram.png" # optional
+---
 
-```js
-// JavaScript example
-function hello() {
-  console.log("Hello, World!");
-}
+Abstract-style explanation and key findings.
 ```
 
-## Layouts
+### Adding a New Entry
 
-### BaseLayout
+1. Pick the collection directory (`blog`, `projects`, or `research`).
+2. Create a new `.md` or `.mdx` file with a unique slug (file name becomes the slug).
+3. Copy the relevant frontmatter template above and adjust the fields.
+4. `npm run dev` or `npm run build` to validate the schema — Astro will flag missing required fields.
 
-The main layout that includes header, footer, and all necessary CSS imports.
+### Creating Additional Collections
 
-### PostLayout
+If you need more content types (e.g., `talks`):
 
-Layout specifically for posts, includes metadata display and post navigation.
+1. Update `src/content/config.ts` with a new `defineCollection` schema.
+2. Create `src/content/talks/` and add Markdown files that match the schema.
+3. Add route/pages under `src/pages/talks/` or components that consume the collection.
+4. Extend utilities like `src/lib/tags.ts` if the new collection should participate in tag aggregation.
 
-## Components
+## 🏷 Working with Tags
 
-- **Header** - Site header with terminal decoration
-- **Footer** - Site footer with copyright
-- **PostCard** - Post preview card
-- **Pagination** - Page navigation component
-- **FormattedDate** - Date formatting component
+- Tags are simple strings in frontmatter (`tags: ["GraphQL", "DDD"]`).
+- `src/lib/tags.ts` aggregates tags across **all** collections and powers:
+  - `/tags` – directory of every tag with counts.
+  - `/tags/<slug>` – landing page showing posts, projects, and research entries for that tag.
+- Slugs are generated automatically (lowercase, kebab-case) via `slugifyTag`. When linking manually, prefer `<a href={`/tags/${slugifyTag(tag)}/`}>` in components.
 
-## Features
+## 🎨 Customisation Notes
 
-### Tags
+The project keeps the Astro Terminal aesthetic intact. Customisations focus on content, not re-skinning.
 
-Posts can be organised with tags. Each tag gets its own page at `/tags/[tag-name]` showing all posts with that tag. A tag index page at `/tags` displays all available tags.
+- **Theme variables** live in `src/styles/terminal.css`. Update CSS variables to tweak colours.
+- **Fonts** are configured in `src/styles/fonts.css` (currently using Fira Code).
+- **Navigation** is controlled in `src/layouts/BaseLayout.astro`.
+- **Resume** lives in `public/resume.pdf` and is linked from the navigation/footer.
 
+## 📤 Deployment
 
-## Customization
+The site is designed for GitHub Pages:
 
-### Fonts
+1. Ensure `astro.config.mjs` has `site: "https://piyushsatti.github.io"`.
+2. Run `npm run build` locally to validate.
+3. Push to the default branch; the GitHub Actions workflow (if enabled) will build and publish to Pages.
 
-To change the monospace font, update the font import in `src/styles/fonts.css` and the font-family in `src/styles/terminal.css`.
+You can also host the `dist/` folder on any static host (Netlify, Vercel static export, Cloudflare Pages, etc.).
 
-### Colours
+## ✅ Maintenance Checklist
 
-Create your own colour scheme or choose from the default schemes using panr's [Terminal.css generator](https://panr.github.io/terminal-css/).
+- `npm run dev` while editing content for instant feedback.
+- `npm run build` before committing to catch schema or runtime errors.
+- Keep `resume.pdf` updated in `public/`.
+- Refresh social metadata (OpenGraph, JSON-LD) when adding new content types.
 
-### CSS Structure
+## 📄 License
 
-The theme uses modular CSS files:
-- `terminal.css` - Core theme styles and variables
-- `fonts.css` - Font imports and utilities
-- `main.css` - Layout and utility classes
-- `header.css` - Header styles
-- `menu.css` - Navigation menu
-- `footer.css` - Footer styles
-- `post.css` - Post styles
-- `buttons.css` - Button components
-- `code.css` - Code block functionality
-- `syntax.css` - Syntax highlighting theme
-- `pagination.css` - Pagination styles
-- `gist.css` - GitHub Gist embed styles
-- `terms.css` - Terms and conditions styles
-
-## Deployment
-
-### GitHub Pages
-
-This theme includes a GitHub Actions workflow for automatic deployment to GitHub Pages:
-
-1. Go to your repository Settings → Pages
-2. Set Source to "GitHub Actions"
-3. Push to the `main` branch or manually trigger the workflow
-4. Your site will be available at `https://[username].github.io/astro-theme-terminal`
-
-To deploy to a custom domain or different base path, update the `site` and `base` options in `astro.config.mjs`.
-
-**Note**: The base path is only applied in production builds. During development, the site runs at the root path (`/`) for easier testing.
-
-## Contributing
-
-If you find any bugs or have ideas for improvements, please open an issue or submit a pull request.
-
-## Credits
-
-This theme is a port of the [Hugo Terminal Theme](https://github.com/panr/hugo-theme-terminal) created by [panr](https://github.com/panr). All design decisions, colour schemes, and visual aesthetics are credited to the original author.
-
-Astro port created by [Dennis Klappe](https://github.com/dennisklappe).
-
-## License
-
-The original Hugo Terminal Theme is licensed under the MIT License. This Astro port maintains the same licence.
-
-Copyright for the original design: panr
+This repository retains the original [MIT License](./LICENSE) from the Astro Terminal theme. Credit for the visual design goes to [panr](https://github.com/panr).
 
 ---
 
-Made with love for the Astro community
+Maintained with ❤️ by [Piyush Satti](https://piyushsatti.github.io).
