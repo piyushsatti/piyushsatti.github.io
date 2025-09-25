@@ -1,5 +1,6 @@
 ---
 import FormattedDate from "../FormattedDate.astro";
+import { slugifyTag } from "../../lib/tags";
 
 export interface ActionLink {
   label: string;
@@ -34,6 +35,10 @@ const {
   actions = [],
   ctaLabel = "View details →",
 } = Astro.props as Props;
+
+const base = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : import.meta.env.BASE_URL + "/";
 ---
 
 <article class="listing-card">
@@ -70,7 +75,21 @@ const {
   {
     tags.length > 0 && (
       <div class="listing-card__tags">
-        <b>Tags:</b> {tags.join(" • ")}
+        <b>Tags:</b>{" "}
+        {tags.map((tag, index) => {
+          const slug = slugifyTag(tag);
+          const tagHref = `${base}tags/${slug}/`;
+          return (
+            <span class="listing-card__tag">
+              <a href={tagHref}>{tag}</a>
+              {index < tags.length - 1 && (
+                <span aria-hidden="true" class="listing-card__tag-separator">
+                  {" • "}
+                </span>
+              )}
+            </span>
+          );
+        })}
       </div>
     )
   }

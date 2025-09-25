@@ -1,0 +1,35 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getAllTags } from "../../lib/tags";
+
+const base = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : import.meta.env.BASE_URL + "/";
+
+const tags = await getAllTags();
+---
+
+<BaseLayout
+  title="Browse by Tag"
+  description="Browse projects, research, and posts grouped by skills and technologies."
+>
+  <section class="terms">
+    <h1>Browse by Tag</h1>
+    {
+      tags.length === 0 ? (
+        <p>No tagged content yet. Check back soon!</p>
+      ) : (
+        <ul class="terms__list">
+          {tags.map((tag) => (
+            <li class="terms__item">
+              <a href={`${base}tags/${tag.slug}/`}>{tag.label}</a>
+              <span class="count">
+                {tag.count} item{tag.count === 1 ? "" : "s"}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </section>
+</BaseLayout>
