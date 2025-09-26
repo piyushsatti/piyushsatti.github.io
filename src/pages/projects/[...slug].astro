@@ -27,6 +27,8 @@ interface ProjectEntryData {
   endDate?: string;
   tags?: string[];
   image?: string;
+  imageAlt?: string;
+  imageCaption?: string;
   repo?: string;
   demo?: string;
   role?: string;
@@ -67,6 +69,8 @@ const tldr = data.tldr ?? [];
     variant="projects"
     summary={data.summary}
     heroImage={data.image}
+    heroImageAlt={data.imageAlt}
+    heroImageCaption={data.imageCaption}
     tags={tags}
     meta={meta}
     tldr={tldr}

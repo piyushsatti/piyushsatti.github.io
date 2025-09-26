@@ -340,6 +340,13 @@ sup[data-footnote-ref] a:hover {
   border: 1px solid var(--accent);
 }
 
+.post-full__caption {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: color-mix(in srgb, var(--foreground) 65%, transparent);
+  text-align: center;
+}
+
 .post-full__summary {
   font-size: 1.1rem;
   line-height: 1.6;

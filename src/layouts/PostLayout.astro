@@ -22,6 +22,8 @@ export interface Props {
   updatedDate?: Date | string;
   author?: string;
   image?: string;
+  imageAlt?: string;
+  imageCaption?: string;
   tags?: string[];
   links?: LinkProps[];
   meta?: MetaProps[];
@@ -40,6 +42,8 @@ const {
   updatedDate,
   author,
   image,
+  imageAlt,
+  imageCaption,
   tags = [],
   links = [],
   meta = [],
@@ -69,6 +73,8 @@ const aggregatedMeta = [
     summary={summary}
     variant={variant}
     heroImage={image}
+    heroImageAlt={imageAlt}
+    heroImageCaption={imageCaption}
     pubDate={pubDate}
     updatedDate={updatedDate}
     tags={tags}

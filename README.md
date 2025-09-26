@@ -72,6 +72,8 @@ pubDate: 2024-02-18
 author: "Piyush Satti"
 tags: ["Spring Boot", "GraphQL", "DDD"]
 image: "./cover.png" # optional
+imageAlt: "Diagram showing the GraphQL resolver flow" # optional, overrides default alt text
+imageCaption: "Architecture diagram from the refactor sprint" # optional, renders below the hero image
 externalLink: "https://example.com" # optional, renders CTA
 ---
 
@@ -90,6 +92,8 @@ tags: ["Java", "Spring Boot", "GraphQL"]
 repo: "https://github.com/piyushsatti/risk-emulated"
 demo: "https://demo.example.com" # optional
 image: "./cover.png" # optional
+imageAlt: "Screenshot of the RISK game board" # optional
+imageCaption: "Prototype UI used in the beta release" # optional
 ---
 
 Project narrative with TL;DR, architecture notes, and media.
@@ -108,6 +112,8 @@ paper: "https://doi.org/10.1109/LRA.2022.xxxxxx"
 repo: "https://github.com/piyushsatti/mmapf" # optional
 slides: "./deck.pdf" # optional
 image: "./diagram.png" # optional
+imageAlt: "Flowchart of the multi-agent motion planner" # optional
+imageCaption: "Figure 3 from the IEEE RA-L publication" # optional
 ---
 
 Abstract-style explanation and key findings.
@@ -119,6 +125,8 @@ Abstract-style explanation and key findings.
 2. Create a new `.md` or `.mdx` file with a unique slug (file name becomes the slug).
 3. Copy the relevant frontmatter template above and adjust the fields.
 4. `npm run dev` or `npm run build` to validate the schema — Astro will flag missing required fields.
+
+> 💡 **Hero images**: Provide `imageAlt` to override the default alt text (falls back to the entry title) and `imageCaption` to render a `<figcaption>` beneath the cover image. Both fields are optional.
 
 ### Creating Additional Collections
 

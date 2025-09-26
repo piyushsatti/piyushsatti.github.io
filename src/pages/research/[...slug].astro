@@ -26,6 +26,8 @@ interface ResearchEntryData {
   pubDate: string;
   tags?: string[];
   image?: string;
+  imageAlt?: string;
+  imageCaption?: string;
   paper: string;
   repo?: string;
   slides?: string;
@@ -61,6 +63,8 @@ const tldr = data.tldr ?? [];
     variant="research"
     summary={data.summary}
     heroImage={data.image}
+    heroImageAlt={data.imageAlt}
+    heroImageCaption={data.imageCaption}
     pubDate={data.pubDate}
     tags={tags}
     meta={meta}
