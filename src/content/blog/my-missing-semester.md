@@ -83,5 +83,3 @@ The git session was the therapy I needed. I stopped fearing `reflog`, embraced i
 - Missing Semester playlist: https://www.youtube.com/playlist?list=PLyzOVJj3bHQuloKGG59rS43e29ro7I57J
 - Official course site with notes + exercises: https://missing.csail.mit.edu
 - My dotfiles (work in progress): https://github.com/piyushsatti/dotfiles
-
-Tag pages: [/tags/productivity](/tags/productivity) · [/tags/learning](/tags/learning) · [/tags/tooling](/tags/tooling)

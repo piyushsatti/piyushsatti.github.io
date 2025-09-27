@@ -101,5 +101,3 @@ If you’re earlier on the path: binge the lessons, break your speed, feel the f
 - Fast inverse square root (background): https://en.wikipedia.org/wiki/Fast_inverse_square_root
 - Carmack – algorithm story (short explainer): https://www.youtube.com/watch?v=p8u_k2LIZyo
 - Carmack long-form interview: https://www.youtube.com/watch?v=I845O57ZSy4
-
-Tag pages: [/tags/philosophy](/tags/philosophy) · [/tags/inspiration](/tags/inspiration)
