@@ -1,5 +1,6 @@
 ---
-import ListingCard from "./cards/ListingCard.astro";
+import FormattedDate from "./FormattedDate.astro";
+import { slugifyTag } from "../lib/tags";
 
 /** BLOG */
 interface BlogEntry {
@@ -48,8 +49,6 @@ interface ResearchEntry {
 
 type CardEntry = BlogEntry | ProjectEntry | ResearchEntry;
 
-type MetaItem = { kind: "date"; value: Date } | { kind: "text"; value: string };
-
 export interface Props {
   entry?: CardEntry;
   variant?: "blog" | "projects" | "research";
@@ -79,82 +78,119 @@ if (!variant) {
   }
 }
 
+const toDate = (value?: string) => (value ? new Date(value) : undefined);
+const formatRangePart = (value?: Date) =>
+  value
+    ? value.toLocaleDateString(undefined, {
+        year: "numeric",
+        month: "short",
+      })
+    : undefined;
+
 let url = "";
 const title = incoming.data.title;
 const tags = ((incoming as any).data.tags as string[] | undefined) ?? [];
+const image = (incoming as any).data.image as string | undefined;
 
 let primaryDate: Date | undefined;
 let secondaryMeta: string | undefined;
 let blurb: string | undefined;
-const actionLinks: Array<{ label: string; href: string; external?: boolean }> =
-  [];
 
 if (variant === "blog") {
   const data = (incoming as BlogEntry).data;
-  primaryDate = new Date(data.pubDate);
+  primaryDate = toDate(data.pubDate);
   secondaryMeta = data.author;
   blurb = data.description;
   url = data.externalLink || `${base}blog/${incoming.slug}/`;
-  if (data.externalLink) {
-    actionLinks.push({
-      label: "Original",
-      href: data.externalLink,
-      external: true,
-    });
-  }
 } else if (variant === "projects") {
   const data = (incoming as ProjectEntry).data;
-  primaryDate = data.endDate
-    ? new Date(data.endDate)
-    : new Date(data.startDate);
-  secondaryMeta = data.endDate
-    ? `${data.startDate} → ${data.endDate}`
-    : `${data.startDate} → Present`;
+  const start = toDate(data.startDate);
+  const end = toDate(data.endDate);
+  primaryDate = end ?? start;
+  const startLabel = formatRangePart(start);
+  const endLabel = formatRangePart(end);
+  secondaryMeta = endLabel
+    ? `${startLabel ?? ""} → ${endLabel}`
+    : `${startLabel ?? ""} → Present`;
   blurb = data.summary;
   url = `${base}projects/${incoming.slug}/`;
-  if (data.repo)
-    actionLinks.push({ label: "Repo", href: data.repo, external: true });
-  if (data.demo)
-    actionLinks.push({ label: "Demo", href: data.demo, external: true });
 } else {
   const data = (incoming as ResearchEntry).data;
-  primaryDate = new Date(data.pubDate);
+  primaryDate = toDate(data.pubDate);
   secondaryMeta = data.journal;
   blurb = data.summary;
   url = `${base}research/${incoming.slug}/`;
-  if (data.paper)
-    actionLinks.push({ label: "Paper", href: data.paper, external: true });
-  if (data.repo)
-    actionLinks.push({ label: "Repo", href: data.repo, external: true });
-  if (data.slides)
-    actionLinks.push({ label: "Slides", href: data.slides, external: true });
 }
 
 const isExternalPrimary =
   variant === "blog" &&
   "externalLink" in (incoming as any).data &&
   !!(incoming as any).data.externalLink;
-
-const metaItems: MetaItem[] = [];
-
-if (primaryDate) {
-  metaItems.push({ kind: "date", value: primaryDate });
-}
-
-if (secondaryMeta) {
-  metaItems.push({ kind: "text", value: secondaryMeta });
-}
-
-const ctaLabel = isExternalPrimary ? "Read original →" : undefined;
 ---
 
-<ListingCard
-  title={title}
-  href={url}
-  external={isExternalPrimary}
-  summary={blurb}
-  tags={tags}
-  meta={metaItems}
-  actions={actionLinks}
-  ctaLabel={ctaLabel}
-/>
+<article class="post on-list">
+  <h2 class="post-title">
+    <a
+      href={url}
+      target={isExternalPrimary ? "_blank" : undefined}
+      rel={isExternalPrimary ? "noopener" : undefined}
+    >
+      {title}
+    </a>Pi
+  </h2>
+
+  <div class="post-meta">
+    {
+      primaryDate && (
+        <time class="post-date">
+          <FormattedDate date={primaryDate} />
+        </time>
+      )
+    }
+    {secondaryMeta && <span class="post-author">{secondaryMeta}</span>}
+  </div>
+
+  {
+    tags.length > 0 && (
+      <span class="post-tags">
+        {tags.map((tag, index) => {
+          const slug = slugifyTag(tag);
+          const isLast = index === tags.length - 1;
+          return (
+            <span class="post-tag" data-tag={slug}>
+              <a href={`${base}tags/${slug}/`}>{tag}</a>
+              {!isLast && <span aria-hidden="true"> · </span>}
+            </span>
+          );
+        })}
+      </span>
+    )
+  }
+
+  {
+    image && (
+      <figure class="post-cover">
+        <img src={image} alt={title} />
+      </figure>
+    )
+  }
+
+  {
+    blurb && (
+      <div class="post-content">
+        <p>{blurb}</p>
+      </div>
+    )
+  }
+
+  <div>
+    <a
+      href={url}
+      class="read-more button inline"
+      target={isExternalPrimary ? "_blank" : undefined}
+      rel={isExternalPrimary ? "noopener" : undefined}
+    >
+      [Read more]
+    </a>
+  </div>
+</article>
