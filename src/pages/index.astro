@@ -8,7 +8,11 @@ const base = import.meta.env.BASE_URL.endsWith("/")
   : import.meta.env.BASE_URL + "/";
 
 // Blog posts (theme expects 'blog' collection)
-const posts = (await getCollection("blog")).slice(0, 2);
+const postsCollection = await getCollection("blog");
+const featuredPostSlugs = ["rest-vs-graphql-hands-on-learning", "craft-heroes"];
+const posts = featuredPostSlugs
+  .map((slug) => postsCollection.find((entry) => entry.slug === slug))
+  .filter((entry) => entry !== undefined);
 
 // Projects (custom collection)
 const projects = (await getCollection("projects")).slice(0, 2);
