@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Post from "../../components/Post.astro";
+import { toSitePath } from "../../lib/site";
 
 export async function getStaticPaths() {
   const entries = (await getCollection("blog")).sort(
@@ -21,9 +22,6 @@ export async function getStaticPaths() {
 
 const { entry, prevEntry, nextEntry } = Astro.props;
 const { Content } = await entry.render();
-const base = import.meta.env.BASE_URL.endsWith("/")
-  ? import.meta.env.BASE_URL
-  : import.meta.env.BASE_URL + "/";
 
 const links = entry.data.externalLink
   ? [{ label: "Original", href: entry.data.externalLink, external: true }]
@@ -66,7 +64,7 @@ const tags = entry.data.tags ?? [];
         prevEntry && (
           <>
             <a
-              href={`${base}blog/${prevEntry.slug}/`}
+              href={toSitePath(`blog/${prevEntry.slug}/`)}
               class="button inline prev"
             >
               &lt; [<span class="button__text">{prevEntry.data.title}</span>]
@@ -77,7 +75,10 @@ const tags = entry.data.tags ?? [];
       }
       {
         nextEntry && (
-          <a href={`${base}blog/${nextEntry.slug}/`} class="button inline next">
+          <a
+            href={toSitePath(`blog/${nextEntry.slug}/`)}
+            class="button inline next"
+          >
             [<span class="button__text">{nextEntry.data.title}</span>] &gt;
           </a>
         )

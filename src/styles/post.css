@@ -1,6 +1,16 @@
 /* Posts */
 .posts {
   width: 100%;
+  margin: 3rem 0;
+}
+
+.posts:first-of-type {
+  margin-top: 2rem;
+}
+
+.posts-empty {
+  margin: 1.5rem 0;
+  color: var(--muted-text, color-mix(in srgb, var(--foreground) 60%, transparent));
 }
 
 .post {
@@ -75,21 +85,6 @@
   border: 10px solid var(--accent);
   background: transparent;
   padding: 20px;
-}
-
-.post ul {
-  list-style: none;
-}
-
-.post ul li {
-  position: relative;
-}
-
-.post ul li:not(:empty)::before {
-  content: "-";
-  position: absolute;
-  left: -20px;
-  color: var(--accent);
 }
 
 .post-content {

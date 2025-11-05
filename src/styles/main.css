@@ -163,16 +163,21 @@ article h1::after {
 /* Lists with dashes */
 ul {
   list-style: none;
+  padding-left: 0;
 }
 
-ul li {
+:where(.content) ul:not([class]) {
+  padding-left: 1.5rem;
+}
+
+:where(.content) ul:not([class]) li {
   position: relative;
 }
 
-ul li:not(:empty)::before {
+:where(.content) ul:not([class]) li:not(:empty)::before {
   content: "-";
   position: absolute;
-  left: -20px;
+  left: -1.2rem;
   color: var(--accent);
 }
 

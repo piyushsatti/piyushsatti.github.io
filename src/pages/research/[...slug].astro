@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Post from "../../components/Post.astro";
+import { toSitePath } from "../../lib/site";
 
 export async function getStaticPaths() {
   const entries = (await getCollection("research")).sort(
@@ -38,9 +39,6 @@ interface ResearchEntryData {
 const { entry, prevEntry, nextEntry } = Astro.props;
 const { Content } = await entry.render();
 const data = entry.data as ResearchEntryData;
-const base = import.meta.env.BASE_URL.endsWith("/")
-  ? import.meta.env.BASE_URL
-  : import.meta.env.BASE_URL + "/";
 
 const meta = [{ label: "Journal", value: data.journal }];
 if (data.authors && data.authors.length > 0) {
@@ -83,7 +81,7 @@ const tldr = data.tldr ?? [];
         prevEntry && (
           <>
             <a
-              href={`${base}research/${prevEntry.slug}/`}
+              href={toSitePath(`research/${prevEntry.slug}/`)}
               class="button inline prev"
             >
               &lt; [<span class="button__text">{prevEntry.data.title}</span>]
@@ -95,7 +93,7 @@ const tldr = data.tldr ?? [];
       {
         nextEntry && (
           <a
-            href={`${base}research/${nextEntry.slug}/`}
+            href={toSitePath(`research/${nextEntry.slug}/`)}
             class="button inline next"
           >
             [<span class="button__text">{nextEntry.data.title}</span>] &gt;

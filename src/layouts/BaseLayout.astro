@@ -1,6 +1,8 @@
 ---
 import SiteHeader from "../components/site/SiteHeader.astro";
 import SiteFooter from "../components/site/SiteFooter.astro";
+import { SITE_BASE, toSitePath } from "../lib/site";
+import { TERMINAL_THEMES, TERMINAL_THEME_STORAGE_KEY } from "../lib/themes";
 
 export interface Props {
   title: string;
@@ -16,27 +18,24 @@ const {
   bodyClass,
 } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const base = import.meta.env.BASE_URL.endsWith("/")
-  ? import.meta.env.BASE_URL
-  : import.meta.env.BASE_URL + "/";
 const siteName = "Piyush Satti";
 const analyticsId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
 const enableAnalytics =
   typeof analyticsId === "string" && analyticsId.length > 0;
 
 const navItems = [
-  { label: "Home", href: base },
-  { label: "whoami", href: `${base}about` },
+  { label: "Home", href: SITE_BASE },
+  { label: "whoami", href: toSitePath("about") },
   {
     label: "Resume",
-    href: `${base}resume.pdf`,
+    href: toSitePath("resume.pdf"),
     external: true,
   },
-  { label: "Projects", href: `${base}projects` },
-  { label: "Research", href: `${base}research` },
-  { label: "Blog", href: `${base}blog` },
-  { label: "Hobbies", href: `${base}hobbies` },
-  { label: "Contact", href: `${base}contact` },
+  { label: "Projects", href: toSitePath("projects") },
+  { label: "Research", href: toSitePath("research") },
+  { label: "Blog", href: toSitePath("blog") },
+  { label: "Hobbies", href: toSitePath("hobbies") },
+  { label: "Contact", href: toSitePath("contact") },
 ];
 ---
 
@@ -44,11 +43,11 @@ const navItems = [
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <link rel="icon" type="image/svg+xml" href={toSitePath("favicon.svg")} />
     <link
       rel="alternate icon"
       type="image/x-icon"
-      href={`${base}favicon.ico`}
+      href={toSitePath("favicon.ico")}
     />
     <meta name="generator" content={Astro.generator} />
     <meta name="author" content="Piyush Satti" />
@@ -106,21 +105,36 @@ const navItems = [
 
     <script is:inline>
       (() => {
-        const storageKey = "terminal-theme-preference";
+        const themes = JSON.parse(
+          decodeURIComponent("${encodeURIComponent(JSON.stringify(TERMINAL_THEMES))}")
+        );
+        const storageKey = "${TERMINAL_THEME_STORAGE_KEY}";
         const root = document.documentElement;
+
+        const resolveTheme = (id) =>
+          themes.find((theme) => theme.id === id) ?? null;
+
+        const applyTheme = (theme) => {
+          root.setAttribute("data-theme", theme.id);
+          root.setAttribute("data-color-scheme", theme.mode);
+          root.style.setProperty("color-scheme", theme.mode);
+        };
 
         try {
           const stored = localStorage.getItem(storageKey);
-          if (stored === "light" || stored === "dark") {
-            root.setAttribute("data-theme", stored);
+          const storedTheme = resolveTheme(stored);
+          if (storedTheme) {
+            applyTheme(storedTheme);
             return;
           }
 
-          if (
-            window.matchMedia &&
-            window.matchMedia("(prefers-color-scheme: light)").matches
-          ) {
-            root.setAttribute("data-theme", "light");
+          const prefersLight = window.matchMedia?.("(prefers-color-scheme: light)")?.matches;
+          const fallback = themes.find((theme) =>
+            prefersLight ? theme.mode === "light" : theme.mode === "dark"
+          );
+
+          if (fallback) {
+            applyTheme(fallback);
           }
         } catch (error) {
           console.warn("Unable to synchronise theme preference", error);
@@ -128,12 +142,12 @@ const navItems = [
       })();
     </script>
 
-    <link rel="sitemap" href={`${base}sitemap.xml`} />
+    <link rel="sitemap" href={toSitePath("sitemap.xml")} />
     <link
       rel="alternate"
       type="application/rss+xml"
       title="RSS"
-      href={`${base}rss.xml`}
+      href={toSitePath("rss.xml")}
     />
     {Astro.slots.has("head") && <slot name="head" />}
     <script
