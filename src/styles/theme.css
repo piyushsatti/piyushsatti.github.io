@@ -1,8 +1,6 @@
-:root,
-[data-theme="dark"] {
+:root {
   color-scheme: dark;
 
-  /* Core palette based on Terminal CSS dark theme */
   --color-bg: #1a170f;
   --color-surface: #221d14;
   --color-surface-elevated: #2b2418;
@@ -13,7 +11,6 @@
   --color-accent: #eec35e;
   --color-accent-soft: #f4d677;
 
-  /* Derived tokens consumed throughout the site */
   --background: var(--color-bg);
   --foreground: var(--color-text);
   --accent: var(--color-accent);
@@ -35,10 +32,23 @@
   --diff-removed-soft: color-mix(in srgb, var(--diff-removed) 16%, transparent);
 }
 
-[data-theme="light"] {
+[data-theme="terminal-amber-dark"] {
+  color-scheme: dark;
+
+  --color-bg: #1a170f;
+  --color-surface: #221d14;
+  --color-surface-elevated: #2b2418;
+  --color-text: #eceae5;
+  --color-text-muted: #c7c2b7;
+  --color-border: #3b3221;
+  --color-border-strong: color-mix(in srgb, var(--color-accent) 35%, transparent);
+  --color-accent: #eec35e;
+  --color-accent-soft: #f4d677;
+}
+
+[data-theme="terminal-amber-light"] {
   color-scheme: light;
 
-  /* Light palette inspired by Terminal CSS accents */
   --color-bg: #f4efe4;
   --color-surface: #ffffff;
   --color-surface-elevated: #f0e4cf;
@@ -69,3 +79,140 @@
   --diff-removed: #b91c1c;
   --diff-removed-soft: color-mix(in srgb, var(--diff-removed) 18%, transparent);
 }
+
+[data-theme="terminal-magenta-dark"] {
+  color-scheme: dark;
+
+  --color-bg: #1d0a17;
+  --color-surface: #291122;
+  --color-surface-elevated: #36172d;
+  --color-text: #fbe4f1;
+  --color-text-muted: #dab9c9;
+  --color-border: #4a1c33;
+  --color-border-strong: color-mix(in srgb, var(--color-accent) 32%, transparent);
+  --color-accent: #ff72c6;
+  --color-accent-soft: #ff9ed6;
+
+  --background: var(--color-bg);
+  --foreground: var(--color-text);
+  --accent: var(--color-accent);
+  --accent-soft: var(--color-accent-soft);
+  --muted-text: var(--color-text-muted);
+  --surface: var(--color-surface);
+  --surface-elevated: var(--color-surface-elevated);
+  --border-color: var(--color-border);
+  --border-color-strong: var(--color-border-strong);
+  --card-bg: color-mix(in srgb, var(--surface-elevated) 78%, transparent);
+  --card-border: var(--border-color-strong);
+  --text-color: var(--foreground);
+  --code-surface: color-mix(in srgb, var(--color-text) 7%, transparent);
+  --code-border: color-mix(in srgb, var(--color-text) 24%, transparent);
+  --code-comment: color-mix(in srgb, var(--color-text) 52%, transparent);
+  --diff-added: #66ff66;
+  --diff-added-soft: color-mix(in srgb, var(--diff-added) 16%, transparent);
+  --diff-removed: #ff6666;
+  --diff-removed-soft: color-mix(in srgb, var(--diff-removed) 16%, transparent);
+}
+
+[data-theme="terminal-magenta-light"] {
+  color-scheme: light;
+
+  --color-bg: #fff1f9;
+  --color-surface: #ffe4f2;
+  --color-surface-elevated: #ffd1eb;
+  --color-text: #311028;
+  --color-text-muted: #6c3d57;
+  --color-border: #f6b9de;
+  --color-border-strong: color-mix(in srgb, var(--color-accent) 45%, transparent);
+  --color-accent: #d946ef;
+  --color-accent-soft: #f0abfc;
+
+  --background: var(--color-bg);
+  --foreground: var(--color-text);
+  --accent: var(--color-accent);
+  --accent-soft: var(--color-accent-soft);
+  --muted-text: var(--color-text-muted);
+  --surface: var(--color-surface);
+  --surface-elevated: var(--color-surface-elevated);
+  --border-color: var(--color-border);
+  --border-color-strong: var(--color-border-strong);
+  --card-bg: color-mix(in srgb, var(--surface-elevated) 92%, transparent);
+  --card-border: var(--color-border-strong);
+  --text-color: var(--foreground);
+  --code-surface: color-mix(in srgb, var(--color-text) 4%, transparent);
+  --code-border: color-mix(in srgb, var(--color-text) 18%, transparent);
+  --code-comment: color-mix(in srgb, var(--color-text) 58%, transparent);
+  --diff-added: #15803d;
+  --diff-added-soft: color-mix(in srgb, var(--diff-added) 18%, transparent);
+  --diff-removed: #b91c1c;
+  --diff-removed-soft: color-mix(in srgb, var(--diff-removed) 18%, transparent);
+}
+
+[data-theme="terminal-ocean-dark"] {
+  color-scheme: dark;
+
+  --color-bg: #071b2c;
+  --color-surface: #0c2436;
+  --color-surface-elevated: #133149;
+  --color-text: #d5f5ff;
+  --color-text-muted: #a7c4d6;
+  --color-border: #1c3f55;
+  --color-border-strong: color-mix(in srgb, var(--color-accent) 28%, transparent);
+  --color-accent: #38bdf8;
+  --color-accent-soft: #7dd3fc;
+
+  --background: var(--color-bg);
+  --foreground: var(--color-text);
+  --accent: var(--color-accent);
+  --accent-soft: var(--color-accent-soft);
+  --muted-text: var(--color-text-muted);
+  --surface: var(--color-surface);
+  --surface-elevated: var(--color-surface-elevated);
+  --border-color: var(--color-border);
+  --border-color-strong: var(--color-border-strong);
+  --card-bg: color-mix(in srgb, var(--surface-elevated) 78%, transparent);
+  --card-border: var(--border-color-strong);
+  --text-color: var(--foreground);
+  --code-surface: color-mix(in srgb, var(--color-text) 7%, transparent);
+  --code-border: color-mix(in srgb, var(--color-text) 22%, transparent);
+  --code-comment: color-mix(in srgb, var(--color-text) 48%, transparent);
+  --diff-added: #66ff66;
+  --diff-added-soft: color-mix(in srgb, var(--diff-added) 16%, transparent);
+  --diff-removed: #ff6666;
+  --diff-removed-soft: color-mix(in srgb, var(--diff-removed) 16%, transparent);
+}
+
+[data-theme="terminal-ocean-light"] {
+  color-scheme: light;
+
+  --color-bg: #e6f6ff;
+  --color-surface: #d9f0ff;
+  --color-surface-elevated: #c6e8ff;
+  --color-text: #093049;
+  --color-text-muted: #40617a;
+  --color-border: #9fd4f5;
+  --color-border-strong: color-mix(in srgb, var(--color-accent) 48%, transparent);
+  --color-accent: #0ea5e9;
+  --color-accent-soft: #7dd3fc;
+
+  --background: var(--color-bg);
+  --foreground: var(--color-text);
+  --accent: var(--color-accent);
+  --accent-soft: var(--color-accent-soft);
+  --muted-text: var(--color-text-muted);
+  --surface: var(--color-surface);
+  --surface-elevated: var(--color-surface-elevated);
+  --border-color: var(--color-border);
+  --border-color-strong: var(--color-border-strong);
+  --card-bg: color-mix(in srgb, var(--surface-elevated) 92%, transparent);
+  --card-border: var(--color-border-strong);
+  --text-color: var(--foreground);
+  --code-surface: color-mix(in srgb, var(--color-text) 4%, transparent);
+  --code-border: color-mix(in srgb, var(--color-text) 18%, transparent);
+  --code-comment: color-mix(in srgb, var(--color-text) 60%, transparent);
+  --diff-added: #0f766e;
+  --diff-added-soft: color-mix(in srgb, var(--diff-added) 18%, transparent);
+  --diff-removed: #b91c1c;
+  --diff-removed-soft: color-mix(in srgb, var(--diff-removed) 18%, transparent);
+}
+

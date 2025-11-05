@@ -1,10 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getAllTags } from "../../lib/tags";
-
-const base = import.meta.env.BASE_URL.endsWith("/")
-  ? import.meta.env.BASE_URL
-  : import.meta.env.BASE_URL + "/";
+import { toSitePath } from "../../lib/site";
 
 const tags = await getAllTags();
 ---
@@ -22,7 +19,7 @@ const tags = await getAllTags();
         <ul class="terms__list">
           {tags.map((tag) => (
             <li class="terms__item">
-              <a href={`${base}tags/${tag.slug}/`}>{tag.label}</a>
+              <a href={toSitePath(`tags/${tag.slug}/`)}>{tag.label}</a>
               <span class="count">
                 {tag.count} item{tag.count === 1 ? "" : "s"}
               </span>

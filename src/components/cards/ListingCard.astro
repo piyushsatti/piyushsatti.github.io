@@ -1,6 +1,7 @@
 ---
 import FormattedDate from "../FormattedDate.astro";
 import { slugifyTag } from "../../lib/tags";
+import { isExternalUrl, toSitePath } from "../../lib/site";
 
 export interface ActionLink {
   label: string;
@@ -36,18 +37,17 @@ const {
   ctaLabel = "View details →",
 } = Astro.props as Props;
 
-const base = import.meta.env.BASE_URL.endsWith("/")
-  ? import.meta.env.BASE_URL
-  : import.meta.env.BASE_URL + "/";
+const normalizedHref = toSitePath(href);
+const primaryIsExternal = external || isExternalUrl(href);
 ---
 
 <article class="listing-card">
   <header class="listing-card__header">
     <h3 class="listing-card__title">
       <a
-        href={href}
-        target={external ? "_blank" : undefined}
-        rel={external ? "noopener" : undefined}
+        href={normalizedHref}
+        target={primaryIsExternal ? "_blank" : undefined}
+        rel={primaryIsExternal ? "noopener" : undefined}
       >
         {title}
       </a>
@@ -78,7 +78,7 @@ const base = import.meta.env.BASE_URL.endsWith("/")
         <b>Tags:</b>{" "}
         {tags.map((tag, index) => {
           const slug = slugifyTag(tag);
-          const tagHref = `${base}tags/${slug}/`;
+          const tagHref = toSitePath(`tags/${slug}/`);
           return (
             <span class="listing-card__tag">
               <a href={tagHref}>{tag}</a>
@@ -104,10 +104,10 @@ const base = import.meta.env.BASE_URL.endsWith("/")
 
   <footer class="listing-card__footer">
     <a
-      href={href}
+      href={normalizedHref}
       class="listing-card__cta"
-      target={external ? "_blank" : undefined}
-      rel={external ? "noopener" : undefined}
+      target={primaryIsExternal ? "_blank" : undefined}
+      rel={primaryIsExternal ? "noopener" : undefined}
     >
       {ctaLabel}
     </a>
@@ -117,9 +117,13 @@ const base = import.meta.env.BASE_URL.endsWith("/")
           {actions.map((link, index) => (
             <>
               <a
-                href={link.href}
-                target={link.external ? "_blank" : undefined}
-                rel={link.external ? "noopener" : undefined}
+                href={toSitePath(link.href)}
+                target={
+                  link.external || isExternalUrl(link.href) ? "_blank" : undefined
+                }
+                rel={
+                  link.external || isExternalUrl(link.href) ? "noopener" : undefined
+                }
               >
                 {link.label}
               </a>

@@ -1,8 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-const base = import.meta.env.BASE_URL.endsWith("/")
-  ? import.meta.env.BASE_URL
-  : import.meta.env.BASE_URL + "/";
+import { toSitePath } from "../lib/site";
 ---
 
 <BaseLayout title="About Me">
@@ -33,7 +31,7 @@ const base = import.meta.env.BASE_URL.endsWith("/")
 
   <figure class="image-container captions">
     <img
-      src={`${base}og-images/background.gif`}
+      src={toSitePath("og-images/background.gif")}
       alt="Terminal Pi(π) Animation"
       loading="lazy"
     />

@@ -1,9 +1,10 @@
 ---
 import FormattedDate from "./FormattedDate.astro";
 import { slugifyTag } from "../lib/tags";
+import { isExternalUrl, toSitePath } from "../lib/site";
 
 /** BLOG */
-interface BlogEntry {
+export interface BlogEntry {
   slug: string;
   data: {
     title: string;
@@ -17,7 +18,7 @@ interface BlogEntry {
 }
 
 /** PROJECTS */
-interface ProjectEntry {
+export interface ProjectEntry {
   slug: string;
   data: {
     title: string;
@@ -32,7 +33,7 @@ interface ProjectEntry {
 }
 
 /** RESEARCH */
-interface ResearchEntry {
+export interface ResearchEntry {
   slug: string;
   data: {
     title: string;
@@ -47,17 +48,13 @@ interface ResearchEntry {
   };
 }
 
-type CardEntry = BlogEntry | ProjectEntry | ResearchEntry;
+export type CardEntry = BlogEntry | ProjectEntry | ResearchEntry;
 
 export interface Props {
   entry?: CardEntry;
   variant?: "blog" | "projects" | "research";
   post?: BlogEntry;
 }
-
-const base = import.meta.env.BASE_URL.endsWith("/")
-  ? import.meta.env.BASE_URL
-  : import.meta.env.BASE_URL + "/";
 
 const incoming = (Astro.props.entry ?? Astro.props.post) as
   | CardEntry
@@ -101,7 +98,7 @@ if (variant === "blog") {
   primaryDate = toDate(data.pubDate);
   secondaryMeta = data.author;
   blurb = data.description;
-  url = data.externalLink || `${base}blog/${incoming.slug}/`;
+  url = data.externalLink || toSitePath(`blog/${incoming.slug}/`);
 } else if (variant === "projects") {
   const data = (incoming as ProjectEntry).data;
   const start = toDate(data.startDate);
@@ -113,13 +110,13 @@ if (variant === "blog") {
     ? `${startLabel ?? ""} → ${endLabel}`
     : `${startLabel ?? ""} → Present`;
   blurb = data.summary;
-  url = `${base}projects/${incoming.slug}/`;
+  url = toSitePath(`projects/${incoming.slug}/`);
 } else {
   const data = (incoming as ResearchEntry).data;
   primaryDate = toDate(data.pubDate);
   secondaryMeta = data.journal;
   blurb = data.summary;
-  url = `${base}research/${incoming.slug}/`;
+  url = toSitePath(`research/${incoming.slug}/`);
 }
 
 const isExternalPrimary =
@@ -136,7 +133,7 @@ const isExternalPrimary =
       rel={isExternalPrimary ? "noopener" : undefined}
     >
       {title}
-    </a>Pi
+    </a>
   </h2>
 
   <div class="post-meta">
@@ -158,7 +155,7 @@ const isExternalPrimary =
           const isLast = index === tags.length - 1;
           return (
             <span class="post-tag" data-tag={slug}>
-              <a href={`${base}tags/${slug}/`}>{tag}</a>
+              <a href={toSitePath(`tags/${slug}/`)}>{tag}</a>
               {!isLast && <span aria-hidden="true"> · </span>}
             </span>
           );
@@ -187,8 +184,12 @@ const isExternalPrimary =
     <a
       href={url}
       class="read-more button inline"
-      target={isExternalPrimary ? "_blank" : undefined}
-      rel={isExternalPrimary ? "noopener" : undefined}
+      target={
+        isExternalPrimary || isExternalUrl(url) ? "_blank" : undefined
+      }
+      rel={
+        isExternalPrimary || isExternalUrl(url) ? "noopener" : undefined
+      }
     >
       [Read more]
     </a>

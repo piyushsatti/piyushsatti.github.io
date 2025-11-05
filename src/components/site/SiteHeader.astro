@@ -1,4 +1,9 @@
 ---
+import {
+  TERMINAL_THEMES,
+  TERMINAL_THEME_STORAGE_KEY,
+} from "../../lib/themes";
+
 export interface NavItem {
   label: string;
   href: string;
@@ -10,6 +15,15 @@ export interface Props {
 }
 
 const { navItems } = Astro.props;
+const themeOptions = TERMINAL_THEMES;
+const fallbackTheme = {
+  id: "terminal-amber-dark",
+  label: "Amber (Dark)",
+  mode: "dark" as const,
+};
+const defaultTheme = themeOptions[0] ?? fallbackTheme;
+const nextThemeLabel =
+  themeOptions.length > 1 ? themeOptions[1].label : defaultTheme.label;
 ---
 
 <header class="header">
@@ -23,7 +37,10 @@ const { navItems } = Astro.props;
       <button
         class="theme-toggle"
         type="button"
-        aria-label="Switch to light theme"
+        aria-label={`Switch to ${nextThemeLabel} theme`}
+        title={`Switch theme (current: ${defaultTheme.label})`}
+        data-theme-id={defaultTheme.id}
+        data-theme-mode={defaultTheme.mode}
       >
         <span
           class="theme-toggle__icon theme-toggle__icon--sun"
@@ -33,6 +50,7 @@ const { navItems } = Astro.props;
           class="theme-toggle__icon theme-toggle__icon--moon"
           aria-hidden="true">☾</span
         >
+        <span class="theme-toggle__label">{defaultTheme.label}</span>
       </button>
       <ul class="menu menu--mobile">
         <li class="menu__trigger">Menu ▾</li>
@@ -81,61 +99,156 @@ const { navItems } = Astro.props;
     const header = document.currentScript?.previousElementSibling;
     if (!(header instanceof HTMLElement)) return;
 
-    const STORAGE_KEY = "terminal-theme-preference";
+    const themes = JSON.parse(
+      decodeURIComponent("${encodeURIComponent(JSON.stringify(themeOptions))}")
+    );
+    const storageKey = "${TERMINAL_THEME_STORAGE_KEY}";
     const root = document.documentElement;
     const toggle = header.querySelector(".theme-toggle");
     const prefersDark = window.matchMedia?.("(prefers-color-scheme: dark)");
 
-    const getStoredTheme = () => {
-      try {
-        const value = localStorage.getItem(STORAGE_KEY);
-        return value === "light" || value === "dark" ? value : null;
-      } catch (error) {
-        console.warn("Unable to read theme from storage", error);
-        return null;
+    const themeList = Array.isArray(themes) ? themes : [];
+
+    const findThemeIndex = (id) =>
+      typeof id === "string"
+        ? themeList.findIndex((theme) => theme.id === id)
+        : -1;
+
+    const clampIndex = (index) => {
+      if (themeList.length === 0) return -1;
+      if (typeof index !== "number" || Number.isNaN(index) || index < 0) {
+        return -1;
+      }
+      return index % themeList.length;
+    };
+
+    let currentIndex = (() => {
+      if (themeList.length === 0) return -1;
+      const attrIndex = findThemeIndex(root.getAttribute("data-theme"));
+      return attrIndex >= 0 ? attrIndex : 0;
+    })();
+
+    const getTheme = (index) => {
+      if (themeList.length === 0) return null;
+      const normalized = clampIndex(index);
+      if (normalized < 0) return null;
+      return themeList[normalized];
+    };
+
+    const updateToggleLabel = () => {
+      if (!toggle) return;
+      if (themeList.length === 0) {
+        toggle.setAttribute("aria-label", "Toggle theme");
+        toggle.setAttribute("title", "Toggle theme");
+        const label = toggle.querySelector(".theme-toggle__label");
+        if (label) label.textContent = "Theme";
+        return;
+      }
+
+      const currentTheme = getTheme(currentIndex) ?? themeList[0];
+      const nextTheme =
+        getTheme(currentIndex + 1) ?? themeList[(currentIndex + 1) % themeList.length];
+
+      toggle.setAttribute("aria-label", `Switch to ${nextTheme.label} theme`);
+      toggle.setAttribute(
+        "title",
+        `Switch theme (current: ${currentTheme.label})`
+      );
+      toggle.setAttribute("data-theme-id", currentTheme.id);
+      toggle.setAttribute("data-theme-mode", currentTheme.mode);
+
+      const label = toggle.querySelector(".theme-toggle__label");
+      if (label) {
+        label.textContent = currentTheme.label;
       }
     };
 
-    const setStoredTheme = (value) => {
+    const persistTheme = (id) => {
       try {
-        localStorage.setItem(STORAGE_KEY, value);
+        localStorage.setItem(storageKey, id);
       } catch (error) {
         console.warn("Unable to persist theme in storage", error);
       }
     };
 
-    const updateToggleLabel = (theme) => {
-      if (!toggle) return;
-      const nextTheme = theme === "dark" ? "light" : "dark";
-      toggle.setAttribute("aria-label", `Switch to ${nextTheme} theme`);
-    };
+    const applyTheme = (index, persist = true) => {
+      const theme = getTheme(index);
+      if (!theme) return null;
 
-    const applyTheme = (theme, persist = true) => {
-      const normalized = theme === "light" ? "light" : "dark";
-      root.setAttribute("data-theme", normalized);
+      currentIndex = clampIndex(index);
+      root.setAttribute("data-theme", theme.id);
+      root.setAttribute("data-color-scheme", theme.mode);
+      root.style.setProperty("color-scheme", theme.mode);
+      updateToggleLabel();
+
       if (persist) {
-        setStoredTheme(normalized);
+        persistTheme(theme.id);
       }
-      updateToggleLabel(normalized);
-      return normalized;
+
+      return theme;
     };
 
-    const initialTheme =
-      getStoredTheme() ?? (prefersDark?.matches ? "dark" : "light");
+    const readStoredIndex = () => {
+      try {
+        const stored = localStorage.getItem(storageKey);
+        const found = findThemeIndex(stored);
+        return found >= 0 ? found : -1;
+      } catch (error) {
+        console.warn("Unable to read theme from storage", error);
+        return -1;
+      }
+    };
 
-    applyTheme(initialTheme, false);
+    const ensureInitialTheme = () => {
+      if (themeList.length === 0) {
+        updateToggleLabel();
+        return;
+      }
+
+      const storedIndex = readStoredIndex();
+      if (storedIndex >= 0) {
+        applyTheme(storedIndex, false);
+        return;
+      }
+
+      const attrIndex = findThemeIndex(root.getAttribute("data-theme"));
+      if (attrIndex >= 0) {
+        currentIndex = attrIndex;
+        const theme = getTheme(attrIndex);
+        if (theme) {
+          root.setAttribute("data-color-scheme", theme.mode);
+          root.style.setProperty("color-scheme", theme.mode);
+        }
+        updateToggleLabel();
+        return;
+      }
+
+      const fallbackIndex = (() => {
+        if (!prefersDark) return 0;
+        const preferredMode = prefersDark.matches ? "dark" : "light";
+        const matchIndex = themeList.findIndex((theme) => theme.mode === preferredMode);
+        return matchIndex >= 0 ? matchIndex : 0;
+      })();
+
+      applyTheme(fallbackIndex, false);
+    };
+
+    ensureInitialTheme();
 
     toggle?.addEventListener("click", () => {
-      const current =
-        root.getAttribute("data-theme") === "light" ? "light" : "dark";
-      const next = current === "dark" ? "light" : "dark";
-      applyTheme(next);
+      if (themeList.length === 0) return;
+      applyTheme(currentIndex + 1);
     });
 
     if (prefersDark) {
       const handleMatchMedia = (event) => {
-        if (getStoredTheme()) return;
-        applyTheme(event.matches ? "dark" : "light", false);
+        if (readStoredIndex() >= 0) return;
+        const nextIndex = themeList.findIndex((theme) =>
+          event.matches ? theme.mode === "dark" : theme.mode === "light"
+        );
+        if (nextIndex >= 0) {
+          applyTheme(nextIndex, false);
+        }
       };
 
       if (typeof prefersDark.addEventListener === "function") {

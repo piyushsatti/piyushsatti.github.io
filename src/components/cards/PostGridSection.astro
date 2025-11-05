@@ -1,0 +1,34 @@
+---
+import PostCard, { type CardEntry, type Props as PostCardProps } from "../PostCard.astro";
+
+export interface Props {
+  title: string;
+  variant: PostCardProps["variant"];
+  entries: CardEntry[];
+  emptyState?: string;
+}
+
+const {
+  title,
+  variant,
+  entries = [],
+  emptyState = "Nothing to show just yet.",
+} = Astro.props as Props;
+
+const visibleEntries = entries.filter(Boolean);
+---
+
+<section class="posts">
+  <h2 class="posts-title">{title}</h2>
+  {
+    visibleEntries.length > 0 ? (
+      <div class="posts-grid">
+        {visibleEntries.map((entry) => (
+          <PostCard entry={entry} variant={variant} />
+        ))}
+      </div>
+    ) : (
+      <p class="posts-empty">{emptyState}</p>
+    )
+  }
+</section>
