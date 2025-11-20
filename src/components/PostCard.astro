@@ -159,7 +159,6 @@ const isExternalPrimary =
           return (
             <span class="post-tag" data-tag={slug}>
               <a href={`${base}tags/${slug}/`}>{tag}</a>
-              {!isLast && <span aria-hidden="true"> · </span>}
             </span>
           );
         })}

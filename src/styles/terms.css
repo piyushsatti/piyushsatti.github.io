@@ -19,6 +19,10 @@
   margin: 0;
 }
 
+.terms__list li:not(:empty)::before {
+  content: none;
+}
+
 .terms__item {
   display: flex;
   flex-direction: column;
