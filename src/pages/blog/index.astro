@@ -17,7 +17,11 @@ const posts = (await getCollection("blog")).sort(
       posts.length === 0 ? (
         <p>No posts yet. Check back soon!</p>
       ) : (
-        posts.map((p) => <PostCard entry={p} variant="blog" />)
+        <div class="posts-grid">
+          {posts.map((p) => (
+            <PostCard entry={p} variant="blog" />
+          ))}
+        </div>
       )
     }
   </div>

@@ -18,7 +18,11 @@ const projects = (await getCollection("projects")).sort((a, b) => {
       projects.length === 0 ? (
         <p>No projects yet.</p>
       ) : (
-        projects.map((entry) => <PostCard entry={entry} variant="projects" />)
+        <div class="posts-grid">
+          {projects.map((entry) => (
+            <PostCard entry={entry} variant="projects" />
+          ))}
+        </div>
       )
     }
   </div>

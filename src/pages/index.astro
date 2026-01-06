@@ -1,21 +1,29 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PostCard from "../components/PostCard.astro";
+import TechStack from "../components/TechStack.astro";
 import { getCollection } from "astro:content";
 
 const base = import.meta.env.BASE_URL.endsWith("/")
   ? import.meta.env.BASE_URL
   : import.meta.env.BASE_URL + "/";
 
-// Blog posts (theme expects 'blog' collection)
-const postsCollection = await getCollection("blog");
-const featuredPostSlugs = ["rest-vs-graphql-hands-on-learning", "craft-heroes"];
-const posts = featuredPostSlugs
-  .map((slug) => postsCollection.find((entry) => entry.slug === slug))
-  .filter((entry) => entry !== undefined);
+// Latest blog posts
+const posts = (await getCollection("blog"))
+  .sort(
+    (a, b) =>
+      new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf()
+  )
+  .slice(0, 2);
 
-// Projects (custom collection)
-const projects = (await getCollection("projects")).slice(0, 2);
+// Latest projects
+const projects = (await getCollection("projects"))
+  .sort((a, b) => {
+    const aDate = new Date(a.data.endDate ?? a.data.startDate).valueOf();
+    const bDate = new Date(b.data.endDate ?? b.data.startDate).valueOf();
+    return bDate - aDate;
+  })
+  .slice(0, 2);
 ---
 
 <BaseLayout title="Home" description="Welcome to my personal website">
@@ -47,23 +55,43 @@ const projects = (await getCollection("projects")).slice(0, 2);
     </div>
 
     <div class="right">
-      <figure class="hero__photo">
-        <img
-          src={`${base}og-images/me.jpeg`}
-          alt="Portrait of Piyush Satti"
-          width="220"
-          height="220"
-          loading="lazy"
-        />
+      <figure
+        class="hero__photo"
+        role="button"
+        tabindex="0"
+        aria-label="Flip portrait"
+      >
+        <div class="hero__photo-card">
+          <div class="hero__photo-face hero__photo--front">
+            <img
+              src={`${base}og-images/me.jpeg`}
+              alt="Portrait of Piyush Satti"
+              width="220"
+              height="220"
+              loading="lazy"
+            />
+          </div>
+          <div class="hero__photo-face hero__photo--back" aria-hidden="true">
+            <img
+              src={`${base}og-images/me.jpeg`}
+              alt=""
+              width="220"
+              height="220"
+              loading="lazy"
+            />
+          </div>
+        </div>
       </figure>
     </div>
   </section>
+
+  <TechStack idPrefix="home" />
 
   <div class="posts">
     <br />
     <h2 class="posts-title">Featured Projects</h2>
     <br />
-    <div>
+    <div class="posts-grid">
       {
         projects.map((project) => (
           <PostCard
@@ -78,7 +106,7 @@ const projects = (await getCollection("projects")).slice(0, 2);
   <div class="posts">
     <h2 class="posts-title">Latest Posts</h2>
     <br />
-    <div>
+    <div class="posts-grid">
       {
         posts.map((post) => (
           <PostCard
@@ -90,3 +118,22 @@ const projects = (await getCollection("projects")).slice(0, 2);
     </div>
   </div>
 </BaseLayout>
+
+<script is:inline>
+  (() => {
+    const figure = document.querySelector(".hero__photo");
+    if (!(figure instanceof HTMLElement)) return;
+
+    const toggle = () => {
+      figure.classList.toggle("is-flipped");
+    };
+
+    figure.addEventListener("click", toggle);
+    figure.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        toggle();
+      }
+    });
+  })();
+</script>

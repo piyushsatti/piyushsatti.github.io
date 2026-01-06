@@ -37,7 +37,7 @@ const entries = bucket.entries;
       <p>No content is currently associated with this tag.</p>
     ) : (
       <section class="term-posts">
-        <div>
+        <div class="posts-grid">
           {entries.map(({ entry, collection }) => (
             <PostCard entry={entry} variant={collection} />
           ))}

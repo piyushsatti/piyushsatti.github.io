@@ -10,6 +10,13 @@ export interface Props {
 }
 
 const { navItems } = Astro.props;
+
+const palettes = [
+  { id: "amber", label: "Amber" },
+  { id: "cobalt", label: "Cobalt" },
+  { id: "mint", label: "Mint" },
+  { id: "rose", label: "Rose" },
+];
 ---
 
 <header class="header">
@@ -20,20 +27,42 @@ const { navItems } = Astro.props;
       </a>
     </div>
     <div class="header__actions">
-      <button
-        class="theme-toggle"
-        type="button"
-        aria-label="Switch to light theme"
-      >
-        <span
-          class="theme-toggle__icon theme-toggle__icon--sun"
-          aria-hidden="true">☀</span
+      <div class="theme-toggle-group">
+        <button
+          class="theme-toggle"
+          type="button"
+          aria-label="Switch to light theme"
         >
-        <span
-          class="theme-toggle__icon theme-toggle__icon--moon"
-          aria-hidden="true">☾</span
+          <span
+            class="theme-toggle__icon theme-toggle__icon--sun"
+            aria-hidden="true">☀</span
+          >
+          <span
+            class="theme-toggle__icon theme-toggle__icon--moon"
+            aria-hidden="true">☾</span
+          >
+        </button>
+        <button
+          class="palette-trigger"
+          type="button"
+          aria-haspopup="true"
+          aria-expanded="false"
+          aria-label="Open palette selector"
         >
-      </button>
+          ...
+        </button>
+        <div class="palette-toggle" role="group" aria-label="Select theme palette">
+          {palettes.map((palette) => (
+            <button
+              type="button"
+              class="palette-swatch"
+              data-palette={palette.id}
+              aria-label={`${palette.label} palette`}
+              aria-pressed="false"
+            />
+          ))}
+        </div>
+      </div>
       <ul class="menu menu--mobile">
         <li class="menu__trigger">Menu ▾</li>
         <li>
@@ -82,9 +111,19 @@ const { navItems } = Astro.props;
     if (!(header instanceof HTMLElement)) return;
 
     const STORAGE_KEY = "terminal-theme-preference";
+    const PALETTE_KEY = "terminal-theme-palette";
     const root = document.documentElement;
     const toggle = header.querySelector(".theme-toggle");
+    const paletteGroup = header.querySelector(".theme-toggle-group");
+    const paletteTrigger = header.querySelector(".palette-trigger");
+    const swatches = Array.from(header.querySelectorAll(".palette-swatch"));
     const prefersDark = window.matchMedia?.("(prefers-color-scheme: dark)");
+
+    const isValidPalette = (value) =>
+      value === "amber" ||
+      value === "cobalt" ||
+      value === "mint" ||
+      value === "rose";
 
     const getStoredTheme = () => {
       try {
@@ -96,11 +135,56 @@ const { navItems } = Astro.props;
       }
     };
 
+    const getStoredPalette = () => {
+      try {
+        const value = localStorage.getItem(PALETTE_KEY);
+        return isValidPalette(value) ? value : null;
+      } catch (error) {
+        console.warn("Unable to read palette from storage", error);
+        return null;
+      }
+    };
+
     const setStoredTheme = (value) => {
       try {
         localStorage.setItem(STORAGE_KEY, value);
       } catch (error) {
         console.warn("Unable to persist theme in storage", error);
+      }
+    };
+
+    const setStoredPalette = (value) => {
+      try {
+        localStorage.setItem(PALETTE_KEY, value);
+      } catch (error) {
+        console.warn("Unable to persist palette in storage", error);
+      }
+    };
+
+    const updatePaletteButtons = (activePalette) => {
+      swatches.forEach((button) => {
+        if (!(button instanceof HTMLElement)) return;
+        const isActive = button.getAttribute("data-palette") === activePalette;
+        button.classList.toggle("is-active", isActive);
+        button.setAttribute("aria-pressed", String(isActive));
+      });
+    };
+
+    const applyPalette = (palette, persist = true) => {
+      const next = isValidPalette(palette) ? palette : "amber";
+      root.setAttribute("data-palette", next);
+      updatePaletteButtons(next);
+      if (persist) {
+        setStoredPalette(next);
+      }
+      return next;
+    };
+
+    const setPaletteOpen = (open) => {
+      if (!(paletteGroup instanceof HTMLElement)) return;
+      paletteGroup.classList.toggle("is-open", open);
+      if (paletteTrigger instanceof HTMLElement) {
+        paletteTrigger.setAttribute("aria-expanded", String(open));
       }
     };
 
@@ -124,12 +208,44 @@ const { navItems } = Astro.props;
       getStoredTheme() ?? (prefersDark?.matches ? "dark" : "light");
 
     applyTheme(initialTheme, false);
+    applyPalette(getStoredPalette() ?? "amber", false);
 
     toggle?.addEventListener("click", () => {
       const current =
         root.getAttribute("data-theme") === "light" ? "light" : "dark";
       const next = current === "dark" ? "light" : "dark";
       applyTheme(next);
+    });
+
+    paletteTrigger?.addEventListener("click", (event) => {
+      event.stopPropagation();
+      const isOpen =
+        paletteGroup instanceof HTMLElement &&
+        paletteGroup.classList.contains("is-open");
+      setPaletteOpen(!isOpen);
+    });
+
+    swatches.forEach((button) => {
+      button.addEventListener("click", () => {
+        const palette = button.getAttribute("data-palette");
+        if (!palette) return;
+        applyPalette(palette);
+        setPaletteOpen(false);
+      });
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!(paletteGroup instanceof HTMLElement)) return;
+      const target = event.target;
+      if (target instanceof Node && !paletteGroup.contains(target)) {
+        setPaletteOpen(false);
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        setPaletteOpen(false);
+      }
     });
 
     if (prefersDark) {

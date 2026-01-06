@@ -1,0 +1,336 @@
+---
+type FocusLevel = "core" | "comfortable" | "exploring";
+type TechType =
+  | "language"
+  | "framework"
+  | "database"
+  | "cloud"
+  | "tooling"
+  | "data"
+  | "pattern";
+type TechStack = "frontend" | "backend" | "data" | "infra" | "general";
+
+interface TechItem {
+  name: string;
+  type: TechType;
+  stack: TechStack;
+  focus: FocusLevel;
+  tags?: string[];
+}
+
+export interface Props {
+  title?: string;
+  subtitle?: string;
+  idPrefix?: string;
+}
+
+const {
+  title = "Technical Skills",
+  subtitle = "Filter by language, stack, and focus area.",
+  idPrefix = "tech",
+} = Astro.props as Props;
+
+const typeLabels: Record<TechType, string> = {
+  language: "Language",
+  framework: "Framework",
+  database: "Database",
+  cloud: "Cloud/Infra",
+  tooling: "Tooling",
+  data: "Data/ML",
+  pattern: "Pattern",
+};
+
+const stackLabels: Record<TechStack, string> = {
+  frontend: "Frontend",
+  backend: "Backend",
+  data: "Data/ML",
+  infra: "Infra",
+  general: "General",
+};
+
+const focusLabels: Record<FocusLevel, string> = {
+  core: "Proficient",
+  comfortable: "Comfortable",
+  exploring: "Learning",
+};
+
+const focusButtonLabels: Record<FocusLevel, string> = {
+  core: "Proficient (P)",
+  comfortable: "Comfortable (C)",
+  exploring: "Learning (L)",
+};
+
+const focusShortLabels: Record<FocusLevel, string> = {
+  core: "P",
+  comfortable: "C",
+  exploring: "L",
+};
+
+const items: TechItem[] = [
+  { name: "Python", type: "language", stack: "backend", focus: "core" },
+  { name: "Java", type: "language", stack: "backend", focus: "core" },
+  { name: "TypeScript", type: "language", stack: "frontend", focus: "core" },
+  { name: "JavaScript", type: "language", stack: "frontend", focus: "comfortable" },
+  { name: "SQL", type: "language", stack: "data", focus: "core" },
+  { name: "C/C++", type: "language", stack: "general", focus: "exploring" },
+  { name: "Bash", type: "language", stack: "infra", focus: "comfortable" },
+  { name: "MATLAB", type: "language", stack: "data", focus: "exploring" },
+  { name: "Astro", type: "framework", stack: "frontend", focus: "core" },
+  { name: "Next.js", type: "framework", stack: "frontend", focus: "comfortable" },
+  { name: "Tailwind CSS", type: "framework", stack: "frontend", focus: "core" },
+  { name: "FastAPI", type: "framework", stack: "backend", focus: "core" },
+  { name: "Flask", type: "framework", stack: "backend", focus: "comfortable" },
+  { name: "Spring Boot", type: "framework", stack: "backend", focus: "core" },
+  { name: "Express.js", type: "framework", stack: "backend", focus: "comfortable" },
+  { name: "Node.js", type: "framework", stack: "backend", focus: "comfortable" },
+  { name: "PostgreSQL", type: "database", stack: "data", focus: "core" },
+  { name: "MongoDB", type: "database", stack: "data", focus: "comfortable" },
+  { name: "Redis", type: "database", stack: "data", focus: "comfortable" },
+  { name: "Apache Spark", type: "data", stack: "data", focus: "comfortable" },
+  { name: "NumPy", type: "data", stack: "data", focus: "core" },
+  { name: "Pandas", type: "data", stack: "data", focus: "core" },
+  { name: "PyTorch", type: "data", stack: "data", focus: "comfortable" },
+  { name: "Scikit-learn", type: "data", stack: "data", focus: "comfortable" },
+  { name: "Docker", type: "cloud", stack: "infra", focus: "core" },
+  { name: "GitHub Actions", type: "tooling", stack: "infra", focus: "comfortable" },
+  { name: "Git/GitHub", type: "tooling", stack: "general", focus: "core" },
+  { name: "DigitalOcean", type: "cloud", stack: "infra", focus: "comfortable" },
+  { name: "Vercel", type: "cloud", stack: "frontend", focus: "comfortable" },
+  { name: "Supabase", type: "cloud", stack: "data", focus: "comfortable" },
+  { name: "Nginx", type: "tooling", stack: "infra", focus: "comfortable" },
+  { name: "Kafka", type: "data", stack: "backend", focus: "comfortable" },
+  { name: "Elasticsearch", type: "database", stack: "data", focus: "exploring" },
+  { name: "Serverless", type: "pattern", stack: "infra", focus: "comfortable" },
+  { name: "Microservices", type: "pattern", stack: "backend", focus: "comfortable" },
+  { name: "Monolithic", type: "pattern", stack: "backend", focus: "comfortable" },
+];
+
+const searchId = `${idPrefix}-tech-search`;
+const titleId = `${idPrefix}-tech-title`;
+---
+
+<section class="tech-section" data-tech-section>
+  <header class="tech-section__header">
+    <div class="tech-section__intro">
+      <h2 id={titleId}>{title}</h2>
+      <p class="tech-section__subtitle">{subtitle}</p>
+    </div>
+    <div class="tech-section__count" aria-live="polite">
+      <span data-tech-count>0</span> shown
+    </div>
+  </header>
+
+  <div class="tech-filters">
+    <div
+      class="tech-filters__group"
+      data-filter-group="type"
+      role="group"
+      aria-label="Filter by type"
+    >
+      <span class="tech-filters__label">Type</span>
+      <button type="button" class="chip is-active" data-filter="all" aria-pressed="true">
+        All
+      </button>
+      <button type="button" class="chip" data-filter="language" aria-pressed="false">
+        Languages
+      </button>
+      <button type="button" class="chip" data-filter="framework" aria-pressed="false">
+        Frameworks
+      </button>
+      <button type="button" class="chip" data-filter="database" aria-pressed="false">
+        Databases
+      </button>
+      <button type="button" class="chip" data-filter="cloud" aria-pressed="false">
+        Cloud/Infra
+      </button>
+      <button type="button" class="chip" data-filter="tooling" aria-pressed="false">
+        Tooling
+      </button>
+      <button type="button" class="chip" data-filter="data" aria-pressed="false">
+        Data/ML
+      </button>
+      <button type="button" class="chip" data-filter="pattern" aria-pressed="false">
+        Patterns
+      </button>
+    </div>
+
+    <div
+      class="tech-filters__group"
+      data-filter-group="stack"
+      role="group"
+      aria-label="Filter by stack"
+    >
+      <span class="tech-filters__label">Stack</span>
+      <button type="button" class="chip is-active" data-filter="all" aria-pressed="true">
+        All
+      </button>
+      <button type="button" class="chip" data-filter="frontend" aria-pressed="false">
+        Frontend
+      </button>
+      <button type="button" class="chip" data-filter="backend" aria-pressed="false">
+        Backend
+      </button>
+      <button type="button" class="chip" data-filter="data" aria-pressed="false">
+        Data/ML
+      </button>
+      <button type="button" class="chip" data-filter="infra" aria-pressed="false">
+        Infra
+      </button>
+      <button type="button" class="chip" data-filter="general" aria-pressed="false">
+        General
+      </button>
+    </div>
+
+    <div
+      class="tech-filters__group tech-filters__group--focus"
+      data-filter-group="focus"
+      role="group"
+      aria-label="Filter by focus"
+    >
+      <span class="tech-filters__label">Focus</span>
+      <button type="button" class="chip is-active" data-filter="all" aria-pressed="true">
+        All
+      </button>
+      <button type="button" class="chip" data-filter="core" aria-pressed="false">
+        {focusButtonLabels.core}
+      </button>
+      <button type="button" class="chip" data-filter="comfortable" aria-pressed="false">
+        {focusButtonLabels.comfortable}
+      </button>
+      <button type="button" class="chip" data-filter="exploring" aria-pressed="false">
+        {focusButtonLabels.exploring}
+      </button>
+    </div>
+
+    <div class="tech-filters__group tech-filters__group--search">
+      <label class="tech-filters__label" for={searchId}>Search</label>
+      <input
+        id={searchId}
+        class="tech-search"
+        type="search"
+        placeholder="Search tech..."
+        data-tech-search
+      />
+    </div>
+  </div>
+
+  <div class="tech-grid" data-tech-grid aria-labelledby={titleId}>
+    {items.map((item) => {
+      const typeLabel = typeLabels[item.type];
+      const stackLabel = stackLabels[item.stack];
+      const focusLabel = focusLabels[item.focus];
+      const focusShortLabel = focusShortLabels[item.focus];
+      const searchTokens = [
+        item.name,
+        typeLabel,
+        stackLabel,
+        focusLabel,
+        focusShortLabel,
+        ...(item.tags ?? []),
+      ]
+        .join(" ")
+        .toLowerCase();
+      return (
+        <article
+          class="tech-card"
+          data-tech-item
+          data-type={item.type}
+          data-stack={item.stack}
+          data-focus={item.focus}
+          data-search={searchTokens}
+        >
+          <div class="tech-card__header">
+            <h3>{item.name}</h3>
+            <span
+              class="tech-card__focus"
+              title={focusLabel}
+              aria-label={focusLabel}
+            >
+              {focusShortLabel}
+            </span>
+          </div>
+          <div class="tech-card__meta">
+            <span class="tech-badge">{typeLabel}</span>
+            <span class="tech-badge">{stackLabel}</span>
+          </div>
+        </article>
+      );
+    })}
+  </div>
+
+  <p class="tech-empty" data-tech-empty hidden>No matches. Try adjusting filters.</p>
+</section>
+
+<script is:inline>
+  (() => {
+    const section = document.currentScript?.previousElementSibling;
+    if (!(section instanceof HTMLElement)) return;
+
+    const cards = Array.from(section.querySelectorAll("[data-tech-item]"));
+    const countEl = section.querySelector("[data-tech-count]");
+    const emptyEl = section.querySelector("[data-tech-empty]");
+    const searchInput = section.querySelector("[data-tech-search]");
+    const groups = Array.from(section.querySelectorAll("[data-filter-group]"));
+
+    const state = {
+      type: "all",
+      stack: "all",
+      focus: "all",
+      query: "",
+    };
+
+    const applyFilters = () => {
+      let visible = 0;
+      const query = state.query.trim().toLowerCase();
+
+      cards.forEach((card) => {
+        const type = card.getAttribute("data-type") || "";
+        const stack = card.getAttribute("data-stack") || "";
+        const focus = card.getAttribute("data-focus") || "";
+        const haystack = (card.getAttribute("data-search") || "").toLowerCase();
+
+        let match = true;
+        if (state.type !== "all" && state.type !== type) match = false;
+        if (state.stack !== "all" && state.stack !== stack) match = false;
+        if (state.focus !== "all" && state.focus !== focus) match = false;
+        if (query && !haystack.includes(query)) match = false;
+
+        card.hidden = !match;
+        if (match) visible += 1;
+      });
+
+      if (countEl) countEl.textContent = String(visible);
+      if (emptyEl) emptyEl.hidden = visible !== 0;
+    };
+
+    groups.forEach((group) => {
+      const groupKey = group.getAttribute("data-filter-group");
+      if (!groupKey) return;
+      const buttons = Array.from(group.querySelectorAll("button[data-filter]"));
+
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const value = button.getAttribute("data-filter") || "all";
+          state[groupKey] = value;
+
+          buttons.forEach((btn) => {
+            const isActive = btn === button;
+            btn.classList.toggle("is-active", isActive);
+            btn.setAttribute("aria-pressed", String(isActive));
+          });
+
+          applyFilters();
+        });
+      });
+    });
+
+    if (searchInput instanceof HTMLInputElement) {
+      searchInput.addEventListener("input", () => {
+        state.query = searchInput.value;
+        applyFilters();
+      });
+    }
+
+    applyFilters();
+  })();
+</script>

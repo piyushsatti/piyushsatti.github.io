@@ -17,9 +17,11 @@ const researchEntries = (await getCollection("research")).sort(
       researchEntries.length === 0 ? (
         <p>No research posts yet.</p>
       ) : (
-        researchEntries.map((entry) => (
-          <PostCard entry={entry} variant="research" />
-        ))
+        <div class="posts-grid">
+          {researchEntries.map((entry) => (
+            <PostCard entry={entry} variant="research" />
+          ))}
+        </div>
       )
     }
   </div>
