@@ -33,6 +33,35 @@
   --diff-added-soft: color-mix(in srgb, var(--diff-added) 16%, transparent);
   --diff-removed: #ff6666;
   --diff-removed-soft: color-mix(in srgb, var(--diff-removed) 16%, transparent);
+  --glow-strong: color-mix(in srgb, var(--color-accent) 55%, transparent);
+  --glow-soft: color-mix(in srgb, var(--color-accent) 25%, transparent);
+  --background-gradient:
+    radial-gradient(
+      1200px 800px at 85% -10%,
+      color-mix(in srgb, var(--color-accent) 22%, transparent),
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 700px at -10% 20%,
+      color-mix(in srgb, var(--color-accent-soft) 16%, transparent),
+      transparent 55%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-bg) 90%, #000) 0%,
+      var(--color-bg) 100%
+    );
+  --background-texture:
+    repeating-linear-gradient(
+      0deg,
+      color-mix(in srgb, var(--color-text) 4%, transparent) 0 1px,
+      transparent 1px 3px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--color-text) 4%, transparent) 0 1px,
+      transparent 1px 3px
+    );
 }
 
 [data-theme="light"] {
@@ -68,4 +97,33 @@
   --diff-added-soft: color-mix(in srgb, var(--diff-added) 18%, transparent);
   --diff-removed: #b91c1c;
   --diff-removed-soft: color-mix(in srgb, var(--diff-removed) 18%, transparent);
+  --glow-strong: color-mix(in srgb, var(--color-accent) 45%, transparent);
+  --glow-soft: color-mix(in srgb, var(--color-accent) 20%, transparent);
+  --background-gradient:
+    radial-gradient(
+      1000px 700px at 80% -10%,
+      color-mix(in srgb, var(--color-accent) 18%, transparent),
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 600px at -10% 20%,
+      color-mix(in srgb, var(--color-accent-soft) 20%, transparent),
+      transparent 55%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-bg) 98%, #fff) 0%,
+      var(--color-bg) 100%
+    );
+  --background-texture:
+    repeating-linear-gradient(
+      0deg,
+      color-mix(in srgb, var(--color-border) 30%, transparent) 0 1px,
+      transparent 1px 3px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--color-border) 30%, transparent) 0 1px,
+      transparent 1px 3px
+    );
 }
