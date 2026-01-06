@@ -63,7 +63,7 @@ const projects = (await getCollection("projects")).slice(0, 2);
     <br />
     <h2 class="posts-title">Featured Projects</h2>
     <br />
-    <div class="posts-grid">
+    <div>
       {
         projects.map((project) => (
           <PostCard
@@ -78,7 +78,7 @@ const projects = (await getCollection("projects")).slice(0, 2);
   <div class="posts">
     <h2 class="posts-title">Latest Posts</h2>
     <br />
-    <div class="posts-grid">
+    <div>
       {
         posts.map((post) => (
           <PostCard

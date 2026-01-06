@@ -91,7 +91,7 @@ const tldr = data.tldr ?? [];
               href={`${base}projects/${prevEntry.slug}/`}
               class="button inline prev"
             >
-              &lt; [<span class="button__text">{prevEntry.data.title}</span>]
+              &lt; [<span>{prevEntry.data.title}</span>]
             </a>
             {prevEntry && nextEntry && <span>::</span>}
           </>
@@ -103,7 +103,7 @@ const tldr = data.tldr ?? [];
             href={`${base}projects/${nextEntry.slug}/`}
             class="button inline next"
           >
-            [<span class="button__text">{nextEntry.data.title}</span>] &gt;
+            [<span>{nextEntry.data.title}</span>] &gt;
           </a>
         )
       }
