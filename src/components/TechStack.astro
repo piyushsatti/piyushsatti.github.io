@@ -9,12 +9,23 @@ type TechType =
   | "data"
   | "pattern";
 type TechStack = "frontend" | "backend" | "data" | "infra" | "general";
+type LanguageId =
+  | "python"
+  | "java"
+  | "javascript"
+  | "typescript"
+  | "sql"
+  | "cpp"
+  | "bash"
+  | "matlab"
+  | "css";
 
 interface TechItem {
   name: string;
   type: TechType;
   stack: TechStack;
   focus: FocusLevel;
+  languages?: LanguageId[];
   tags?: string[];
 }
 
@@ -66,31 +77,55 @@ const focusShortLabels: Record<FocusLevel, string> = {
   exploring: "L",
 };
 
+const languageLabels: Record<LanguageId, string> = {
+  python: "Python",
+  java: "Java",
+  javascript: "JavaScript",
+  typescript: "TypeScript",
+  sql: "SQL",
+  cpp: "C/C++",
+  bash: "Bash",
+  matlab: "MATLAB",
+  css: "CSS",
+};
+
+const languageOptions: LanguageId[] = [
+  "python",
+  "java",
+  "javascript",
+  "typescript",
+  "sql",
+  "cpp",
+  "bash",
+  "matlab",
+  "css",
+];
+
 const items: TechItem[] = [
-  { name: "Python", type: "language", stack: "backend", focus: "core" },
-  { name: "Java", type: "language", stack: "backend", focus: "core" },
-  { name: "TypeScript", type: "language", stack: "frontend", focus: "core" },
-  { name: "JavaScript", type: "language", stack: "frontend", focus: "comfortable" },
-  { name: "SQL", type: "language", stack: "data", focus: "core" },
-  { name: "C/C++", type: "language", stack: "general", focus: "exploring" },
-  { name: "Bash", type: "language", stack: "infra", focus: "comfortable" },
-  { name: "MATLAB", type: "language", stack: "data", focus: "exploring" },
-  { name: "Astro", type: "framework", stack: "frontend", focus: "core" },
-  { name: "Next.js", type: "framework", stack: "frontend", focus: "comfortable" },
-  { name: "Tailwind CSS", type: "framework", stack: "frontend", focus: "core" },
-  { name: "FastAPI", type: "framework", stack: "backend", focus: "core" },
-  { name: "Flask", type: "framework", stack: "backend", focus: "comfortable" },
-  { name: "Spring Boot", type: "framework", stack: "backend", focus: "core" },
-  { name: "Express.js", type: "framework", stack: "backend", focus: "comfortable" },
-  { name: "Node.js", type: "framework", stack: "backend", focus: "comfortable" },
-  { name: "PostgreSQL", type: "database", stack: "data", focus: "core" },
+  { name: "Python", type: "language", stack: "backend", focus: "core", languages: ["python"] },
+  { name: "Java", type: "language", stack: "backend", focus: "core", languages: ["java"] },
+  { name: "TypeScript", type: "language", stack: "frontend", focus: "core", languages: ["typescript"] },
+  { name: "JavaScript", type: "language", stack: "frontend", focus: "comfortable", languages: ["javascript"] },
+  { name: "SQL", type: "language", stack: "data", focus: "core", languages: ["sql"] },
+  { name: "C/C++", type: "language", stack: "general", focus: "exploring", languages: ["cpp"] },
+  { name: "Bash", type: "language", stack: "infra", focus: "comfortable", languages: ["bash"] },
+  { name: "MATLAB", type: "language", stack: "data", focus: "exploring", languages: ["matlab"] },
+  { name: "Astro", type: "framework", stack: "frontend", focus: "core", languages: ["javascript", "typescript"] },
+  { name: "Next.js", type: "framework", stack: "frontend", focus: "comfortable", languages: ["javascript", "typescript"] },
+  { name: "Tailwind CSS", type: "framework", stack: "frontend", focus: "core", languages: ["css"] },
+  { name: "FastAPI", type: "framework", stack: "backend", focus: "core", languages: ["python"] },
+  { name: "Flask", type: "framework", stack: "backend", focus: "comfortable", languages: ["python"] },
+  { name: "Spring Boot", type: "framework", stack: "backend", focus: "core", languages: ["java"] },
+  { name: "Express.js", type: "framework", stack: "backend", focus: "comfortable", languages: ["javascript"] },
+  { name: "Node.js", type: "framework", stack: "backend", focus: "comfortable", languages: ["javascript"] },
+  { name: "PostgreSQL", type: "database", stack: "data", focus: "core", languages: ["sql"] },
   { name: "MongoDB", type: "database", stack: "data", focus: "comfortable" },
   { name: "Redis", type: "database", stack: "data", focus: "comfortable" },
-  { name: "Apache Spark", type: "data", stack: "data", focus: "comfortable" },
-  { name: "NumPy", type: "data", stack: "data", focus: "core" },
-  { name: "Pandas", type: "data", stack: "data", focus: "core" },
-  { name: "PyTorch", type: "data", stack: "data", focus: "comfortable" },
-  { name: "Scikit-learn", type: "data", stack: "data", focus: "comfortable" },
+  { name: "Apache Spark", type: "data", stack: "data", focus: "comfortable", languages: ["python"] },
+  { name: "NumPy", type: "data", stack: "data", focus: "core", languages: ["python"] },
+  { name: "Pandas", type: "data", stack: "data", focus: "core", languages: ["python"] },
+  { name: "PyTorch", type: "data", stack: "data", focus: "comfortable", languages: ["python"] },
+  { name: "Scikit-learn", type: "data", stack: "data", focus: "comfortable", languages: ["python"] },
   { name: "Docker", type: "cloud", stack: "infra", focus: "core" },
   { name: "GitHub Actions", type: "tooling", stack: "infra", focus: "comfortable" },
   { name: "Git/GitHub", type: "tooling", stack: "general", focus: "core" },
@@ -152,6 +187,23 @@ const titleId = `${idPrefix}-tech-title`;
       <button type="button" class="chip" data-filter="pattern" aria-pressed="false">
         Patterns
       </button>
+    </div>
+
+    <div
+      class="tech-filters__group tech-filters__group--language"
+      data-filter-group="language"
+      role="group"
+      aria-label="Filter by language"
+    >
+      <span class="tech-filters__label">Language</span>
+      <button type="button" class="chip is-active" data-filter="all" aria-pressed="true">
+        All
+      </button>
+      {languageOptions.map((lang) => (
+        <button type="button" class="chip" data-filter={lang} aria-pressed="false">
+          {languageLabels[lang]}
+        </button>
+      ))}
     </div>
 
     <div
@@ -220,12 +272,17 @@ const titleId = `${idPrefix}-tech-title`;
       const stackLabel = stackLabels[item.stack];
       const focusLabel = focusLabels[item.focus];
       const focusShortLabel = focusShortLabels[item.focus];
+      const languageTokens = (item.languages ?? []).map(
+        (lang) => languageLabels[lang] ?? lang
+      );
       const searchTokens = [
         item.name,
         typeLabel,
         stackLabel,
         focusLabel,
         focusShortLabel,
+        ...languageTokens,
+        ...(item.languages ?? []),
         ...(item.tags ?? []),
       ]
         .join(" ")
@@ -237,6 +294,7 @@ const titleId = `${idPrefix}-tech-title`;
           data-type={item.type}
           data-stack={item.stack}
           data-focus={item.focus}
+          data-languages={(item.languages ?? []).join(" ")}
           data-search={searchTokens}
         >
           <div class="tech-card__header">
@@ -275,6 +333,7 @@ const titleId = `${idPrefix}-tech-title`;
     const state = {
       type: "all",
       stack: "all",
+      language: "all",
       focus: "all",
       query: "",
     };
@@ -287,11 +346,17 @@ const titleId = `${idPrefix}-tech-title`;
         const type = card.getAttribute("data-type") || "";
         const stack = card.getAttribute("data-stack") || "";
         const focus = card.getAttribute("data-focus") || "";
+        const languages = (card.getAttribute("data-languages") || "")
+          .split(" ")
+          .filter(Boolean);
         const haystack = (card.getAttribute("data-search") || "").toLowerCase();
 
         let match = true;
         if (state.type !== "all" && state.type !== type) match = false;
         if (state.stack !== "all" && state.stack !== stack) match = false;
+        if (state.language !== "all" && !languages.includes(state.language)) {
+          match = false;
+        }
         if (state.focus !== "all" && state.focus !== focus) match = false;
         if (query && !haystack.includes(query)) match = false;
 
