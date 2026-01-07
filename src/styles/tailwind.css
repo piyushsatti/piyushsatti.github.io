@@ -590,11 +590,11 @@
   .page h1,
   article h1 {
     position: relative;
-    color: var(--accent);
+    color: var(--foreground);
     margin-top: 0 !important;
     margin-bottom: 15px !important;
     padding-bottom: 15px;
-    border-bottom: 3px dotted var(--accent);
+    border-bottom: 3px dotted color-mix(in srgb, var(--border-color) 70%, transparent);
   }
 
   .page h1::after,
@@ -604,7 +604,7 @@
     bottom: 2px;
     display: block;
     width: 100%;
-    border-bottom: 3px dotted var(--accent);
+    border-bottom: 3px dotted color-mix(in srgb, var(--border-color) 70%, transparent);
   }
 
   ul {
@@ -1988,20 +1988,22 @@
 
   .posts-title {
     position: relative;
-    color: var(--accent);
+    color: var(--foreground);
     margin-top: 0 !important;
     margin-bottom: 0 !important;
+    padding-top: 6px;
     padding-bottom: 15px;
-    border-bottom: 3px dotted var(--accent);
+    --title-underline: color-mix(in srgb, var(--border-color) 70%, transparent);
+    border-bottom: 3px dotted var(--title-underline);
   }
 
   .posts-title::after {
     content: "";
     position: absolute;
-    bottom: 2px;
+    bottom: 6px;
     display: block;
     width: 100%;
-    border-bottom: 3px dotted var(--accent);
+    border-bottom: 3px dotted var(--title-underline);
   }
 
   .footnotes {

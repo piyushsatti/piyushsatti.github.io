@@ -3,12 +3,12 @@
   color-scheme: dark;
 
   /* Core palette based on Terminal CSS dark theme */
-  --color-bg: #1a170f;
-  --color-surface: #221d14;
-  --color-surface-elevated: #2b2418;
-  --color-text: #eceae5;
-  --color-text-muted: #c7c2b7;
-  --color-border: #3b3221;
+  --color-bg: #211d15;
+  --color-surface: #292318;
+  --color-surface-elevated: #322a1e;
+  --color-text: #e3ddd2;
+  --color-text-muted: #bcb5a7;
+  --color-border: #463b29;
   --color-border-strong: color-mix(in srgb, var(--color-accent) 35%, transparent);
   --palette-accent: #eec35e;
   --palette-accent-soft: #f4d677;
@@ -35,8 +35,8 @@
   --diff-added-soft: color-mix(in srgb, var(--diff-added) 16%, transparent);
   --diff-removed: #ff6666;
   --diff-removed-soft: color-mix(in srgb, var(--diff-removed) 16%, transparent);
-  --glow-strong: color-mix(in srgb, var(--color-accent) 55%, transparent);
-  --glow-soft: color-mix(in srgb, var(--color-accent) 25%, transparent);
+  --glow-strong: color-mix(in srgb, var(--color-accent) 45%, transparent);
+  --glow-soft: color-mix(in srgb, var(--color-accent) 18%, transparent);
   --background-gradient:
     radial-gradient(
       1200px 800px at 85% -10%,
@@ -146,6 +146,26 @@
 [data-palette="mint"] {
   --palette-accent: #67e8c2;
   --palette-accent-soft: #9af0d3;
+}
+
+[data-theme="light"][data-palette="amber"] {
+  --palette-accent: #b45309;
+  --palette-accent-soft: #e69a2d;
+}
+
+[data-theme="light"][data-palette="mint"] {
+  --palette-accent: #0f766e;
+  --palette-accent-soft: #2fb7a0;
+}
+
+[data-theme="light"][data-palette="cobalt"] {
+  --palette-accent: #1d4ed8;
+  --palette-accent-soft: #60a5fa;
+}
+
+[data-theme="light"][data-palette="rose"] {
+  --palette-accent: #b91c1c;
+  --palette-accent-soft: #f87171;
 }
 
 [data-palette="rose"] {
