@@ -1,13 +1,4 @@
 ---
-type FocusLevel = "core" | "comfortable" | "exploring";
-type TechType =
-  | "language"
-  | "framework"
-  | "database"
-  | "cloud"
-  | "tooling"
-  | "data"
-  | "pattern";
 type TechStack = "frontend" | "backend" | "data" | "infra" | "general";
 type LanguageId =
   | "python"
@@ -22,9 +13,7 @@ type LanguageId =
 
 interface TechItem {
   name: string;
-  type: TechType;
   stack: TechStack;
-  focus: FocusLevel;
   languages?: LanguageId[];
   tags?: string[];
 }
@@ -41,40 +30,12 @@ const {
   idPrefix = "tech",
 } = Astro.props as Props;
 
-const typeLabels: Record<TechType, string> = {
-  language: "Language",
-  framework: "Framework",
-  database: "Database",
-  cloud: "Cloud/Infra",
-  tooling: "Tooling",
-  data: "Data/ML",
-  pattern: "Pattern",
-};
-
 const stackLabels: Record<TechStack, string> = {
   frontend: "Frontend",
   backend: "Backend",
   data: "Data/ML",
   infra: "Infra",
   general: "General",
-};
-
-const focusLabels: Record<FocusLevel, string> = {
-  core: "Proficient",
-  comfortable: "Comfortable",
-  exploring: "Learning",
-};
-
-const focusButtonLabels: Record<FocusLevel, string> = {
-  core: "Proficient (P)",
-  comfortable: "Comfortable (C)",
-  exploring: "Learning (L)",
-};
-
-const focusShortLabels: Record<FocusLevel, string> = {
-  core: "P",
-  comfortable: "C",
-  exploring: "L",
 };
 
 const languageLabels: Record<LanguageId, string> = {
@@ -102,42 +63,42 @@ const languageOptions: LanguageId[] = [
 ];
 
 const items: TechItem[] = [
-  { name: "Python", type: "language", stack: "backend", focus: "core", languages: ["python"] },
-  { name: "Java", type: "language", stack: "backend", focus: "core", languages: ["java"] },
-  { name: "TypeScript", type: "language", stack: "frontend", focus: "core", languages: ["typescript"] },
-  { name: "JavaScript", type: "language", stack: "frontend", focus: "comfortable", languages: ["javascript"] },
-  { name: "SQL", type: "language", stack: "data", focus: "core", languages: ["sql"] },
-  { name: "C/C++", type: "language", stack: "general", focus: "exploring", languages: ["cpp"] },
-  { name: "Bash", type: "language", stack: "infra", focus: "comfortable", languages: ["bash"] },
-  { name: "MATLAB", type: "language", stack: "data", focus: "exploring", languages: ["matlab"] },
-  { name: "Astro", type: "framework", stack: "frontend", focus: "core", languages: ["javascript", "typescript"] },
-  { name: "Next.js", type: "framework", stack: "frontend", focus: "comfortable", languages: ["javascript", "typescript"] },
-  { name: "Tailwind CSS", type: "framework", stack: "frontend", focus: "core", languages: ["css"] },
-  { name: "FastAPI", type: "framework", stack: "backend", focus: "core", languages: ["python"] },
-  { name: "Flask", type: "framework", stack: "backend", focus: "comfortable", languages: ["python"] },
-  { name: "Spring Boot", type: "framework", stack: "backend", focus: "core", languages: ["java"] },
-  { name: "Express.js", type: "framework", stack: "backend", focus: "comfortable", languages: ["javascript"] },
-  { name: "Node.js", type: "framework", stack: "backend", focus: "comfortable", languages: ["javascript"] },
-  { name: "PostgreSQL", type: "database", stack: "data", focus: "core", languages: ["sql"] },
-  { name: "MongoDB", type: "database", stack: "data", focus: "comfortable" },
-  { name: "Redis", type: "database", stack: "data", focus: "comfortable" },
-  { name: "Apache Spark", type: "data", stack: "data", focus: "comfortable", languages: ["python"] },
-  { name: "NumPy", type: "data", stack: "data", focus: "core", languages: ["python"] },
-  { name: "Pandas", type: "data", stack: "data", focus: "core", languages: ["python"] },
-  { name: "PyTorch", type: "data", stack: "data", focus: "comfortable", languages: ["python"] },
-  { name: "Scikit-learn", type: "data", stack: "data", focus: "comfortable", languages: ["python"] },
-  { name: "Docker", type: "cloud", stack: "infra", focus: "core" },
-  { name: "GitHub Actions", type: "tooling", stack: "infra", focus: "comfortable" },
-  { name: "Git/GitHub", type: "tooling", stack: "general", focus: "core" },
-  { name: "DigitalOcean", type: "cloud", stack: "infra", focus: "comfortable" },
-  { name: "Vercel", type: "cloud", stack: "frontend", focus: "comfortable" },
-  { name: "Supabase", type: "cloud", stack: "data", focus: "comfortable" },
-  { name: "Nginx", type: "tooling", stack: "infra", focus: "comfortable" },
-  { name: "Kafka", type: "data", stack: "backend", focus: "comfortable" },
-  { name: "Elasticsearch", type: "database", stack: "data", focus: "exploring" },
-  { name: "Serverless", type: "pattern", stack: "infra", focus: "comfortable" },
-  { name: "Microservices", type: "pattern", stack: "backend", focus: "comfortable" },
-  { name: "Monolithic", type: "pattern", stack: "backend", focus: "comfortable" },
+  { name: "Python", stack: "backend", languages: ["python"] },
+  { name: "Java", stack: "backend", languages: ["java"] },
+  { name: "TypeScript", stack: "frontend", languages: ["typescript"] },
+  { name: "JavaScript", stack: "frontend", languages: ["javascript"] },
+  { name: "SQL", stack: "data", languages: ["sql"] },
+  { name: "C/C++", stack: "general", languages: ["cpp"] },
+  { name: "Bash", stack: "infra", languages: ["bash"] },
+  { name: "MATLAB", stack: "data", languages: ["matlab"] },
+  { name: "Astro", stack: "frontend", languages: ["javascript", "typescript"] },
+  { name: "Next.js", stack: "frontend", languages: ["javascript", "typescript"] },
+  { name: "Tailwind CSS", stack: "frontend", languages: ["css"] },
+  { name: "FastAPI", stack: "backend", languages: ["python"] },
+  { name: "Flask", stack: "backend", languages: ["python"] },
+  { name: "Spring Boot", stack: "backend", languages: ["java"] },
+  { name: "Express.js", stack: "backend", languages: ["javascript"] },
+  { name: "Node.js", stack: "backend", languages: ["javascript"] },
+  { name: "PostgreSQL", stack: "data", languages: ["sql"] },
+  { name: "MongoDB", stack: "data" },
+  { name: "Redis", stack: "data" },
+  { name: "Apache Spark", stack: "data", languages: ["python"] },
+  { name: "NumPy", stack: "data", languages: ["python"] },
+  { name: "Pandas", stack: "data", languages: ["python"] },
+  { name: "PyTorch", stack: "data", languages: ["python"] },
+  { name: "Scikit-learn", stack: "data", languages: ["python"] },
+  { name: "Docker", stack: "infra" },
+  { name: "GitHub Actions", stack: "infra" },
+  { name: "Git/GitHub", stack: "general" },
+  { name: "DigitalOcean", stack: "infra" },
+  { name: "Vercel", stack: "frontend" },
+  { name: "Supabase", stack: "data" },
+  { name: "Nginx", stack: "infra" },
+  { name: "Kafka", stack: "backend" },
+  { name: "Elasticsearch", stack: "data" },
+  { name: "Serverless", stack: "infra" },
+  { name: "Microservices", stack: "backend" },
+  { name: "Monolithic", stack: "backend" },
 ];
 
 const searchId = `${idPrefix}-tech-search`;
@@ -156,39 +117,6 @@ const titleId = `${idPrefix}-tech-title`;
   </header>
 
   <div class="tech-filters">
-    <div
-      class="tech-filters__group"
-      data-filter-group="type"
-      role="group"
-      aria-label="Filter by type"
-    >
-      <span class="tech-filters__label">Type</span>
-      <button type="button" class="chip is-active" data-filter="all" aria-pressed="true">
-        All
-      </button>
-      <button type="button" class="chip" data-filter="language" aria-pressed="false">
-        Languages
-      </button>
-      <button type="button" class="chip" data-filter="framework" aria-pressed="false">
-        Frameworks
-      </button>
-      <button type="button" class="chip" data-filter="database" aria-pressed="false">
-        Databases
-      </button>
-      <button type="button" class="chip" data-filter="cloud" aria-pressed="false">
-        Cloud/Infra
-      </button>
-      <button type="button" class="chip" data-filter="tooling" aria-pressed="false">
-        Tooling
-      </button>
-      <button type="button" class="chip" data-filter="data" aria-pressed="false">
-        Data/ML
-      </button>
-      <button type="button" class="chip" data-filter="pattern" aria-pressed="false">
-        Patterns
-      </button>
-    </div>
-
     <div
       class="tech-filters__group tech-filters__group--language"
       data-filter-group="language"
@@ -233,27 +161,6 @@ const titleId = `${idPrefix}-tech-title`;
       </button>
     </div>
 
-    <div
-      class="tech-filters__group tech-filters__group--focus"
-      data-filter-group="focus"
-      role="group"
-      aria-label="Filter by focus"
-    >
-      <span class="tech-filters__label">Focus</span>
-      <button type="button" class="chip is-active" data-filter="all" aria-pressed="true">
-        All
-      </button>
-      <button type="button" class="chip" data-filter="core" aria-pressed="false">
-        {focusButtonLabels.core}
-      </button>
-      <button type="button" class="chip" data-filter="comfortable" aria-pressed="false">
-        {focusButtonLabels.comfortable}
-      </button>
-      <button type="button" class="chip" data-filter="exploring" aria-pressed="false">
-        {focusButtonLabels.exploring}
-      </button>
-    </div>
-
     <div class="tech-filters__group tech-filters__group--search">
       <label class="tech-filters__label" for={searchId}>Search</label>
       <input
@@ -268,19 +175,13 @@ const titleId = `${idPrefix}-tech-title`;
 
   <div class="tech-grid" data-tech-grid aria-labelledby={titleId}>
     {items.map((item) => {
-      const typeLabel = typeLabels[item.type];
       const stackLabel = stackLabels[item.stack];
-      const focusLabel = focusLabels[item.focus];
-      const focusShortLabel = focusShortLabels[item.focus];
       const languageTokens = (item.languages ?? []).map(
         (lang) => languageLabels[lang] ?? lang
       );
       const searchTokens = [
         item.name,
-        typeLabel,
         stackLabel,
-        focusLabel,
-        focusShortLabel,
         ...languageTokens,
         ...(item.languages ?? []),
         ...(item.tags ?? []),
@@ -291,24 +192,14 @@ const titleId = `${idPrefix}-tech-title`;
         <article
           class="tech-card"
           data-tech-item
-          data-type={item.type}
           data-stack={item.stack}
-          data-focus={item.focus}
           data-languages={(item.languages ?? []).join(" ")}
           data-search={searchTokens}
         >
           <div class="tech-card__header">
             <h3>{item.name}</h3>
-            <span
-              class="tech-card__focus"
-              title={focusLabel}
-              aria-label={focusLabel}
-            >
-              {focusShortLabel}
-            </span>
           </div>
           <div class="tech-card__meta">
-            <span class="tech-badge">{typeLabel}</span>
             <span class="tech-badge">{stackLabel}</span>
           </div>
         </article>
@@ -331,10 +222,8 @@ const titleId = `${idPrefix}-tech-title`;
     const groups = Array.from(section.querySelectorAll("[data-filter-group]"));
 
     const state = {
-      type: "all",
       stack: "all",
       language: "all",
-      focus: "all",
       query: "",
     };
 
@@ -343,21 +232,17 @@ const titleId = `${idPrefix}-tech-title`;
       const query = state.query.trim().toLowerCase();
 
       cards.forEach((card) => {
-        const type = card.getAttribute("data-type") || "";
         const stack = card.getAttribute("data-stack") || "";
-        const focus = card.getAttribute("data-focus") || "";
         const languages = (card.getAttribute("data-languages") || "")
           .split(" ")
           .filter(Boolean);
         const haystack = (card.getAttribute("data-search") || "").toLowerCase();
 
         let match = true;
-        if (state.type !== "all" && state.type !== type) match = false;
         if (state.stack !== "all" && state.stack !== stack) match = false;
         if (state.language !== "all" && !languages.includes(state.language)) {
           match = false;
         }
-        if (state.focus !== "all" && state.focus !== focus) match = false;
         if (query && !haystack.includes(query)) match = false;
 
         card.hidden = !match;

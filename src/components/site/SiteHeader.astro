@@ -67,19 +67,30 @@ const palettes = [
         <li class="menu__trigger">Menu ▾</li>
         <li>
           <ul class="menu__dropdown">
-            {
-              navItems.map((item) => (
-                <li>
-                  <a
-                    href={item.href}
-                    target={item.external ? "_blank" : undefined}
-                    rel={item.external ? "noopener noreferrer" : undefined}
-                  >
-                    {item.label}
-                  </a>
+                {
+                  navItems.filter((item) => item.label !== "Resume").map((item) => (
+                    <li>
+                      <a
+                        href={item.href}
+                        target={item.external ? "_blank" : undefined}
+                        rel={item.external ? "noopener noreferrer" : undefined}
+                      >
+                        {item.label}
+                      </a>
+                    </li>
+                  ))
+                }
+                <li class="menu">
+                  <span class="menu__trigger">Resume ▾</span>
+                  <ul class="menu__dropdown">
+                    <li>
+                      <a href="/Piyush_Satti_Full_stack_Jan26.pdf" target="_blank" rel="noopener noreferrer">Full Stack Developer</a>
+                    </li>
+                    <li>
+                      <a href="/Piyush_Satti_Software_engineer_Jan26.pdf" target="_blank" rel="noopener noreferrer">Software Engineering</a>
+                    </li>
+                  </ul>
                 </li>
-              ))
-            }
           </ul>
         </li>
       </ul>
@@ -89,7 +100,7 @@ const palettes = [
   <nav class="navigation-menu">
     <ul class="navigation-menu__inner menu--desktop">
       {
-        navItems.map((item) => (
+        navItems.filter((item) => item.label !== "Resume").map((item) => (
           <li>
             <a
               href={item.href}
@@ -101,6 +112,17 @@ const palettes = [
           </li>
         ))
       }
+      <li class="menu">
+        <span class="menu__trigger">Resume ▾</span>
+        <ul class="menu__dropdown">
+          <li>
+            <a href="/Piyush_Satti_Full_stack_Jan26.pdf" target="_blank" rel="noopener noreferrer">Full Stack Developer</a>
+          </li>
+          <li>
+            <a href="/Piyush_Satti_Software_engineer_Jan26.pdf" target="_blank" rel="noopener noreferrer">Software Engineering</a>
+          </li>
+        </ul>
+      </li>
     </ul>
   </nav>
 </header>
@@ -307,7 +329,25 @@ const palettes = [
 
     document.addEventListener("click", (event) => {
       const target = event.target;
-      if (target instanceof Node && !header.contains(target)) {
+      if (!(target instanceof Node)) return;
+      
+      // Close all menus if clicking outside header
+      if (!header.contains(target)) {
+        closeMenus();
+        return;
+      }
+      
+      // Close menus if clicking inside header but not on a trigger or inside a dropdown
+      const clickedInsideMenu = menus.some((menu) => {
+        const trigger = menu.querySelector(".menu__trigger");
+        const dropdown = menu.querySelector(".menu__dropdown");
+        return (
+          (trigger instanceof HTMLElement && trigger.contains(target)) ||
+          (dropdown instanceof HTMLElement && dropdown.contains(target))
+        );
+      });
+      
+      if (!clickedInsideMenu) {
         closeMenus();
       }
     });
@@ -344,6 +384,15 @@ const palettes = [
         } else {
           dropdown.style.left = "";
           dropdown.style.right = "";
+        }
+      });
+      
+      // Close dropdown when clicking on a link inside it
+      dropdown.addEventListener("click", (event) => {
+        const target = event.target;
+        if (target instanceof HTMLElement && target.tagName === "A") {
+          menu.classList.remove("open");
+          dropdown.removeAttribute("style");
         }
       });
     });
