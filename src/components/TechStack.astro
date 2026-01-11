@@ -72,7 +72,11 @@ const items: TechItem[] = [
   { name: "Bash", stack: "infra", languages: ["bash"] },
   { name: "MATLAB", stack: "data", languages: ["matlab"] },
   { name: "Astro", stack: "frontend", languages: ["javascript", "typescript"] },
-  { name: "Next.js", stack: "frontend", languages: ["javascript", "typescript"] },
+  {
+    name: "Next.js",
+    stack: "frontend",
+    languages: ["javascript", "typescript"],
+  },
   { name: "Tailwind CSS", stack: "frontend", languages: ["css"] },
   { name: "FastAPI", stack: "backend", languages: ["python"] },
   { name: "Flask", stack: "backend", languages: ["python"] },
@@ -124,14 +128,26 @@ const titleId = `${idPrefix}-tech-title`;
       aria-label="Filter by language"
     >
       <span class="tech-filters__label">Language</span>
-      <button type="button" class="chip is-active" data-filter="all" aria-pressed="true">
+      <button
+        type="button"
+        class="chip is-active"
+        data-filter="all"
+        aria-pressed="true"
+      >
         All
       </button>
-      {languageOptions.map((lang) => (
-        <button type="button" class="chip" data-filter={lang} aria-pressed="false">
-          {languageLabels[lang]}
-        </button>
-      ))}
+      {
+        languageOptions.map((lang) => (
+          <button
+            type="button"
+            class="chip"
+            data-filter={lang}
+            aria-pressed="false"
+          >
+            {languageLabels[lang]}
+          </button>
+        ))
+      }
     </div>
 
     <div
@@ -141,22 +157,52 @@ const titleId = `${idPrefix}-tech-title`;
       aria-label="Filter by stack"
     >
       <span class="tech-filters__label">Stack</span>
-      <button type="button" class="chip is-active" data-filter="all" aria-pressed="true">
+      <button
+        type="button"
+        class="chip is-active"
+        data-filter="all"
+        aria-pressed="true"
+      >
         All
       </button>
-      <button type="button" class="chip" data-filter="frontend" aria-pressed="false">
+      <button
+        type="button"
+        class="chip"
+        data-filter="frontend"
+        aria-pressed="false"
+      >
         Frontend
       </button>
-      <button type="button" class="chip" data-filter="backend" aria-pressed="false">
+      <button
+        type="button"
+        class="chip"
+        data-filter="backend"
+        aria-pressed="false"
+      >
         Backend
       </button>
-      <button type="button" class="chip" data-filter="data" aria-pressed="false">
+      <button
+        type="button"
+        class="chip"
+        data-filter="data"
+        aria-pressed="false"
+      >
         Data/ML
       </button>
-      <button type="button" class="chip" data-filter="infra" aria-pressed="false">
+      <button
+        type="button"
+        class="chip"
+        data-filter="infra"
+        aria-pressed="false"
+      >
         Infra
       </button>
-      <button type="button" class="chip" data-filter="general" aria-pressed="false">
+      <button
+        type="button"
+        class="chip"
+        data-filter="general"
+        aria-pressed="false"
+      >
         General
       </button>
     </div>
@@ -174,40 +220,44 @@ const titleId = `${idPrefix}-tech-title`;
   </div>
 
   <div class="tech-grid" data-tech-grid aria-labelledby={titleId}>
-    {items.map((item) => {
-      const stackLabel = stackLabels[item.stack];
-      const languageTokens = (item.languages ?? []).map(
-        (lang) => languageLabels[lang] ?? lang
-      );
-      const searchTokens = [
-        item.name,
-        stackLabel,
-        ...languageTokens,
-        ...(item.languages ?? []),
-        ...(item.tags ?? []),
-      ]
-        .join(" ")
-        .toLowerCase();
-      return (
-        <article
-          class="tech-card"
-          data-tech-item
-          data-stack={item.stack}
-          data-languages={(item.languages ?? []).join(" ")}
-          data-search={searchTokens}
-        >
-          <div class="tech-card__header">
-            <h3>{item.name}</h3>
-          </div>
-          <div class="tech-card__meta">
-            <span class="tech-badge">{stackLabel}</span>
-          </div>
-        </article>
-      );
-    })}
+    {
+      items.map((item) => {
+        const stackLabel = stackLabels[item.stack];
+        const languageTokens = (item.languages ?? []).map(
+          (lang) => languageLabels[lang] ?? lang
+        );
+        const searchTokens = [
+          item.name,
+          stackLabel,
+          ...languageTokens,
+          ...(item.languages ?? []),
+          ...(item.tags ?? []),
+        ]
+          .join(" ")
+          .toLowerCase();
+        return (
+          <article
+            class="tech-card"
+            data-tech-item
+            data-stack={item.stack}
+            data-languages={(item.languages ?? []).join(" ")}
+            data-search={searchTokens}
+          >
+            <div class="tech-card__header">
+              <h3>{item.name}</h3>
+            </div>
+            <div class="tech-card__meta">
+              <span class="tech-badge">{stackLabel}</span>
+            </div>
+          </article>
+        );
+      })
+    }
   </div>
 
-  <p class="tech-empty" data-tech-empty hidden>No matches. Try adjusting filters.</p>
+  <p class="tech-empty" data-tech-empty hidden>
+    No matches. Try adjusting filters.
+  </p>
 </section>
 
 <script is:inline>
