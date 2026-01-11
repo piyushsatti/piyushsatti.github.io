@@ -1,0 +1,145 @@
+---
+interface ExperienceItem {
+  company: string;
+  role: string;
+  startDate: string;
+  endDate: string | null; // null means "Present"
+  description: string;
+  achievements?: string[];
+  tech?: string[];
+}
+
+export interface Props {
+  title?: string;
+  experiences: ExperienceItem[];
+}
+
+const { title = "Experience", experiences } = Astro.props;
+---
+
+<section class="experience-section">
+  <h2 class="experience-title">{title}</h2>
+
+  <div class="experience-list">
+    {
+      experiences.map((exp) => (
+        <article class="experience-card">
+          <div class="experience-card__header">
+            <div class="experience-card__title">
+              <h3>{exp.role}</h3>
+              <p class="experience-card__company">{exp.company}</p>
+            </div>
+            <time class="experience-card__date">
+              {exp.startDate} - {exp.endDate ?? "Present"}
+            </time>
+          </div>
+
+          <p class="experience-card__description">{exp.description}</p>
+
+          {exp.achievements && exp.achievements.length > 0 && (
+            <ul class="experience-card__achievements">
+              {exp.achievements.map((achievement) => (
+                <li>{achievement}</li>
+              ))}
+            </ul>
+          )}
+
+          {exp.tech && exp.tech.length > 0 && (
+            <div class="experience-card__tech">
+              {exp.tech.map((tech) => (
+                <span class="tech-badge">{tech}</span>
+              ))}
+            </div>
+          )}
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .experience-section {
+    margin: 3rem 0;
+  }
+
+  .experience-title {
+    margin-bottom: 2rem;
+    font-size: 1.75rem;
+  }
+
+  .experience-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .experience-card {
+    border: 2px solid var(--accent);
+    padding: 1.5rem;
+    background: var(--card-bg);
+    transition: all 0.2s ease;
+  }
+
+  .experience-card:hover {
+    border-color: var(--accent-soft);
+    box-shadow: 0 0 20px var(--glow-soft);
+  }
+
+  .experience-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .experience-card__title h3 {
+    margin: 0 0 0.25rem 0;
+    color: var(--accent);
+  }
+
+  .experience-card__company {
+    margin: 0;
+    font-weight: 600;
+    color: var(--foreground);
+  }
+
+  .experience-card__date {
+    color: var(--muted-text);
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+
+  .experience-card__description {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+
+  .experience-card__achievements {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .experience-card__achievements li {
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+  }
+
+  .experience-card__tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  @media (max-width: 684px) {
+    .experience-card__header {
+      flex-direction: column;
+    }
+
+    .experience-card__date {
+      align-self: flex-start;
+    }
+  }
+</style>

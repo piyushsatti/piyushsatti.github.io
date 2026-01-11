@@ -1,13 +1,154 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout title="Hobbies">
   <div class="index-content framed">
     <h1>Hobbies</h1>
     <p>
-      When I'm not coding, I enjoy hiking, photography, and playing the guitar. These activities help me relax and recharge, allowing me to return to my work with a fresh perspective.
+      Outside of software, I spend most of my creative time around tabletop
+      RPGs: running games, designing adventures, and building community spaces
+      where people can reliably find a table. I also like experimenting with
+      automation and AI-assisted workflows for practical projects.
     </p>
   </div>
+
+  <section class="hobby-section">
+    <h2>Dungeons & Dragons</h2>
+    <div class="hobby-content">
+      <p>
+        I enjoy the full loop of the hobby: worldbuilding, encounter design, and
+        collaborative storytelling. I tend to run games with a "player-first"
+        mindset and focus on making it easy for new players to get started.
+      </p>
+
+      <div class="hobby-details">
+        <h3>What I like most</h3>
+        <ul>
+          <li>Worldbuilding and long-running story arcs</li>
+          <li>Session facilitation and improvisation</li>
+          <li>Designing one-shots and reusable modules</li>
+          <li>Helping new players onboard quickly</li>
+        </ul>
+
+        <h3>How it overlaps with my engineering</h3>
+        <ul>
+          <li>Building tools and workflows that reduce scheduling friction</li>
+          <li>
+            Creating lightweight systems for event signups and coordination
+          </li>
+          <li>Automation for repetitive community ops tasks</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="hobby-section">
+    <h2>Smokebomb Studios</h2>
+    <div class="hobby-content">
+      <p>
+        Smokebomb Studios is my community-building outlet: a platform centered
+        on tabletop RPGs in India, spanning online play, learning resources, and
+        IRL events. The goal is simple: make it easier for people to discover
+        TTRPGs, find consistent games, and meet the local community.
+      </p>
+
+      <div class="hobby-details">
+        <h3>Current focus</h3>
+        <ul>
+          <li>
+            <strong>Living Chronicles:</strong> a plug-and-play campaign format where
+            multiple DMs contribute to a shared world, so players can drop in when
+            they are free.
+          </li>
+          <li>
+            <strong>IRL events:</strong> conventions and city events that bring players
+            together around a shared storyline.
+          </li>
+        </ul>
+
+        <h3>Explore</h3>
+        <ul>
+          <li>
+            <a
+              href="https://www.smokebombstudios.com/projects/living-chronicles"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Living Chronicles
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.smokebombstudios.com/projects/irl-events"
+              target="_blank"
+              rel="noreferrer"
+            >
+              IRL Events
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.smokebombstudios.com/bangalore-dd-con"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Bangalore D&D Con
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.smokebombstudios.com/delhi-dd-tour"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Delhi D&D Tour
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  .hobby-section {
+    margin: 3rem 0;
+    border: 2px solid var(--accent);
+    padding: 2rem;
+    background: var(--card-bg);
+  }
+
+  .hobby-section h2 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--accent);
+    font-size: 1.75rem;
+  }
+
+  .hobby-content p {
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .hobby-details h3 {
+    color: var(--accent);
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .hobby-details ul {
+    margin: 0.5rem 0 1rem 1.5rem;
+    line-height: 1.6;
+  }
+
+  .hobby-details li {
+    margin-bottom: 0.5rem;
+  }
+
+  @media (max-width: 684px) {
+    .hobby-section {
+      padding: 1.5rem;
+    }
+  }
+</style>

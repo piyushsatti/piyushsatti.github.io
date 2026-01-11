@@ -1,0 +1,211 @@
+---
+interface TimelineItem {
+  title: string;
+  institution: string;
+  startDate: string;
+  endDate: string;
+  description?: string;
+  details?: string[];
+  links?: { label: string; href: string }[];
+}
+
+export interface Props {
+  title?: string;
+  items: TimelineItem[];
+}
+
+const { title = "Education", items } = Astro.props;
+---
+
+<section class="timeline-section">
+  <h2 class="timeline-title">{title}</h2>
+
+  <div class="timeline">
+    {
+      items.map((item, index) => (
+        <article class="timeline-item">
+          <div class="timeline-marker">
+            <div class="timeline-dot" />
+            {index < items.length - 1 && <div class="timeline-line" />}
+          </div>
+
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <div class="timeline-info">
+                <h3>{item.title}</h3>
+                <p class="timeline-institution">{item.institution}</p>
+              </div>
+              <time class="timeline-date">
+                {item.startDate} - {item.endDate}
+              </time>
+            </div>
+
+            {item.description && (
+              <p class="timeline-description">{item.description}</p>
+            )}
+
+            {item.details && item.details.length > 0 && (
+              <ul class="timeline-details">
+                {item.details.map((detail) => (
+                  <li>{detail}</li>
+                ))}
+              </ul>
+            )}
+
+            {item.links && item.links.length > 0 && (
+              <div class="timeline-links">
+                {item.links.map((link, idx) => (
+                  <>
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {link.label}
+                    </a>
+                    {idx < (item.links?.length ?? 0) - 1 && <span> :: </span>}
+                  </>
+                ))}
+              </div>
+            )}
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .timeline-section {
+    margin: 3rem 0;
+  }
+
+  .timeline-title {
+    margin-bottom: 2rem;
+    font-size: 1.75rem;
+  }
+
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .timeline-item {
+    position: relative;
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .timeline-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .timeline-marker {
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 0.35rem;
+  }
+
+  .timeline-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 3px solid var(--background);
+    box-shadow: 0 0 0 2px var(--accent);
+    z-index: 2;
+    flex-shrink: 0;
+  }
+
+  .timeline-line {
+    width: 2px;
+    flex: 1;
+    background: var(--accent);
+    opacity: 0.3;
+    margin-top: 0.5rem;
+    min-height: 2rem;
+  }
+
+  .timeline-content {
+    flex: 1;
+    padding-bottom: 1rem;
+  }
+
+  .timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .timeline-info h3 {
+    margin: 0 0 0.25rem 0;
+    color: var(--accent);
+    font-size: 1.25rem;
+  }
+
+  .timeline-institution {
+    margin: 0;
+    font-weight: 600;
+    color: var(--foreground);
+  }
+
+  .timeline-date {
+    color: var(--muted-text);
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+
+  .timeline-description {
+    margin-bottom: 0.75rem;
+    line-height: 1.6;
+  }
+
+  .timeline-details {
+    margin: 0.75rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .timeline-details li {
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+  }
+
+  .timeline-links {
+    margin-top: 0.75rem;
+    font-size: 0.95rem;
+  }
+
+  .timeline-links a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .timeline-links a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 684px) {
+    .timeline {
+      padding-left: 1rem;
+    }
+
+    .timeline-header {
+      flex-direction: column;
+    }
+
+    .timeline-date {
+      align-self: flex-start;
+    }
+
+    .timeline-marker {
+      gap: 0.5rem;
+    }
+  }
+</style>

@@ -1,9 +1,250 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import TechStack from "../components/TechStack.astro";
+import Timeline from "../components/Timeline.astro";
+import CourseCards from "../components/CourseCards.astro";
+
 const base = import.meta.env.BASE_URL.endsWith("/")
   ? import.meta.env.BASE_URL
   : import.meta.env.BASE_URL + "/";
+
+// Education timeline data
+const education = [
+  {
+    title: "M.Sc. Applied Computer Science",
+    institution: "Concordia University",
+    startDate: "Sept 2023",
+    endDate: "Aug 2025",
+    description: "Montreal, Quebec, Canada",
+    details: [
+      "GPA: 3.62/4.3",
+      // Add thesis/coursework here if you want (not listed on the resume)
+    ],
+    links: [], // add certificate/transcript links when you have them
+  },
+  {
+    title: "B.E. Electronics and Computer Engineering",
+    institution: "Thapar Institute of Engineering and Technology",
+    startDate: "Jun 2017",
+    endDate: "Jun 2021",
+    description: "Patiala, Punjab, India",
+    details: ["GPA: 8.96/10"],
+    links: [],
+  },
+];
+
+// Courses data (restructured for cards)
+const coursesForCards = [
+  // -------- Concordia University (M.Sc. Applied Computer Science) --------
+  {
+    title: "Intro/Theoretical Computer Science",
+    code: "COMP 335",
+    institution: "Concordia University",
+    semester: "Fall 2023",
+    grade: "A",
+    category: "Theory",
+    topics: ["Automata theory", "Formal languages", "Computability"],
+  },
+  {
+    title: "Programming and Problem Solving",
+    code: "COMP 6481",
+    institution: "Concordia University",
+    semester: "Fall 2023",
+    grade: "A+",
+    category: "Software Engineering",
+    topics: ["Advanced programming", "Problem solving techniques"],
+  },
+  {
+    title: "Software Composition and Maintenance",
+    code: "SOEN 6431",
+    institution: "Concordia University",
+    semester: "Fall 2023",
+    grade: "B",
+    category: "Software Engineering",
+    topics: ["Software architecture", "Maintenance strategies"],
+  },
+  {
+    title: "Algorithm Design Techniques",
+    code: "COMP 6651",
+    institution: "Concordia University",
+    semester: "Winter 2024",
+    grade: "B+",
+    category: "Theory",
+    topics: ["Greedy algorithms", "Dynamic programming", "NP-completeness"],
+  },
+  {
+    title: "Advanced Programming Practices",
+    code: "SOEN 6441",
+    institution: "Concordia University",
+    semester: "Winter 2024",
+    grade: "A",
+    category: "Software Engineering",
+    topics: ["Design patterns", "Best practices", "Code quality"],
+  },
+  {
+    title: "Distributed System Design",
+    code: "COMP 6231",
+    institution: "Concordia University",
+    semester: "Fall 2024",
+    grade: "B",
+    category: "Systems",
+    topics: ["Distributed architectures", "Consensus", "Fault tolerance"],
+  },
+  {
+    title: "Applied Artificial Intelligence",
+    code: "COMP 6721",
+    institution: "Concordia University",
+    semester: "Fall 2024",
+    grade: "A-",
+    category: "AI/ML",
+    topics: ["AI algorithms", "Machine learning", "Neural networks"],
+  },
+  {
+    title: "Information Retrieval and Web Search",
+    code: "COMP 6791",
+    institution: "Concordia University",
+    semester: "Fall 2024",
+    grade: "A-",
+    category: "Data/DB",
+    topics: ["Search engines", "Ranking algorithms", "Text processing"],
+  },
+  {
+    title: "Topics in CS (Conversational AI)",
+    code: "COMP 691",
+    institution: "Concordia University",
+    semester: "Winter 2025",
+    grade: "B",
+    category: "AI/ML",
+    topics: ["NLP", "Chatbots", "Dialogue systems"],
+  },
+  {
+    title: "Ethics and Professionalism",
+    code: "ENCS 2601",
+    institution: "Concordia University",
+    semester: "Winter 2025",
+    grade: "A+",
+    category: "Theory",
+    topics: ["Professional ethics", "Social responsibility"],
+  },
+  {
+    title: "Software Measurement",
+    code: "SOEN 6611",
+    institution: "Concordia University",
+    semester: "Summer 2025",
+    grade: "A-",
+    category: "Software Engineering",
+    topics: ["Metrics", "Quality assessment", "Analysis techniques"],
+  },
+  {
+    title: "Comparative Study of Programming Languages",
+    code: "COMP 6411",
+    institution: "Concordia University",
+    semester: "Summer 2025",
+    grade: "A+",
+    category: "Theory",
+    topics: ["Language paradigms", "Type systems", "Functional programming"],
+  },
+  {
+    title: "Software Engineering Processes",
+    code: "SOEN 6011",
+    institution: "Concordia University",
+    semester: "Summer 2025",
+    grade: "A-",
+    category: "Software Engineering",
+    topics: ["Agile", "DevOps", "Process models"],
+  },
+  // -------- Thapar Institute (B.E.) --------
+  {
+    title: "Computer Programming I",
+    code: "LFTA017",
+    institution: "Thapar Institute",
+    semester: "Dec 2017",
+    grade: "A",
+    category: "Software Engineering",
+    topics: ["C programming", "Algorithms basics"],
+  },
+  {
+    title: "Object Oriented Programming",
+    code: "LFTA018",
+    institution: "Thapar Institute",
+    semester: "Jun 2018",
+    grade: "B",
+    category: "Software Engineering",
+    topics: ["OOP concepts", "Java programming"],
+  },
+  {
+    title: "Data Structures and Algorithms",
+    code: "UCS613",
+    institution: "Thapar Institute",
+    semester: "Dec 2019",
+    grade: "A",
+    category: "Theory",
+    topics: ["Trees", "Graphs", "Sorting", "Searching"],
+  },
+  {
+    title: "Operating Systems",
+    code: "UCS303",
+    institution: "Thapar Institute",
+    semester: "Dec 2019",
+    grade: "A-",
+    category: "Systems",
+    topics: ["Process management", "Memory management", "File systems"],
+  },
+  {
+    title: "Database Management System",
+    code: "UCS310",
+    institution: "Thapar Institute",
+    semester: "Jun 2020",
+    grade: "A",
+    category: "Data/DB",
+    topics: ["SQL", "Normalization", "Transaction management"],
+  },
+  {
+    title: "Machine Learning",
+    code: "UCS611",
+    institution: "Thapar Institute",
+    semester: "Jun 2020",
+    grade: "A",
+    category: "AI/ML",
+    topics: ["Supervised learning", "Neural networks", "Classification"],
+  },
+  {
+    title: "Image Processing and Computer Vision",
+    code: "UEC705",
+    institution: "Thapar Institute",
+    semester: "Jun 2020",
+    grade: "A",
+    category: "AI/ML",
+    topics: ["Image filters", "Feature extraction", "Object detection"],
+  },
+  {
+    title: "Data Communication and Networks",
+    code: "UEC706",
+    institution: "Thapar Institute",
+    semester: "Jun 2020",
+    grade: "A",
+    category: "Systems",
+    topics: ["Network protocols", "OSI model", "TCP/IP"],
+  },
+  {
+    title: "Network Security",
+    code: "UCS610",
+    institution: "Thapar Institute",
+    semester: "Dec 2020",
+    grade: "A-",
+    category: "Security",
+    topics: ["Cryptography", "Authentication", "Security protocols"],
+  },
+  {
+    title: "Cloud Computing",
+    code: "UCS641",
+    institution: "Thapar Institute",
+    semester: "Dec 2020",
+    grade: "A-",
+    category: "Systems",
+    topics: ["Virtualization", "Cloud architectures", "AWS basics"],
+  },
+];
 ---
 
 <BaseLayout title="About Me">
@@ -38,9 +279,7 @@ const base = import.meta.env.BASE_URL.endsWith("/")
       alt="Terminal Pi(π) Animation"
       loading="lazy"
     />
-    <figcaption>
-      Fueled by: diet coke, whiteclaw, and ramen.
-    </figcaption>
+    <figcaption>Fueled by: diet coke, whiteclaw, and ramen.</figcaption>
   </figure>
 
   <TechStack
@@ -48,4 +287,8 @@ const base = import.meta.env.BASE_URL.endsWith("/")
     title="Technical Skills"
     subtitle="Filter by language, stack, and focus area."
   />
+
+  <Timeline title="Education" items={education} />
+
+  <CourseCards title="Relevant Courses" courses={coursesForCards} />
 </BaseLayout>

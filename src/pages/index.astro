@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PostCard from "../components/PostCard.astro";
 import TechStack from "../components/TechStack.astro";
+import Experience from "../components/Experience.astro";
 import { getCollection } from "astro:content";
 
 const base = import.meta.env.BASE_URL.endsWith("/")
@@ -24,6 +25,64 @@ const projects = (await getCollection("projects"))
     return bDate - aDate;
   })
   .slice(0, 2);
+
+// Experience data (updated from your resume + details you shared)
+const experiences = [
+  {
+    company: "Freelance (Upwork, forums)",
+    role: "Software Developer",
+    startDate: "Aug 2021",
+    endDate: "Apr 2023",
+    description:
+      "Remote. Owned end-to-end delivery for client-facing software systems, from ambiguous requirements through design, implementation, iteration, and handoff under fixed deadlines.",
+    achievements: [
+      "Delivered 20+ client projects across web apps, automations, and integrations",
+      "Built a vision-based game QA automation tool using OpenCV for on-screen detection and PyAutoGUI for input control to automate regression flows",
+      "Shipped an AI movie recommendation platform with an ML-based ranking pipeline, a React web UI, and a Node.js backend exposing APIs for search and recommendations",
+      "Led small project teams on deadline-critical engagements to meet client delivery targets",
+    ],
+    tech: [
+      "Python",
+      "OpenCV",
+      "PyAutoGUI",
+      "FastAPI",
+      "Flask",
+      "JavaScript",
+      "Node.js",
+      "React",
+      "PostgreSQL",
+      "MongoDB",
+      "Redis",
+    ],
+  },
+  {
+    company: "Concordia University",
+    role: "Teaching Assistant (Programmer on Duty, Java)",
+    startDate: "Jan 2025",
+    endDate: "Apr 2025",
+    description:
+      "Supported Object-Oriented Programming II by debugging student code, explaining OOP concepts, and helping students implement course projects.",
+    achievements: [
+      "Programmer on Duty for a course with 400+ students, providing hands-on debugging and implementation support",
+      "Led weekly sessions for ~20 students and delivered a revision lecture for ~40 students covering core Java/OOP topics",
+    ],
+    tech: ["Java", "OOP", "Debugging", "Teaching"],
+  },
+  {
+    company: "Thapar Institute of Engineering and Technology",
+    role: "Research Assistant",
+    startDate: "Aug 2019",
+    endDate: "Apr 2023",
+    description:
+      "Conducted applied research in algorithm-based image restoration and signal processing, translating papers into reproducible implementations and evaluations.",
+    achievements: [
+      "Published 4 academic papers and achieved state-of-the-art results in image restoration",
+      "Implemented 40+ research techniques and evaluated improvements using signal-to-noise ratio metrics",
+      "Contributed to a peer-reviewed publication (IEEE SPL) with 70+ citations",
+    ],
+    tech: ["Python", "MATLAB", "Image Processing", "Signal Processing"],
+  },
+];
 ---
 
 <BaseLayout title="Home" description="Welcome to my personal website">
@@ -77,6 +136,8 @@ const projects = (await getCollection("projects"))
   </section>
 
   <TechStack idPrefix="home" />
+
+  <Experience experiences={experiences} />
 
   <div class="posts">
     <br />
