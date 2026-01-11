@@ -153,11 +153,10 @@ const palettes = [
   </nav>
 </header>
 
-<div class="chat-overlay" data-chat-overlay hidden>
+<div class="chat-embed" data-chat-overlay hidden>
   <div
     class="chat-panel"
-    role="dialog"
-    aria-modal="true"
+    role="region"
     aria-labelledby="chat-title"
   >
     <div class="chat-header">
@@ -168,7 +167,7 @@ const palettes = [
         data-chat-close
         aria-label="Close chat"
       >
-        X
+        ✕
       </button>
     </div>
     <div class="chat-body" data-chat-log>
@@ -202,6 +201,10 @@ const palettes = [
 
     const STORAGE_KEY = "terminal-theme-preference";
     const PALETTE_KEY = "terminal-theme-palette";
+    const CHAT_SESSION_KEY = "chat-session-token";
+    const CHAT_HISTORY_KEY = "chat-history";
+    const CHAT_API_URL = "https://pichatwithme.vercel.app";
+    const MAX_CHAT_HISTORY = 50;
     const root = document.documentElement;
     const toggle = header.querySelector(".theme-toggle");
     const paletteGroup = header.querySelector(".theme-toggle-group");
@@ -440,6 +443,8 @@ const palettes = [
     const openChat = () => {
       if (!(chatOverlay instanceof HTMLElement)) return;
       chatOverlay.hidden = false;
+      // Force reflow for animation
+      chatOverlay.offsetHeight;
       requestAnimationFrame(() => chatOverlay.classList.add("is-open"));
       if (chatInput instanceof HTMLInputElement) {
         chatInput.focus();
@@ -452,44 +457,253 @@ const palettes = [
       window.clearTimeout(chatCloseTimer);
       chatCloseTimer = window.setTimeout(() => {
         chatOverlay.hidden = true;
-      }, 200);
+      }, 300);
     };
 
-    const appendMessage = (text, role) => {
+    // Session management
+    let sessionToken = null;
+    let isRateLimited = false;
+    let thinkingElement = null;
+
+    const getStoredSession = () => {
+      try {
+        return localStorage.getItem(CHAT_SESSION_KEY);
+      } catch (e) {
+        console.warn("Unable to read session from storage", e);
+        return null;
+      }
+    };
+
+    const setStoredSession = (token) => {
+      try {
+        localStorage.setItem(CHAT_SESSION_KEY, token);
+      } catch (e) {
+        console.warn("Unable to persist session in storage", e);
+      }
+    };
+
+    const createSession = async () => {
+      try {
+        const res = await fetch(`${CHAT_API_URL}/api/session`, {
+          method: "POST",
+        });
+        if (!res.ok) throw new Error("Failed to create session");
+        const data = await res.json();
+        sessionToken = data.sessionToken;
+        setStoredSession(sessionToken);
+        return sessionToken;
+      } catch (e) {
+        console.error("Session creation failed", e);
+        return null;
+      }
+    };
+
+    const getOrCreateSession = async () => {
+      if (sessionToken) return sessionToken;
+      sessionToken = getStoredSession();
+      if (sessionToken) return sessionToken;
+      return await createSession();
+    };
+
+    // Chat history persistence
+    const getChatHistory = () => {
+      try {
+        const stored = localStorage.getItem(CHAT_HISTORY_KEY);
+        return stored ? JSON.parse(stored) : [];
+      } catch (e) {
+        console.warn("Unable to read chat history", e);
+        return [];
+      }
+    };
+
+    const saveChatHistory = (messages) => {
+      try {
+        const trimmed = messages.slice(-MAX_CHAT_HISTORY);
+        localStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(trimmed));
+      } catch (e) {
+        console.warn("Unable to persist chat history", e);
+      }
+    };
+
+    const loadChatHistory = () => {
+      if (!(chatLog instanceof HTMLElement)) return;
+      const history = getChatHistory();
+      if (history.length === 0) return;
+
+      // Clear default welcome message if we have history
+      chatLog.innerHTML = "";
+      history.forEach(({ text, role }) => {
+        const message = document.createElement("div");
+        message.className = `chat-message chat-message--${role}`;
+        message.textContent = text;
+        chatLog.appendChild(message);
+      });
+      chatLog.scrollTop = chatLog.scrollHeight;
+    };
+
+    // Append message and persist
+    const appendMessage = (text, role, persist = true) => {
       if (!(chatLog instanceof HTMLElement)) return;
       const message = document.createElement("div");
       message.className = `chat-message chat-message--${role}`;
       message.textContent = text;
       chatLog.appendChild(message);
       chatLog.scrollTop = chatLog.scrollHeight;
+
+      if (persist) {
+        const history = getChatHistory();
+        history.push({ text, role });
+        saveChatHistory(history);
+      }
     };
+
+    // Thinking indicator
+    const showThinking = () => {
+      if (!(chatLog instanceof HTMLElement)) return;
+      thinkingElement = document.createElement("div");
+      thinkingElement.className =
+        "chat-message chat-message--bot chat-message--thinking";
+      thinkingElement.innerHTML =
+        '<span class="thinking-dots">Thinking<span>.</span><span>.</span><span>.</span></span>';
+      chatLog.appendChild(thinkingElement);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    };
+
+    const hideThinking = () => {
+      if (thinkingElement && thinkingElement.parentNode) {
+        thinkingElement.parentNode.removeChild(thinkingElement);
+        thinkingElement = null;
+      }
+    };
+
+    // Rate limit handling
+    const handleRateLimit = (retryAfter, message) => {
+      isRateLimited = true;
+      if (chatInput instanceof HTMLInputElement) {
+        chatInput.disabled = true;
+        chatInput.placeholder =
+          message || `Rate limited. Wait ${retryAfter}s...`;
+      }
+
+      let remaining = retryAfter;
+      const countdown = setInterval(() => {
+        remaining--;
+        if (chatInput instanceof HTMLInputElement) {
+          chatInput.placeholder = `Please wait ${remaining}s...`;
+        }
+        if (remaining <= 0) {
+          clearInterval(countdown);
+          isRateLimited = false;
+          if (chatInput instanceof HTMLInputElement) {
+            chatInput.disabled = false;
+            chatInput.placeholder = "Ask about my work...";
+            chatInput.focus();
+          }
+        }
+      }, 1000);
+    };
+
+    // Send message to API
+    const sendMessage = async (question) => {
+      const token = await getOrCreateSession();
+      if (!token) {
+        return { error: "Unable to establish session. Please try again." };
+      }
+
+      try {
+        const res = await fetch(`${CHAT_API_URL}/api/chat`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sessionToken: token, question }),
+        });
+
+        if (res.status === 429) {
+          const { message, retryAfter } = await res.json();
+          return { rateLimited: true, message, retryAfter };
+        }
+
+        if (res.status === 404) {
+          // Session expired - silently create new one and retry
+          sessionToken = null;
+          localStorage.removeItem(CHAT_SESSION_KEY);
+          const newToken = await createSession();
+          if (!newToken) {
+            return { error: "Session expired. Please try again." };
+          }
+          // Retry with new session
+          const retryRes = await fetch(`${CHAT_API_URL}/api/chat`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ sessionToken: newToken, question }),
+          });
+          if (!retryRes.ok) {
+            return { error: "Something went wrong. Please try again." };
+          }
+          const retryData = await retryRes.json();
+          return { answer: retryData.answer };
+        }
+
+        if (!res.ok) {
+          return { error: "Something went wrong. Please try again." };
+        }
+
+        const data = await res.json();
+        return { answer: data.answer };
+      } catch (e) {
+        console.error("Chat API error", e);
+        return { error: "Network error. Please check your connection." };
+      }
+    };
+
+    // Load history on page load
+    loadChatHistory();
 
     logoLink?.addEventListener("click", (event) => {
       event.preventDefault();
-      openChat();
-    });
-
-    chatOverlay?.addEventListener("click", (event) => {
-      if (event.target === chatOverlay) {
+      // Toggle chat open/close
+      if (chatOverlay instanceof HTMLElement && chatOverlay.classList.contains("is-open")) {
         closeChat();
+      } else {
+        openChat();
       }
     });
 
     chatClose?.addEventListener("click", closeChat);
 
-    chatForm?.addEventListener("submit", (event) => {
+    chatForm?.addEventListener("submit", async (event) => {
       event.preventDefault();
       if (!(chatInput instanceof HTMLInputElement)) return;
+      if (isRateLimited) return;
+
       const value = chatInput.value.trim();
       if (!value) return;
+
       appendMessage(value, "user");
       chatInput.value = "";
-      window.setTimeout(() => {
+      chatInput.disabled = true;
+
+      showThinking();
+
+      const result = await sendMessage(value);
+
+      hideThinking();
+      chatInput.disabled = false;
+
+      if (result.rateLimited) {
         appendMessage(
-          "Thanks for the note. This demo is UI-only for now.",
+          result.message || "Too many requests. Please slow down.",
           "bot"
         );
-      }, 300);
+        handleRateLimit(result.retryAfter || 60, result.message);
+      } else if (result.error) {
+        appendMessage(result.error, "bot");
+      } else if (result.answer) {
+        appendMessage(result.answer, "bot");
+      }
+
+      if (!isRateLimited) {
+        chatInput.focus();
+      }
     });
 
     document.addEventListener("keydown", (event) => {
