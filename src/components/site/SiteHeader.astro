@@ -154,11 +154,7 @@ const palettes = [
 </header>
 
 <div class="chat-embed" data-chat-overlay hidden>
-  <div
-    class="chat-panel"
-    role="region"
-    aria-labelledby="chat-title"
-  >
+  <div class="chat-panel" role="region" aria-labelledby="chat-title">
     <div class="chat-header">
       <h2 id="chat-title" class="chat-title">Pi Chat</h2>
       <button
@@ -661,7 +657,10 @@ const palettes = [
     logoLink?.addEventListener("click", (event) => {
       event.preventDefault();
       // Toggle chat open/close
-      if (chatOverlay instanceof HTMLElement && chatOverlay.classList.contains("is-open")) {
+      if (
+        chatOverlay instanceof HTMLElement &&
+        chatOverlay.classList.contains("is-open")
+      ) {
         closeChat();
       } else {
         openChat();
