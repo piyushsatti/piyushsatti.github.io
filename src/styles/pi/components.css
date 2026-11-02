@@ -1,0 +1,138 @@
+/* Pi Design System components. Colours, sizes and spacing come from tokens.css; nothing here repeats a token value. */
+
+body {
+  margin: 0;
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 28px;
+  -webkit-font-smoothing: antialiased;
+}
+
+:where(a, button, input, summary):focus-visible {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--focus-width);
+}
+
+.pi-eyebrow { color: var(--accent); text-transform: uppercase; margin: 0; }
+
+/* Header */
+.pi-header {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: var(--space-3) var(--space-6);
+  padding-block: var(--space-4);
+  border-bottom: var(--border-hair) solid var(--line);
+}
+.pi-header__name { color: var(--ink); text-decoration: none; font-family: var(--font-serif); font-weight: 600; font-size: 19px; }
+.pi-header__end { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4); }
+.pi-nav { display: flex; gap: var(--space-4); margin: 0; padding: 0; list-style: none; }
+.pi-nav a { color: var(--ink-secondary); text-decoration: none; padding-block: var(--space-1); border-bottom: 2px solid transparent; }
+.pi-nav a:hover { color: var(--ink); }
+.pi-nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent-mark); }
+
+/* Theme control: native radios, so it works with a keyboard and without custom ARIA */
+.pi-theme { display: inline-flex; width: fit-content; margin: 0; padding: 2px; border: var(--border-hair) solid var(--line-strong); border-radius: var(--radius-md); }
+.pi-theme legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.pi-theme input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.pi-theme label { padding: var(--space-1) var(--space-3); border-radius: calc(var(--radius-md) - 2px); color: var(--ink-secondary); cursor: pointer; }
+.pi-theme input:checked + label { background: var(--surface-raised); color: var(--ink); box-shadow: var(--shadow-raised); }
+.pi-theme input:focus-visible + label { outline: var(--focus-width) solid var(--focus); outline-offset: 1px; }
+
+/* Buttons */
+.pi-button {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border: var(--border-hair) solid transparent; border-radius: var(--radius-sm);
+  font: inherit; font-weight: 500; text-decoration: none; cursor: pointer;
+}
+.pi-button--primary { background: var(--accent-fill); color: var(--on-accent); }
+.pi-button--primary:hover { background: var(--accent-fill-hover); }
+.pi-button--secondary { background: transparent; color: var(--ink); border-color: var(--line-strong); }
+.pi-button--secondary:hover { border-color: var(--ink); }
+.pi-button--quiet { background: transparent; color: var(--accent); padding-inline: 0; }
+.pi-button--quiet:hover { text-decoration: underline; text-underline-offset: 4px; }
+.pi-button:disabled, .pi-button[aria-disabled="true"] { background: transparent; color: var(--ink-muted); border-color: var(--line); cursor: not-allowed; text-decoration: none; }
+
+/* Links inside text */
+.pi-link, .pi-prose a { color: var(--accent); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.pi-link:hover, .pi-prose a:hover { text-decoration-thickness: 2px; }
+
+/* Topic cards: independent previews laid side by side, divided by hairlines, not boxed */
+.pi-topics { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: var(--space-8) var(--space-6); }
+.pi-topic { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
+.pi-topic + .pi-topic { border-left: var(--border-hair) solid var(--line); padding-left: var(--space-6); }
+@media (max-width: 40rem) { .pi-topic + .pi-topic { border-left: 0; padding-left: 0; border-top: var(--border-hair) solid var(--line); padding-top: var(--space-6); } }
+.pi-topic__title { margin: 0; color: var(--ink); }
+.pi-topic__title a { color: inherit; text-decoration: none; }
+.pi-topic__title a:hover { text-decoration: underline; text-decoration-color: var(--accent-mark); text-underline-offset: 4px; }
+.pi-topic__rule { width: 24px; height: 2px; background: var(--accent-mark); border: 0; margin: 0 0 var(--space-1); }
+.pi-topic__summary { margin: 0; color: var(--ink-secondary); }
+.pi-topic__art { order: 10; margin-top: var(--space-2); }
+
+/* Line illustrations: graphite on transparent. Dark mode turns the graphite light and keeps the orange orange. Never apply to photographs. */
+.pi-illo { display: block; width: 100%; height: auto; }
+.pi-illo { filter: var(--illo-filter); }
+
+/* Prose */
+.pi-prose { max-width: var(--measure); color: var(--ink); }
+.pi-prose > * { margin-block: 0 var(--space-4); }
+.pi-prose h2, .pi-prose h3 { font-family: var(--font-serif); margin-top: var(--space-8); text-wrap: balance; }
+.pi-prose blockquote { margin-inline: 0; padding-left: var(--space-4); border-left: 2px solid var(--line-strong); color: var(--ink-secondary); }
+.pi-prose code { font-family: var(--font-mono); font-size: 0.875em; background: var(--surface); padding: 1px var(--space-1); border-radius: var(--radius-sm); }
+.pi-prose ul, .pi-prose ol { padding-left: var(--space-6); }
+.pi-prose li + li { margin-top: var(--space-1); }
+
+/* Code block */
+.pi-code { margin: 0; background: var(--surface); border: var(--border-hair) solid var(--line); border-radius: var(--radius-sm); min-width: 0; }
+.pi-code__head { display: flex; justify-content: space-between; gap: var(--space-4); padding: var(--space-2) var(--space-4); border-bottom: var(--border-hair) solid var(--line); color: var(--ink-muted); }
+.pi-code pre { margin: 0; padding: var(--space-4); overflow-x: auto; color: var(--ink); }
+.pi-code .k { color: var(--code-keyword); }
+.pi-code .s { color: var(--code-string); }
+.pi-code .c { color: var(--code-comment); font-style: italic; }
+
+/* Figure and photo placeholder */
+.pi-figure { margin: 0; display: flex; flex-direction: column; gap: var(--space-2); max-width: 100%; }
+.pi-figure img { display: block; max-width: 100%; height: auto; border-radius: var(--radius-md); }
+.pi-figure figcaption { color: var(--ink-secondary); }
+.pi-placeholder {
+  aspect-ratio: 3 / 2; max-width: 100%;
+  display: flex; flex-direction: column; justify-content: center; gap: var(--space-3);
+  padding: var(--space-6);
+  background: var(--surface-raised);
+  border: var(--border-hair) dashed var(--line-strong); border-radius: var(--radius-md);
+}
+.pi-placeholder__note { color: var(--accent); margin: 0; }
+.pi-placeholder__brief { margin: 0; padding-left: var(--space-4); color: var(--ink-muted); }
+
+/* Diagram: clean, labelled SVG; colours via classes so both themes work */
+.pi-diagram { overflow-x: auto; min-width: 0; max-width: 100%; }
+.pi-diagram svg { display: block; width: 100%; min-width: 34rem; height: auto; }
+.pi-diagram .box { fill: var(--canvas); stroke: var(--stroke); stroke-width: 1.25; }
+.pi-diagram .edge { fill: none; stroke: var(--stroke); stroke-width: 1.25; }
+.pi-diagram .edge--hot { stroke: var(--accent-mark); stroke-width: 1.75; }
+.pi-diagram .head { fill: var(--stroke); }
+.pi-diagram .head--hot { fill: var(--accent-mark); }
+.pi-diagram .lbl { fill: var(--ink); font-family: var(--font-mono); font-size: 13px; }
+.pi-diagram .sub { fill: var(--ink-muted); font-family: var(--font-mono); font-size: 11px; }
+
+/* Status tag: word + glyph + colour, never colour alone */
+.pi-status { display: inline-flex; align-items: center; gap: var(--space-1); padding: 0 var(--space-2); border: var(--border-hair) solid currentColor; border-radius: var(--radius-pill); white-space: nowrap; }
+.pi-status::before { font-size: 10px; }
+.pi-status--done { color: var(--status-done); }
+.pi-status--done::before { content: "●"; }
+.pi-status--progress { color: var(--status-progress); }
+.pi-status--progress::before { content: "◐"; }
+.pi-status--draft { color: var(--status-draft); }
+.pi-status--draft::before { content: "○"; }
+
+/* Entry list: notes and evidence rows */
+.pi-entries { list-style: none; margin: 0; padding: 0; border-top: var(--border-hair) solid var(--line); }
+.pi-entries li { border-bottom: var(--border-hair) solid var(--line); }
+.pi-entries a { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: var(--space-4); padding-block: var(--space-3); color: var(--ink); text-decoration: none; }
+.pi-entries a:hover .pi-entries__title { text-decoration: underline; text-decoration-color: var(--accent-mark); text-underline-offset: 4px; }
+.pi-entries__meta { color: var(--ink-muted); }
+.pi-entries__arrow { color: var(--accent); }
+@media (max-width: 30rem) { .pi-entries a { grid-template-columns: minmax(0, 1fr) auto; } .pi-entries__meta { grid-column: 1; grid-row: 2; } }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
