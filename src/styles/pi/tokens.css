@@ -1,0 +1,117 @@
+/* Pi Design System tokens: Field Notebook (light) and Technical Studio (dark).
+   Source: https://claude.ai/artifact/2U6jopRuox4ML3vAaCrmU2 (tokens.json). Regenerate from there; don't hand-edit values. */
+
+:root {
+  --canvas: #f5f0e6;
+  --surface: #ece5d6;
+  --surface-raised: #fbf8f1;
+  --ink: #211e1a;
+  --ink-secondary: #4f4a42;
+  --ink-muted: #686256;
+  --accent: #9e4116;
+  --accent-fill: #a94a1c;
+  --accent-fill-hover: #8c3a12;
+  --on-accent: #fffaf2;
+  --accent-mark: #bf5a26;
+  --line: #d8cfbd;
+  --line-strong: #8a8273;
+  --stroke: #3f3b35;
+  --focus: #22598a;
+  --code-keyword: var(--accent);
+  --code-string: #3f6a3c;
+  --code-comment: var(--ink-muted);
+  --status-done: #2f6a5a;
+  --status-progress: #8a5a10;
+  --status-draft: #5c564c;
+  --shadow-raised: 0 1px 0 rgba(33,30,26,0.06), 0 6px 18px -10px rgba(33,30,26,0.25);
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
+  --radius-sm: 3px;
+  --radius-md: 6px;
+  --radius-pill: 999px;
+  --measure: 40rem;
+  --page-max: 72rem;
+  --border-hair: 1px;
+  --focus-width: 2px;
+  --font-serif: "Source Serif 4", Charter, Georgia, serif;
+  --font-sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  --font-hand: Kalam, "Bradley Hand", "Segoe Print", cursive;
+  --illo-filter: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --canvas: #171512;
+    --surface: #201d19;
+    --surface-raised: #29251f;
+    --ink: #ede7db;
+    --ink-secondary: #bdb5a7;
+    --ink-muted: #a39b8d;
+    --accent: #eba54e;
+    --accent-fill: #e49c3e;
+    --accent-fill-hover: #f0b263;
+    --on-accent: #1c140a;
+    --accent-mark: #d98c3a;
+    --line: #38332c;
+    --line-strong: #7d7567;
+    --stroke: #cfc7b8;
+    --focus: #8fc3ee;
+    --code-keyword: var(--accent);
+    --code-string: #a9c98f;
+    --code-comment: var(--ink-muted);
+    --status-done: #7fcab4;
+    --status-progress: #e9b765;
+    --status-draft: #b3ab9d;
+    --shadow-raised: 0 1px 0 rgba(0,0,0,0.4), 0 8px 20px -12px rgba(0,0,0,0.6);
+    --illo-filter: invert(1) hue-rotate(180deg) brightness(0.92);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --canvas: #171512;
+  --surface: #201d19;
+  --surface-raised: #29251f;
+  --ink: #ede7db;
+  --ink-secondary: #bdb5a7;
+  --ink-muted: #a39b8d;
+  --accent: #eba54e;
+  --accent-fill: #e49c3e;
+  --accent-fill-hover: #f0b263;
+  --on-accent: #1c140a;
+  --accent-mark: #d98c3a;
+  --line: #38332c;
+  --line-strong: #7d7567;
+  --stroke: #cfc7b8;
+  --focus: #8fc3ee;
+  --code-keyword: var(--accent);
+  --code-string: #a9c98f;
+  --code-comment: var(--ink-muted);
+  --status-done: #7fcab4;
+  --status-progress: #e9b765;
+  --status-draft: #b3ab9d;
+  --shadow-raised: 0 1px 0 rgba(0,0,0,0.4), 0 8px 20px -12px rgba(0,0,0,0.6);
+  --illo-filter: invert(1) hue-rotate(180deg) brightness(0.92);
+  color-scheme: dark;
+}
+
+.display { font-family: var(--font-serif); font-size: 52px; line-height: 56px; font-weight: 600; letter-spacing: -0.01em; }
+.h1 { font-family: var(--font-serif); font-size: 38px; line-height: 44px; font-weight: 600; }
+.h2 { font-family: var(--font-serif); font-size: 28px; line-height: 34px; font-weight: 600; }
+.h3 { font-family: var(--font-serif); font-size: 21px; line-height: 28px; font-weight: 600; }
+.lead { font-family: var(--font-sans); font-size: 19px; line-height: 30px; font-weight: 400; }
+.body { font-family: var(--font-sans); font-size: 17px; line-height: 28px; font-weight: 400; }
+.body-sm { font-family: var(--font-sans); font-size: 15px; line-height: 24px; font-weight: 400; }
+.label { font-family: var(--font-sans); font-size: 15px; line-height: 20px; font-weight: 500; }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: 0.08em; }
+.meta { font-family: var(--font-mono); font-size: 13px; line-height: 20px; font-weight: 400; }
+.code { font-family: var(--font-mono); font-size: 14px; line-height: 22px; font-weight: 400; }
+.annotation { font-family: var(--font-hand); font-size: 19px; line-height: 24px; font-weight: 400; }

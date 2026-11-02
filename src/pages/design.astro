@@ -1,0 +1,216 @@
+---
+// Pi Design System proof page. Standalone on purpose: no BaseLayout, so none of the site's
+// global CSS, analytics, banner or chat load here. All copy is sample text.
+import "../styles/pi/tokens.css";
+import "../styles/pi/components.css";
+import "../styles/pi/page.css";
+---
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Pi Design System · Piyush Satti</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Kalam:wght@400&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<script is:inline>
+  (function () {
+    var c = 'system';
+    try { c = localStorage.getItem('pi-theme') || 'system'; } catch (e) {}
+    if (c !== 'system') document.documentElement.setAttribute('data-theme', c);
+  })();
+</script>
+</head>
+<body>
+<div class="proof meta"><div class="wrap"><p>Design proof built from the Pi Design System. All copy is sample text; the headline is held for the resume review.</p></div></div>
+
+<div class="wrap">
+  <header class="pi-header">
+    <a class="pi-header__name" href="#top" id="top">Piyush Satti</a>
+    <div class="pi-header__end">
+      <nav aria-label="Main">
+        <ul class="pi-nav label">
+          <li><a href="#work">Work</a></li>
+          <li><a href="#notes">Notes</a></li>
+          <li><a href="#about">About</a></li>
+        </ul>
+      </nav>
+      <fieldset class="pi-theme meta">
+        <legend>Theme</legend>
+        <input type="radio" name="theme" id="theme-system" value="system" checked><label for="theme-system">System</label>
+        <input type="radio" name="theme" id="theme-light" value="light"><label for="theme-light">Light</label>
+        <input type="radio" name="theme" id="theme-dark" value="dark"><label for="theme-dark">Dark</label>
+      </fieldset>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="hero-h">
+      <div class="hero__text">
+        <p class="eyebrow pi-eyebrow">// Backend work, home lab, notes</p>
+        <h1 class="display" id="hero-h"><span class="hero__pending">Headline goes here</span> once the resume review is done.</h1>
+        <p class="annotation hero__note">held on purpose, not forgotten</p>
+        <p class="lead hero__lead">Sample copy. I build backend systems and keep a notebook of what I learn: the home lab I run, a product I'm preparing, and the tools on my desk.</p>
+        <div class="hero__actions">
+          <a class="pi-button pi-button--primary label" href="#work">See the work</a>
+          <a class="pi-button pi-button--secondary label" href="#notes">Read the notes</a>
+        </div>
+      </div>
+      <figure class="pi-figure">
+        <img class="pi-illo" src="/pi/illustrations/desk-scene.png" width="960" height="640" alt="Pencil drawing of an empty work desk with two monitors, a laptop, a lamp and a small shelf of network equipment.">
+        <figcaption class="body-sm">Illustration, not a photo of the actual desk.</figcaption>
+      </figure>
+    </section>
+
+    <section class="section" id="work" aria-labelledby="work-h">
+      <div class="section__head">
+        <p class="eyebrow pi-eyebrow">// Work · three separate topics</p>
+        <h2 class="h1" id="work-h">What I'm building</h2>
+      </div>
+      <div class="pi-topics">
+        <article class="pi-topic">
+          <h3 class="h3 pi-topic__title"><a href="#work">Home lab</a></h3>
+          <hr class="pi-topic__rule">
+          <p class="body-sm pi-topic__summary">A self-hosted environment for learning, testing and everyday tools.</p>
+          <p class="meta"><span class="pi-status pi-status--progress">In progress</span></p>
+          <img class="pi-illo pi-topic__art" src="/pi/illustrations/topic-homelab.png" loading="lazy" decoding="async" width="960" height="640" alt="">
+        </article>
+        <article class="pi-topic">
+          <h3 class="h3 pi-topic__title"><a href="#work">Chronicler</a></h3>
+          <hr class="pi-topic__rule">
+          <p class="body-sm pi-topic__summary">A campaign-management product, being prepared for production. Notes on its decisions, architecture and validation.</p>
+          <p class="meta"><span class="pi-status pi-status--progress">Preparing for production</span></p>
+          <img class="pi-illo pi-topic__art" src="/pi/illustrations/topic-chronicler.png" loading="lazy" decoding="async" width="960" height="640" alt="">
+        </article>
+        <article class="pi-topic">
+          <h3 class="h3 pi-topic__title"><a href="#work">Workspace notes</a></h3>
+          <hr class="pi-topic__rule">
+          <p class="body-sm pi-topic__summary">Practical notes on the tools and setup I work with.</p>
+          <p class="meta"><span class="pi-status pi-status--draft">Draft idea</span></p>
+          <img class="pi-illo pi-topic__art" src="/pi/illustrations/topic-workspace.png" loading="lazy" decoding="async" width="960" height="640" alt="">
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="notes" aria-labelledby="notes-h">
+      <div class="section__head">
+        <p class="eyebrow pi-eyebrow">// Notes</p>
+        <h2 class="h1" id="notes-h">From the notebook</h2>
+      </div>
+      <div class="feature">
+        <article class="pi-prose body">
+          <p class="meta" style="color:var(--ink-muted)">Sample note · 2026-10-31</p>
+          <h3 class="h2" style="margin-top:0">Acknowledge after the write</h3>
+          <p class="lead" style="color:var(--ink-secondary)">A worker that acknowledges a job too early can lose it. A small example of where the ack belongs.</p>
+          <p>The API validates a request and puts a job on a queue. A worker picks it up, does the work and stores the result. If the worker crashes between taking the job and storing the result, the queue should hand the job to someone else.</p>
+          <p>That only happens if the worker hasn't acknowledged it yet. So the acknowledgement goes last, after <code>store.put</code> returns.</p>
+          <blockquote>Write down what you expected before you look at the logs. It makes the surprise easier to see.</blockquote>
+        </article>
+        <div class="feature__side">
+          <figure class="pi-figure">
+            <div class="pi-diagram">
+              <svg viewBox="0 0 640 170" role="img" aria-labelledby="dg-t dg-d">
+                <title id="dg-t">Example: how a job moves through a small backend</title>
+                <desc id="dg-d">A client sends a request to the API. The API puts a job on a queue. A worker takes the job and writes the result to the store. The highlighted path runs from queue to worker to store.</desc>
+                <rect class="box" x="8" y="56" width="104" height="56" rx="3"/>
+                <text class="lbl" x="60" y="82" text-anchor="middle">client</text>
+                <text class="sub" x="60" y="99" text-anchor="middle">browser</text>
+                <rect class="box" x="168" y="56" width="104" height="56" rx="3"/>
+                <text class="lbl" x="220" y="82" text-anchor="middle">api</text>
+                <text class="sub" x="220" y="99" text-anchor="middle">validates</text>
+                <rect class="box" x="328" y="56" width="104" height="56" rx="3"/>
+                <text class="lbl" x="380" y="82" text-anchor="middle">queue</text>
+                <text class="sub" x="380" y="99" text-anchor="middle">jobs</text>
+                <rect class="box" x="488" y="8" width="104" height="56" rx="3"/>
+                <text class="lbl" x="540" y="34" text-anchor="middle">worker</text>
+                <text class="sub" x="540" y="51" text-anchor="middle">processes</text>
+                <rect class="box" x="488" y="104" width="104" height="56" rx="3"/>
+                <text class="lbl" x="540" y="130" text-anchor="middle">store</text>
+                <text class="sub" x="540" y="147" text-anchor="middle">results</text>
+                <path class="edge" d="M112 84 H160"/><path class="head" d="M168 84 l-8 -4 v8 z"/>
+                <path class="edge" d="M272 84 H320"/><path class="head" d="M328 84 l-8 -4 v8 z"/>
+                <path class="edge edge--hot" d="M432 84 H460 V36 H480"/><path class="head head--hot" d="M488 36 l-8 -4 v8 z"/>
+                <path class="edge edge--hot" d="M540 64 V96"/><path class="head head--hot" d="M540 104 l-4 -8 h8 z"/>
+              </svg>
+            </div>
+            <figcaption class="body-sm">The highlighted path is where a lost job can happen.</figcaption>
+          </figure>
+          <figure class="pi-code">
+            <figcaption class="pi-code__head meta"><span>worker.py</span><span>Python</span></figcaption>
+            <pre class="code"><code><span class="c"># Acknowledge only after the result is stored.</span>
+<span class="k">def</span> handle(message, store):
+    result = process(message.body)
+    store.put(message.id, result)
+    message.ack()
+    <span class="k">return</span> &#123;<span class="s">"id"</span>: message.id, <span class="s">"status"</span>: <span class="s">"done"</span>&#125;</code></pre>
+          </figure>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:var(--space-4)">
+        <div class="section__head">
+          <p class="eyebrow pi-eyebrow" style="flex-basis:auto">// More notes · sample titles</p>
+        </div>
+        <ul class="pi-entries">
+          <li><a href="#notes"><span class="pi-entries__title body-sm">Notes on container networking</span><span class="pi-entries__meta meta">2026-10-31</span><span class="pi-entries__arrow" aria-hidden="true">→</span></a></li>
+          <li><a href="#notes"><span class="pi-entries__title body-sm">A few useful debugging habits</span><span class="pi-status pi-status--progress meta">In progress</span><span class="pi-entries__arrow" aria-hidden="true">→</span></a></li>
+          <li><a href="#notes"><span class="pi-entries__title body-sm">Setting up a lightweight home lab</span><span class="pi-status pi-status--draft meta">Draft idea</span><span class="pi-entries__arrow" aria-hidden="true">→</span></a></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" id="about" aria-labelledby="about-h">
+      <div class="section__head">
+        <p class="eyebrow pi-eyebrow">// About</p>
+        <h2 class="h1" id="about-h">About this notebook</h2>
+      </div>
+      <div class="about">
+        <div class="pi-prose body">
+          <p>Sample copy. My day job is backend engineering. Machine learning is something I'm studying for later, and I'll write about it here when there's real work to show.</p>
+          <p>The three topics above stay separate. Each one has its own notes, its own status and its own evidence.</p>
+          <div class="contact">
+            <p class="eyebrow pi-eyebrow">// Contact</p>
+            <p class="body-sm" style="color:var(--ink-secondary)">Contact details go here once they're confirmed.</p>
+          </div>
+        </div>
+        <figure class="pi-figure">
+          <div class="pi-placeholder" role="img" aria-label="Placeholder for a real photo of the desk at work">
+            <p class="annotation pi-placeholder__note">real work photo goes here</p>
+            <ul class="meta pi-placeholder__brief">
+              <li>Over the shoulder at the desk, natural light</li>
+              <li>Pair with a readable crop of one screen</li>
+              <li>No addresses, tokens or private windows in frame</li>
+            </ul>
+          </div>
+          <figcaption class="body-sm">Waiting for a real photo.</figcaption>
+        </figure>
+      </div>
+    </section>
+  </main>
+</div>
+
+<footer class="site-foot meta">
+  <div class="wrap">
+    <p>Piyush Satti</p>
+    <p>Pi Design System · sample copy</p>
+  </div>
+</footer>
+
+<script is:inline>
+  (function () {
+    var root = document.documentElement;
+    var saved = 'system';
+    try { saved = localStorage.getItem('pi-theme') || 'system'; } catch (e) {}
+    var input = document.getElementById('theme-' + saved);
+    if (input) input.checked = true;
+    document.querySelectorAll('input[name="theme"]').forEach(function (r) {
+      r.addEventListener('change', function () {
+        if (r.value === 'system') root.removeAttribute('data-theme');
+        else root.setAttribute('data-theme', r.value);
+        try { localStorage.setItem('pi-theme', r.value); } catch (e) {}
+      });
+    });
+  })();
+</script>
+</body>
+</html>
