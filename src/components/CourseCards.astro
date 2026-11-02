@@ -251,7 +251,8 @@ const categories = [
 
   .course-card {
     flex: 0 0 320px;
-    border: 2px solid var(--accent);
+    border: var(--border-hair) solid var(--line);
+    border-radius: var(--radius-md);
     padding: 1.5rem;
     background: var(--card-bg);
     transition: all 0.2s ease;
@@ -261,9 +262,7 @@ const categories = [
   }
 
   .course-card:hover {
-    border-color: var(--accent-soft);
-    box-shadow: 0 0 20px var(--glow-soft);
-    transform: translateY(-2px);
+    border-color: var(--line-strong);
   }
 
   .course-card__header {
@@ -304,10 +303,10 @@ const categories = [
     display: inline-block;
     padding: 0.25rem 0.75rem;
     font-size: 0.85rem;
-    background: color-mix(in srgb, var(--accent) 15%, transparent);
-    border: 1px solid var(--accent);
-    color: var(--accent);
-    border-radius: 3px;
+    background: transparent;
+    border: var(--border-hair) solid var(--line-strong);
+    color: var(--ink-secondary);
+    border-radius: var(--radius-pill);
   }
 
   .course-badge--grade {

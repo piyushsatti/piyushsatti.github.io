@@ -21,7 +21,7 @@ export default {
       },
       fontFamily: {
         mono: [
-          "Fira Code",
+          "IBM Plex Mono",
           "JetBrains Mono",
           "Monaco",
           "Consolas",

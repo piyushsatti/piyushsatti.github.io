@@ -10,7 +10,7 @@
     --terminal-background-fallback: #1a170f;
     --terminal-foreground-fallback: #eceae5;
     --terminal-accent-fallback: #eec35e;
-    --font-display: "Space Grotesk", "Fira Code", "JetBrains Mono", monospace;
+    --font-display: var(--font-serif);
   }
 
   html {
