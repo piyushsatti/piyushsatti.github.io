@@ -1,7 +1,7 @@
 export const prerender = true;
 
 export async function GET({ site }) {
-  const origin = site ?? "https://piyushsatti.github.io";
+  const origin = site ?? "https://piyushsatti.com";
   const sitemapURL = new URL("sitemap.xml", origin).toString();
 
   const body = [`User-agent: *`, `Allow: /`, ``, `Sitemap: ${sitemapURL}`]

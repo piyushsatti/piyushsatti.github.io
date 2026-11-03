@@ -3,6 +3,8 @@
    canvas, surface and surface-raised in its theme. */
 
 :root[data-palette="cobalt"] {
+  /* Pi's focus ring is drafting blue; on a blue accent it would read as a link, so use ink. */
+  --focus: var(--ink);
   --accent: #2b54a3; --accent-fill: #2f5bb0; --accent-fill-hover: #24488f; --on-accent: #fffaf2; --accent-mark: #3d6cc4;
 }
 :root[data-palette="mint"] {

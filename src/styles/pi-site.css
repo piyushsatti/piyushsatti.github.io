@@ -30,7 +30,8 @@ a {
 }
 a:hover { color: var(--accent); text-shadow: none; text-decoration-thickness: 2px; text-decoration-color: currentColor; }
 
-:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+/* Not :where(): it must outrank tailwind.css's 1px a/button:focus-visible ring. */
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible {
   outline: var(--focus-width) solid var(--focus);
   outline-offset: var(--focus-width);
   box-shadow: none;
