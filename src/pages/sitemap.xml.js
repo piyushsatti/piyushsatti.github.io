@@ -11,14 +11,13 @@ const basePaths = [
   "blog",
   "tags",
   "hobbies",
-  "contact",
 ];
 
 const formatDate = (value) =>
   value ? new Date(value).toISOString() : undefined;
 
 export async function GET({ site }) {
-  const origin = site ?? "https://piyushsatti.github.io";
+  const origin = site ?? "https://piyushsatti.com";
 
   const urls = new Map();
 

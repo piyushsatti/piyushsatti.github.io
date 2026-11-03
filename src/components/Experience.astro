@@ -74,15 +74,15 @@ const { title = "Experience", experiences } = Astro.props;
   }
 
   .experience-card {
-    border: 2px solid var(--accent);
+    border: var(--border-hair) solid var(--line);
+    border-radius: var(--radius-md);
     padding: 1.5rem;
     background: var(--card-bg);
     transition: all 0.2s ease;
   }
 
   .experience-card:hover {
-    border-color: var(--accent-soft);
-    box-shadow: 0 0 20px var(--glow-soft);
+    border-color: var(--line-strong);
   }
 
   .experience-card__header {

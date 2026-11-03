@@ -1,0 +1,37 @@
+/* Pi Design System accent palettes. "amber" is the system's own burnt orange (tokens.css), so it has no override.
+   Each palette swaps only the accent family; every value is checked for 4.5:1 text and 3:1 mark contrast on
+   canvas, surface and surface-raised in its theme. */
+
+:root[data-palette="cobalt"] {
+  /* Pi's focus ring is drafting blue; on a blue accent it would read as a link, so use ink. */
+  --focus: var(--ink);
+  --accent: #2b54a3; --accent-fill: #2f5bb0; --accent-fill-hover: #24488f; --on-accent: #fffaf2; --accent-mark: #3d6cc4;
+}
+:root[data-palette="mint"] {
+  --accent: #1d6b5b; --accent-fill: #207362; --accent-fill-hover: #175c4e; --on-accent: #fffaf2; --accent-mark: #2f8a76;
+}
+:root[data-palette="rose"] {
+  --accent: #a3324b; --accent-fill: #ad3852; --accent-fill-hover: #8f2a41; --on-accent: #fffaf2; --accent-mark: #c24a63;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"])[data-palette="cobalt"] {
+    --accent: #8fb0f0; --accent-fill: #86a8ec; --accent-fill-hover: #a6c0f4; --on-accent: #0f1422; --accent-mark: #7598e0;
+  }
+  :root:not([data-theme="light"])[data-palette="mint"] {
+    --accent: #72cfb3; --accent-fill: #68c7ab; --accent-fill-hover: #8ddcc3; --on-accent: #0c1a16; --accent-mark: #5bb89c;
+  }
+  :root:not([data-theme="light"])[data-palette="rose"] {
+    --accent: #f0909f; --accent-fill: #ec8697; --accent-fill-hover: #f5a8b4; --on-accent: #22100f; --accent-mark: #de7385;
+  }
+}
+
+:root[data-theme="dark"][data-palette="cobalt"] {
+  --accent: #8fb0f0; --accent-fill: #86a8ec; --accent-fill-hover: #a6c0f4; --on-accent: #0f1422; --accent-mark: #7598e0;
+}
+:root[data-theme="dark"][data-palette="mint"] {
+  --accent: #72cfb3; --accent-fill: #68c7ab; --accent-fill-hover: #8ddcc3; --on-accent: #0c1a16; --accent-mark: #5bb89c;
+}
+:root[data-theme="dark"][data-palette="rose"] {
+  --accent: #f0909f; --accent-fill: #ec8697; --accent-fill-hover: #f5a8b4; --on-accent: #22100f; --accent-mark: #de7385;
+}

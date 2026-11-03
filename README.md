@@ -158,7 +158,7 @@ The project keeps the Astro Terminal aesthetic intact. Customisations focus on c
 
 The site is designed for GitHub Pages:
 
-1. Ensure `astro.config.mjs` has `site: "https://piyushsatti.github.io"`.
+1. Ensure `astro.config.mjs` has `site: "https://piyushsatti.com"`.
 2. Run `npm run build` locally to validate.
 3. Push to the default branch; the GitHub Actions workflow (if enabled) will build and publish to Pages.
 
