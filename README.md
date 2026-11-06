@@ -171,6 +171,18 @@ You can also host the `dist/` folder on any static host (Netlify, Vercel static 
 - Keep `resume.pdf` updated in `public/`.
 - Refresh social metadata (OpenGraph, JSON-LD) when adding new content types.
 
+## 🙏 Credits
+
+Retro mode (`/retro/`) is built on other people's work:
+
+- **The computer and the CRT screen: [Henry Heffernan](https://henryheffernan.com).** The 3D computer and desk models with their baked textures (his logo painted out of the monitor's texture, our badge drawn in), the way the screen is placed into the monitor, the camera framing, the film-grain shader, and the smudge and shadow layers come from his portfolio, [henryjeff/portfolio-website](https://github.com/henryjeff/portfolio-website) (commit `c53c5a5`), under the MIT License. His copyright notice and license sit next to the files in [`public/retro/henry/LICENSE.md`](./public/retro/henry/LICENSE.md). The idea of a portfolio inside an old computer screen is his too. Thank you, Henry.
+- **3D rendering: [three.js](https://threejs.org)**, MIT License.
+- **Windows XP interface: [XP.css](https://github.com/botoxparty/XP.css) by Adam Hammad and Jordan Scales**, MIT License.
+
+- **Wallpaper: "Bliss"**, Microsoft's official 4K render of Charles O'Rear's photograph (Microsoft Design, 2021), resized to 1600px. © Microsoft; used here as a tribute, not under a free license.
+
+The desktop itself (windows, icons, taskbar, the pixel dinosaur cursors, the screen static and the click sounds, which are generated in code) is our own work; Henry's OS ([portfolio-inner-site](https://github.com/henryjeff/portfolio-inner-site)) is not used, and no Microsoft cursor files are included.
+
 ## 📄 License
 
 This repository retains the original [MIT License](./LICENSE) from the Astro Terminal theme. Credit for the visual design goes to [panr](https://github.com/panr).

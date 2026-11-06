@@ -33,6 +33,7 @@ const palettes = [
       </a>
     </div>
     <div class="header__actions">
+      <a class="retro-toggle" href="/retro/" data-retro>retro</a>
       <div class="theme-toggle-group">
         <button
           class="theme-toggle"
@@ -304,7 +305,8 @@ const palettes = [
     const initialTheme =
       getStoredTheme() ?? (prefersDark?.matches ? "dark" : "light");
 
-    applyTheme(initialTheme, false);
+    // Pages inside a retro-mode window read as paper, whatever the visitor picked
+    applyTheme(root.classList.contains("is-embedded") ? "light" : initialTheme, false);
     applyPalette(getStoredPalette() ?? "amber", false);
 
     toggle?.addEventListener("click", () => {
@@ -434,6 +436,19 @@ const palettes = [
           dropdown.removeAttribute("style");
         }
       });
+    });
+
+    // Retro mode: quick fade to black, then /retro/ powers the CRT on
+    header.querySelector("[data-retro]")?.addEventListener("click", (event) => {
+      if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+      event.preventDefault();
+      const href = event.currentTarget.getAttribute("href");
+      const fade = document.createElement("div");
+      fade.style.cssText =
+        "position:fixed;inset:0;background:#000;opacity:0;transition:opacity .3s;z-index:9999";
+      document.body.appendChild(fade);
+      requestAnimationFrame(() => (fade.style.opacity = "1"));
+      setTimeout(() => (window.location.href = href), 320);
     });
 
     const logoLink = header.querySelector(".header__logo a");

@@ -107,6 +107,8 @@ const navItems = [
       (() => {
         const storageKey = "terminal-theme-preference";
         const root = document.documentElement;
+        // Inside a retro-mode window: drop the site chrome, the window has its own
+        if (window.self !== window.top) root.classList.add("is-embedded");
 
         try {
           const stored = localStorage.getItem(storageKey);

@@ -331,3 +331,8 @@ iframe[src*="spotify"], iframe[src*="google.com/maps"], iframe[src*="soundcloud"
 /* Post bodies never push the page sideways: embeds scale down, long URLs wrap */
 .post-full__content iframe { max-width: 100%; height: auto; aspect-ratio: 16 / 9; }
 .post-full__content a { overflow-wrap: anywhere; }
+
+/* Retro mode entry, and pages shown inside a retro-mode window */
+.retro-toggle { font-family: var(--font-mono); font-size: 13px; color: var(--ink-secondary); text-decoration: none; border: var(--border-hair) solid var(--line-strong); border-radius: var(--radius-sm); padding: 2px 8px; }
+.retro-toggle:hover { color: var(--ink); border-color: var(--ink); }
+.is-embedded .header, .is-embedded .availability-banner, .is-embedded .footer { display: none; }
