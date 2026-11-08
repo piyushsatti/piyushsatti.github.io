@@ -1,4 +1,5 @@
 import { getCollection, type CollectionEntry } from "astro:content";
+import { isPublished } from "./published";
 
 const COLLECTIONS = ["blog", "projects", "research"] as const;
 
@@ -42,7 +43,10 @@ async function loadTagMap(): Promise<Map<string, TagBucket>> {
   const buckets = new Map<string, TagBucket>();
 
   for (const collection of COLLECTIONS) {
-    const entries = await getCollection(collection);
+    const entries = await getCollection(
+      collection,
+      collection === "blog" ? isPublished : undefined
+    );
 
     for (const entry of entries) {
       const tags = Array.isArray((entry.data as any).tags)

@@ -3,6 +3,7 @@ title: "REST vs GraphQL: Contrasting Two API Designs"
 description: "A deep technical comparison of REST (in Nonagon) and GraphQL (in Risk-Emulated), exploring schema design, error handling, performance, and trade-offs."
 pubDate: "2025-10-09"
 tags: [Python, Java, REST, GraphQL, Backend, LearningByBuilding]
+draft: true
 ---
 
 ## Introduction

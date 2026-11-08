@@ -1,5 +1,6 @@
 import { getCollection } from "astro:content";
 import { getAllTags } from "../lib/tags";
+import { isPublished } from "../lib/published";
 
 export const prerender = true;
 
@@ -28,7 +29,7 @@ export async function GET({ site }) {
     urls.set(loc, {});
   });
 
-  const blogEntries = await getCollection("blog");
+  const blogEntries = await getCollection("blog", isPublished);
   blogEntries.forEach((entry) => {
     const loc = new URL(`blog/${entry.slug}/`, origin).toString();
     const lastmod =

@@ -4,13 +4,14 @@ import PostCard from "../components/PostCard.astro";
 import TechStack from "../components/TechStack.astro";
 import Experience from "../components/Experience.astro";
 import { getCollection } from "astro:content";
+import { isPublished } from "../lib/published";
 
 const base = import.meta.env.BASE_URL.endsWith("/")
   ? import.meta.env.BASE_URL
   : import.meta.env.BASE_URL + "/";
 
 // Latest blog posts
-const posts = (await getCollection("blog"))
+const posts = (await getCollection("blog", isPublished))
   .sort(
     (a, b) =>
       new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf()
@@ -28,6 +29,14 @@ const projects = (await getCollection("projects"))
 
 // Experience data
 const experiences = [
+  {
+    company: "Citylogix",
+    role: "Python Developer",
+    startDate: "Feb 2026",
+    endDate: null,
+    description:
+      "I'm a Python developer at Citylogix, where I started in February on an Airflow pipeline that processes road-survey imagery. I containerised its image-processing and GIS steps with Docker and owned the integration of a new data-collection vehicle. I also researched and implemented a panoramic reprojection method that turns 360° imagery into planar views, so field vehicles can carry fewer cameras, and researched and validated an inference method that improved detection quality; it was adopted in production. From August most of my time went into a platform that moves around 12 TB of field survey data a day into long-term storage, which I built end to end from design to production. These days I build training-data tooling with the AI team: a database, a record format and the command-line tools around them. I designed, directed and reviewed AI-written code for all of it, deciding what gets built and how it fits together while the agents do the typing.",
+  },
   {
     company: "Freelance (Upwork, forums)",
     role: "Software Developer",
@@ -62,7 +71,7 @@ const experiences = [
     description:
       "Supported Object-Oriented Programming II by debugging student code, explaining OOP concepts, and helping students implement course projects.",
     achievements: [
-      "Programmer on Duty for a course with 400+ students, providing hands-on debugging and implementation support",
+      "Programmer on Duty for the course, providing hands-on debugging and implementation support",
       "Led weekly sessions for ~20 students and delivered a revision lecture for ~40 students covering core Java/OOP topics",
     ],
     tech: ["Java", "OOP", "Debugging", "Teaching"],
@@ -89,11 +98,10 @@ const experiences = [
     <div class="left">
       <div class="index-content framed">
         <h1 id="hello-there">Piyush Satti</h1>
+        <p>Python developer working on data pipelines and computer vision.</p>
         <p>
-          Software developer with a Master of Applied Computer Science from
-          Concordia University (Montreal, Canada). I build production software
-          end-to-end, with hands-on freelance delivery experience and published
-          research in algorithm development.
+          I also build open-source tools for coding with agents, and write here
+          about them and my home lab.
         </p>
 
         <p class="hero__links">

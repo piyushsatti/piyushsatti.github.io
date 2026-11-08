@@ -12,6 +12,7 @@ tldr:
   - "A world model, in Sutton’s sense, predicts consequences of actions and updates when surprised."
   - "Most learning signal should come from rich experience streams, not sparse end rewards."
   - "The 'Bitter Lesson' prediction: scalable methods that learn from experience outlast hand-designed knowledge."
+draft: true
 ---
 
 If you follow modern “agent” discourse long enough, you start to see two different definitions of progress talking past each other.

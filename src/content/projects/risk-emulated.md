@@ -1,35 +1,36 @@
 ---
-title: "Risk-Emulated: Backend Game Engine"
-startDate: "2024-08-01"
-endDate: "2024-11-01"
-summary: "Playable RISK backend using Spring Boot + GraphQL with a typed schema (createGame, reinforce, attack, gameStatus), map validator, State/Strategy engine, audit MoveLog, and CI gates."
-tags:
-  ["Java", "Spring Boot", "GraphQL", "DDD", "Docker", "PostgreSQL", "Testing"]
+title: "Risk-Emulated: Java Terminal Strategy Game"
+startDate: "2024-02-02"
+endDate: "2024-04-09"
+summary: "A team course project: a Risk-style strategy game played in the terminal, written in Java 21 and built with Maven. It has a map editor that loads, edits, validates and saves .map files, and JUnit tests."
+tags: ["Java", "Maven", "JUnit", "Design Patterns", "Team project"]
 image: ""
-repo: "https://github.com/piyushsatti/old-risk-emulated"
+repo: "https://github.com/piyushsatti/risk-emulated"
 ---
 
 ## Overview
 
-A backend-only, rules-accurate **RISK** implementation. It exposes a **typed GraphQL API** for map creation and turn phases while isolating game logic behind domain services. The focus: correctness, testability, and reproducibility.
+Risk-Emulated is a turn-based strategy game in the style of Risk, played entirely in a terminal. A team of six built it for the SOEN 6441 course project at Concordia University between February and April 2024. It is written in Java 21 and built with Maven. There is no server, database or graphical interface.
+
+The game has two modes. In the map editor you load a `.map` file, add or remove continents, countries and borders, check that the map is playable, and save it. In gameplay you add players, assign countries and deploy armies, all by typing commands.
+
+My part: I wrote the map loading, saving and validation code, the error handling around map commands, and early unit tests for map connectivity. In March 2024 I also moved the code to a model-view-controller layout with the game phases as states.
 
 ## Problem → Solution → Impact
 
-- **Problem.** Represent turn-based board-game mechanics (setup, reinforce, attack, fortify) as safe, testable server operations.
-- **Solution.** **DDD** entities (`Game`, `Player`, `Territory`, `Continent`, `Card`, `MoveLog`), a phase/state engine (State pattern), and pluggable combat/reinforcement policies (Strategy). A graph-based validator enforces connected maps and continent bonuses.
-- **Impact.** Deterministic turns (audit via `MoveLog`), fast iteration on rules, and clean boundaries for future UI.
+- **Problem.** Players need to build or load a map, check that it can be played, then take turns placing armies, all from typed text commands.
+- **Solution.** `GameEngine` runs a loop that moves between the main menu, the map editor and gameplay. `MapInterface` reads and writes `.map` files and checks a map before play: every country must be reachable from every other country, and the countries inside each continent must be connected to each other. `CommandValidator` checks each command and its `-add` or `-remove` options before anything changes, and named exceptions (such as `DuplicateCountryException` and `InvalidMapException`) say what went wrong. `TerminalRenderer` prints the menus, prompts and the map.
+- **Impact.** A map that fails validation cannot be used to start a game, and a mistyped command is rejected with a message before it touches the map.
 
-## API (examples)
+## Commands (examples)
 
-- Queries/Mutations: `createGame`, `reinforce`, `attack`, `fortify`, `gameStatus`.
-- Strongly-typed I/O via GraphQL, ideal for future UI or bots.
+- Map editor: `loadmap`, `editmap`, `savemap`, `showmap`, `validatemap`, and `editcontinent`, `editcountry`, `editneighbor` with `-add` or `-remove`.
+- Gameplay: `gameplayer -add` or `-remove`, `assigncountries`, `deploy`.
 
-## Testing & CI
+## Testing
 
-Style gates (**Checkstyle/Spotless**), coverage checks, and GitHub Actions workflows. Observability via MoveLog enables step-by-step replay.
+JUnit tests cover map validation (connected and disconnected maps), assigning countries to players, reinforcement counts and deploy checks. Run them with `mvn test`. Javadoc is generated with the Maven Javadoc plugin.
 
-## Next steps
+## Where it ended
 
-- Add rate-limited public sandbox
-- Extend schema for map editors and variants
-- More coverage on edge combat cases
+The `main` branch holds the first build. The `build2_refactor` branch (last commit 9 April 2024) holds the final build: game phases as State classes, one class per command, an adapter for Conquest-format map files, six order types (deploy, advance, bomb, blockade, airlift, diplomacy), computer players with different strategies (aggressive, benevolent, random, cheater), a tournament mode, a game log, and test suites for the orders, commands and phases. In January 2026 I added a README and architecture and map-editor notes to `main`.

@@ -20,6 +20,7 @@ tldr:
   - "In-context learning behaves like working memory; weights are a compressed, hazy recollection of training data."
   - "Outcome-based RL has poor credit assignment (“sucking supervision through a straw”); process supervision is hard because judges are gameable."
   - "Synthetic self-training risks distribution collapse; entropy and novelty matter for stable improvement."
+draft: true
 ---
 
 Andrej Karpathy’s argument is not “agents are impossible.” It is “agents are early, and the hard parts are in the stack, not in the demos.” He frames an agent as something closer to a hireable intern than a chatbot. By that standard, today’s systems are useful, but not reliable.

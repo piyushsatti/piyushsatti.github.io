@@ -3,6 +3,7 @@ title: "Building Nonagon — Lessons from a Discord-Native System"
 description: "Reflecting on the technical and architectural lessons learned while building Nonagon — a Discord-native quest and summary management system built with FastAPI and MongoDB."
 pubDate: "2025-10-09"
 tags: [Python, FastAPI, Discord, LearningByBuilding, Backend, Portfolio]
+draft: true
 ---
 
 ## Overview

@@ -13,6 +13,7 @@ tldr:
   - "Carmack re-framed limits as a creative catalyst, not a blocker"
   - "Balance: choose when to polish and when to ship"
   - "Goal: deliberate practice toward writing code that is both clean and fast enough"
+draft: true
 ---
 
 There comes a point (or several small ones) where you look up from a sprint board and wonder if there is more to all these tickets than velocity charts. I'm not even “there” yet career‑wise—still carving out a foothold—but I already have a mental North Star. Actually two of them: **Robert “Uncle Bob” Martin** and **John Carmack**. They sit on opposite sides of the same coin that I keep flipping in my head every time I start something new.

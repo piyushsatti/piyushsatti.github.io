@@ -13,6 +13,7 @@ tldr:
   - "Version control, debugging, and data wrangling sessions are practical fire drills, not theory"
   - "Small daily rituals—journaled dotfiles, tmux sessions, watch scripts—compound into reliability"
   - "I now have a personal syllabus for levelling up beyond feature tickets"
+draft: true
 ---
 
 Every degree syllabus I have seen worships algorithms and projects, not the gritty tools that keep engineers sane. Cue MIT's **Missing Semester** playlist—it felt like the adviser I wish I met in my freshman fall. Instead of more theory, it walks through the connective tissue of real-world software work: shells, editors, automation, reproducibility. I'm writing this while my terminal is still glowing because the course filled exactly the gap I have been tripping over.

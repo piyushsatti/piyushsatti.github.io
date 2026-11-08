@@ -15,6 +15,7 @@ const blog = defineCollection({
     externalLink: z.string().url().optional(),
     sourceLink: z.string().url().optional(),
     tldr: z.array(z.string()).optional(),
+    draft: z.boolean().default(false),
   }),
 });
 
