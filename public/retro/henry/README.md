@@ -12,6 +12,8 @@ c53c5a50183655eb83d70048403a5084f5d1214c, under the MIT License in LICENSE.md
 | models/baked_computer_ps.jpg | static/models/Computer/baked_computer.jpg, modified: the "Heffernan / henry inc" logo on the monitor bezel and the keyboard label painted over |
 | models/environment.glb | static/models/World/environment.glb |
 | models/baked_environment.jpg | static/models/World/baked_environment.jpg |
+| audio/mouse_down.mp3, mouse_up.mp3 | static/audio/mouse/ |
+| audio/key_1.mp3 to key_6.mp3 | static/audio/keyboard/ |
 | models/decor.glb | static/models/Decor/decor.glb |
 | models/baked_decor_modified.jpg | static/models/Decor/baked_decor_modified.jpg |
 

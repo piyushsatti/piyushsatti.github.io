@@ -66,7 +66,8 @@ const henry = "/retro/henry";
 <h1 class="sr-only">Piyush Satti, retro mode</h1>
 <!-- Henry Heffernan's computer and desk (MIT), rendered with three.js; the screen below is placed
      into the monitor with CSS3DRenderer, the way his portfolio does it -->
-<div class="room" id="room"><div id="css3d"></div><div id="webgl"></div><div id="grain"></div></div>
+<div class="curtain" id="curtain"></div>
+<div class="room" id="room"><div id="css3d"></div><div id="webgl"></div><div id="grain"></div><div class="housing" id="housing"></div></div>
 
 <div class="screen is-off" id="screen" data-cursor-start={florence[0]} data-cursor-walk={florence[1]} data-cursor-wait={reginald}>
     <div class="display">
@@ -113,12 +114,7 @@ const henry = "/retro/henry";
     </div>
     </div>
 
-    <div class="layers" aria-hidden="true">
-      <canvas class="layer layer--static" id="static" width="160" height="128"></canvas>
-      <img class="layer layer--smudges" src={`${henry}/layers/smudges.jpg`} alt="">
-      <img class="layer layer--shadow" src={`${henry}/layers/shadow.png`} alt="">
-      <div class="layer layer--glare"></div>
-    </div>
+    <div class="layers" aria-hidden="true"></div>
 </div>
 
 <template id="window-tpl">
@@ -141,13 +137,12 @@ const henry = "/retro/henry";
   .room { position: fixed; inset: 0; background: #d7d7d9; cursor: var(--cursor); }
   #css3d, #webgl, #grain { position: absolute; inset: 0; }
   #webgl, #grain { pointer-events: none; }
-  #grain { mix-blend-mode: soft-light; opacity: 0.12; }
+  #grain { mix-blend-mode: soft-light; opacity: 0.04; }
   /* The screen: 1280x1024 in the model's units (Henry's size), a 32px dark gap round the
      picture, and a constant sub-pixel jitter. The desktop inside is laid out at 640x505 and
      scaled 1.9x, so it reads well on a 1080p display. */
   .screen { width: 1280px; height: 1024px; background: #1d2e2f; font-family: Tahoma, Verdana, "Segoe UI", sans-serif; cursor: var(--cursor); }
-  /* slightly muted, like phosphor seen through glass */
-  .display { position: absolute; inset: 32px; overflow: hidden; filter: saturate(0.9) contrast(0.95); animation: jittery 0.3s ease-in-out infinite; transition: clip-path 0.35s ease-out, filter 0.35s ease-out; }
+  .display { position: absolute; inset: 32px; overflow: hidden; animation: jittery 0.3s ease-in-out infinite; transition: clip-path 0.35s ease-out, filter 0.35s ease-out; }
   .screen.is-off .display { clip-path: inset(49.8% 0); filter: brightness(6); }
   .desk-area { position: absolute; top: 0; left: 0; width: 640px; height: 505px; transform: scale(1.9); transform-origin: 0 0; overflow: hidden; }
   @keyframes jittery {
@@ -165,9 +160,9 @@ const henry = "/retro/henry";
   .wallpaper { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 
   .desktop { position: absolute; inset: 8px 8px 36px; display: flex; flex-flow: column wrap; align-content: flex-start; gap: 2px; }
-  .icon { all: unset; width: 76px; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 3px; color: #fff; font-family: inherit; font-size: 12px; text-align: center; }
+  .icon { all: unset; width: 64px; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 3px; color: #fff; font-family: inherit; font-size: 10px; text-align: center; }
   .icon:focus-visible .icon__label, .icon.is-selected .icon__label { background: #316ac5; outline: 1px dotted #fff; }
-  .icon__img { width: 32px; height: 32px; image-rendering: pixelated; background: center / contain no-repeat; }
+  .icon__img { width: 24px; height: 24px; image-rendering: pixelated; background: center / contain no-repeat; }
   .icon__img--folder { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath fill='%23000' d='M1 3h5l1 1h8v10H1z'/%3E%3Cpath fill='%23ffd34d' d='M2 4h4l1 1h7v8H2z'/%3E%3Cpath fill='%23fff3a8' d='M2 6h12v1H2z'/%3E%3C/svg%3E"); }
   .icon__img--doc { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath fill='%23000' d='M3 1h7l3 3v11H3z'/%3E%3Cpath fill='%23fff' d='M4 2h5v3h3v9H4z'/%3E%3Cpath fill='%23808080' d='M5 7h6v1H5zm0 2h6v1H5zm0 2h4v1H5z'/%3E%3C/svg%3E"); }
   .icon__img--user { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath fill='%23000' d='M1 2h14v10H1zm4 11h6v2H5z'/%3E%3Cpath fill='%23c0c0c0' d='M2 3h12v8H2z'/%3E%3Cpath fill='%23000080' d='M3 4h10v6H3z'/%3E%3Cpath fill='%23fff' d='M7 5h2v2H7zm-1 3h4v1H6z'/%3E%3C/svg%3E"); }
@@ -207,16 +202,14 @@ const henry = "/retro/henry";
   .ctx .is-default { font-weight: bold; }
   .ctx hr { margin: 3px 1px; border: 0; border-top: 1px solid #aca899; }
 
-  /* CRT layers over the visible picture only (Henry's shadow and smudge art is sized to it) */
-  .layers { position: absolute; inset: 32px; pointer-events: none; z-index: 10000; }
-  .layer { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  /* procedural static, drawn small and scaled up so it stays soft */
-  .layer--static { opacity: 0.1; mix-blend-mode: screen; }
-  .layer--smudges { opacity: 0.12; mix-blend-mode: screen; }
-  .layer--shadow { object-fit: fill; }
-  /* curved-glass sheen */
-  .layer--glare { background: radial-gradient(ellipse 70% 55% at 28% 18%, rgba(255, 255, 255, 0.09), transparent 60%); }
+  /* Over the desktop itself: faint scanlines and nothing else. Every other effect lives in the housing. */
+  .layers { position: absolute; inset: 32px; pointer-events: none; z-index: 10000; background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.07) 0 1px, transparent 1px 3px); }
+  /* The tube housing: everything outside the screen rectangle. A slightly rounded dark rim, an inner falloff, then black. */
+  .housing { position: fixed; z-index: 5; pointer-events: none; opacity: 0; border-radius: 22px; box-shadow: 0 0 0 5px #142223, 0 0 0 10px #0c1718, 0 0 0 18px #070e0e, 0 0 36px 24px rgba(0, 0, 0, 0.85), 0 0 0 200vmax #030606; }
 
+  /* black from the first paint, so arriving from the header fade never flashes the grey room */
+  .curtain { position: fixed; inset: 0; background: #000; z-index: 10002; pointer-events: none; transition: opacity 0.9s ease-out; }
+  .curtain.is-off { opacity: 0; }
   .fade { position: fixed; inset: 0; background: #000; opacity: 0; transition: opacity 0.3s; z-index: 10001; pointer-events: none; }
   .fade.is-on { opacity: 1; }
 
@@ -249,68 +242,52 @@ const henry = "/retro/henry";
     const powerOn = () => { screen.classList.remove("is-off"); booting = false; };
     addEventListener("retro:ready", powerOn, { once: true });
     setTimeout(powerOn, 8000);
-    // Static: random noise plus a faint band rolling down, ~12fps; one still frame if motion is reduced
-    const staticCanvas = document.getElementById("static");
-    const sg = staticCanvas.getContext("2d");
-    const noise = sg.createImageData(staticCanvas.width, staticCanvas.height);
-    let roll = 0;
-    const drawStatic = () => {
-      const d = noise.data;
-      for (let i = 0; i < d.length; i += 4) {
-        const v = Math.random() * 255;
-        d[i] = d[i + 1] = d[i + 2] = v;
-        d[i + 3] = 255;
-      }
-      sg.putImageData(noise, 0, 0);
-      roll = (roll + 1.5) % (staticCanvas.height + 40);
-      const band = sg.createLinearGradient(0, roll - 40, 0, roll);
-      band.addColorStop(0, "rgba(255,255,255,0)");
-      band.addColorStop(1, "rgba(255,255,255,0.35)");
-      sg.fillStyle = band;
-      sg.fillRect(0, roll - 40, staticCanvas.width, 40);
-    };
-    drawStatic();
-    if (!reduceMotion) setInterval(drawStatic, 80);
-
     // Cursors, like the old scheme: normal arrow, blue dino while the monitor boots,
     // yellow dino walking while a window is starting
     const { cursorStart, cursorWalk, cursorWait } = screen.dataset;
     let booting = true; // blue dino until the computer is on
     let loading = 0;
+    let busy = false; // blue dino while the desktop refreshes
     let step = false;
     setInterval(() => {
       step = !step;
-      const cursor = booting ? cursorWait : loading > 0 ? (step ? cursorWalk : cursorStart) : "auto";
+      const cursor = booting || busy ? cursorWait : loading > 0 ? (step ? cursorWalk : cursorStart) : "auto";
       document.documentElement.style.setProperty("--cursor", cursor); // whole page, so the dino shows during the intro too
     }, 220);
 
     // Sounds
     let soundOn = true;
     try { soundOn = localStorage.getItem(SOUND_KEY) !== "off"; } catch (e) {}
-    // Clicks are synthesised (a short filtered noise burst), so there are no audio files at all
+    // Henry's recorded mouse and key sounds (MIT), decoded once and played through WebAudio
+    const SOUNDS = { down: "mouse_down", up: "mouse_up", ...Object.fromEntries([1, 2, 3, 4, 5, 6].map((n) => ["key" + n, "key_" + n])) };
+    const buffers = {};
     let audio;
-    const click = (freq, length, volume) => {
-      if (!soundOn) return;
+    const load = async () => {
       audio ??= new AudioContext();
-      const rate = audio.sampleRate;
-      const buf = audio.createBuffer(1, Math.round(rate * length), rate);
-      const data = buf.getChannelData(0);
-      for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (rate * length * 0.18));
+      await Promise.all(Object.entries(SOUNDS).map(async ([name, file]) => {
+        if (buffers[name]) return;
+        try {
+          const res = await fetch("/retro/henry/audio/" + file + ".mp3");
+          buffers[name] = await audio.decodeAudioData(await res.arrayBuffer());
+        } catch (e) {}
+      }));
+    };
+    const play = (name, volume) => {
+      if (!soundOn) return;
+      if (!audio) { load(); return; } // first gesture unlocks audio; sounds follow
+      const buffer = buffers[name];
+      if (!buffer) return;
       const src = audio.createBufferSource();
-      src.buffer = buf;
-      const filter = audio.createBiquadFilter();
-      filter.type = "bandpass";
-      filter.frequency.value = freq;
-      filter.Q.value = 1.2;
+      src.buffer = buffer;
       const gain = audio.createGain();
       gain.gain.value = volume;
-      src.connect(filter).connect(gain).connect(audio.destination);
+      src.connect(gain).connect(audio.destination);
       src.start();
     };
     const listen = (doc) => {
-      doc.addEventListener("pointerdown", () => click(2200, 0.035, 0.9), true);
-      doc.addEventListener("pointerup", () => click(3200, 0.025, 0.5), true);
-      doc.addEventListener("keydown", (e) => { if (!e.repeat) click(1500 + Math.random() * 1200, 0.045, 0.7); }, true);
+      doc.addEventListener("pointerdown", () => play("down", 0.8), true);
+      doc.addEventListener("pointerup", () => play("up", 0.6), true);
+      doc.addEventListener("keydown", (e) => { if (!e.repeat) play("key" + (1 + Math.floor(Math.random() * 6)), 0.7); }, true);
     };
     listen(document);
     const renderSound = () => {
@@ -476,6 +453,14 @@ const henry = "/retro/henry";
       ctx.querySelector("button").focus();
     };
     const realPage = (href) => window.open(href, "_blank", "noopener");
+    // Refresh, like XP: the icons blink off and on while the busy cursor shows
+    const desktopIcons = document.getElementById("desktop");
+    const refresh = () => {
+      busy = true;
+      if (!reduceMotion) desktopIcons.style.visibility = "hidden";
+      setTimeout(() => { desktopIcons.style.visibility = ""; }, 140);
+      setTimeout(() => { busy = false; }, 1100);
+    };
     document.querySelectorAll("#desktop .icon").forEach((icon) => {
       icon.addEventListener("contextmenu", (e) => {
         e.stopPropagation();
@@ -494,7 +479,7 @@ const henry = "/retro/henry";
     display.addEventListener("contextmenu", (e) => {
       if (e.target.closest(".app, .taskbar, .start-menu, .ctx")) return;
       showCtx(e, [
-        { label: "Refresh", run: () => location.reload() },
+        { label: "Refresh", run: refresh },
         null,
         { label: "View source on GitHub", run: () => realPage("https://github.com/piyushsatti/piyushsatti.github.io") },
         null,
@@ -626,15 +611,30 @@ const henry = "/retro/henry";
   ));
   const grainCam = new THREE.Camera();
 
+  const curtain = document.getElementById("curtain");
+  setTimeout(() => curtain.classList.add("is-off"), 7000); // never leave the page black
+
   // Camera: open on an establishing shot of the whole desk (Henry's "desk" keyframe), then
   // zoom to his "monitor" keyframe once the models are in. The screen powers on as it lands.
   const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const CONTENT = { w: 1216, h: 960 }; // the visible desktop inside the 1280x1024 screen
+  const housing = document.getElementById("housing");
+  const grainEl = document.getElementById("grain");
+  let amount = 0; // 0 on the wide shot, 1 once landed
+  const corner = new THREE.Vector3();
   const DESK = { pos: new THREE.Vector3(0, 1800, 5500), focus: new THREE.Vector3(0, 500, 0) };
   const monitorKey = () => {
     const w = room.clientWidth;
     const h = room.clientHeight;
-    // Henry's formula: pull back on tall windows, push in on wide ones
-    return { pos: new THREE.Vector3(0, 950, 2000 + (h / w) * 1200 - (w < 768 ? 0 : 600)), focus: new THREE.Vector3(0, 950, 0) };
+    // Phones: Henry's formula, the desktop is bigger than the view and you pan around it
+    if (w < 768) return { pos: new THREE.Vector3(0, 950, 2000 + (h / w) * 1200), focus: new THREE.Vector3(0, 950, 0) };
+    // Otherwise stop where the 1216x960 desktop fills the view with 6vmin of housing round it
+    const margin = 0.06 * Math.min(w, h);
+    const pxPerUnit = Math.min((w - 2 * margin) / CONTENT.w, (h - 2 * margin) / CONTENT.h);
+    const dist = h / (2 * pxPerUnit * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)));
+    // Look straight down the screen's normal (it is tilted 3 degrees), so the glass projects to a true rectangle
+    const normal = new THREE.Vector3(0, 0, 1).applyEuler(SCREEN_ROT);
+    return { pos: SCREEN_POS.clone().addScaledVector(normal, dist), focus: SCREEN_POS.clone() };
   };
   const pos = DESK.pos.clone();
   const focus = DESK.focus.clone();
@@ -660,11 +660,24 @@ const henry = "/retro/henry";
     }
     camera.position.copy(pos);
     camera.lookAt(focus);
+    camera.updateMatrixWorld();
     gl.render(scene, camera);
     css.render(cssScene, camera);
+
+    // The housing hole follows the screen rectangle on the glass; it fades in over the last stretch of the zoom
+    let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+    for (const [sx, sy] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) {
+      corner.set(sx * SCREEN.w / 2, sy * SCREEN.h / 2, 0).applyEuler(SCREEN_ROT).add(SCREEN_POS).project(camera);
+      const px = (corner.x + 1) / 2 * room.clientWidth;
+      const py = (1 - corner.y) / 2 * room.clientHeight;
+      x0 = Math.min(x0, px); x1 = Math.max(x1, px); y0 = Math.min(y0, py); y1 = Math.max(y1, py);
+    }
+    Object.assign(housing.style, { left: x0 + "px", top: y0 + "px", width: x1 - x0 + "px", height: y1 - y0 + "px", opacity: Math.min(1, Math.max(0, (amount - 0.55) / 0.4)) });
+    grainEl.style.opacity = 0.04 * (1 - amount); // no grain over the desktop once it is up
   };
   const land = () => {
     landed = true;
+    amount = 1;
     render();
     dispatchEvent(new Event("retro:ready"));
   };
@@ -678,8 +691,9 @@ const henry = "/retro/henry";
       start ??= t;
       const k = Math.min(1, (t - start) / DURATION);
       const to = monitorKey();
-      pos.lerpVectors(from.pos, to.pos, ease(k));
-      focus.lerpVectors(from.focus, to.focus, ease(k));
+      amount = ease(k);
+      pos.lerpVectors(from.pos, to.pos, amount);
+      focus.lerpVectors(from.focus, to.focus, amount);
       render();
       if (k < 1) requestAnimationFrame(step);
       else land();
@@ -695,8 +709,8 @@ const henry = "/retro/henry";
     addBaked("environment.glb", "baked_environment.jpg"),
     addBaked("decor.glb", "baked_decor_modified.jpg"),
   ]).then(
-    () => { render(); setTimeout(zoom, reduceMotion ? 0 : 700); }, // hold the wide shot a beat
-    (e) => { console.error("Retro models failed to load", e); land(); }
+    () => { render(); curtain.classList.add("is-off"); setTimeout(zoom, reduceMotion ? 0 : 1400); }, // fade up on the wide shot, hold it a beat
+    (e) => { console.error("Retro models failed to load", e); curtain.classList.add("is-off"); land(); }
   );
 
   if (!reduceMotion) {
