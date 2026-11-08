@@ -11,31 +11,30 @@ const base = import.meta.env.BASE_URL.endsWith("/")
 // Education timeline data
 const education = [
   {
-    title: "M.Sc. Applied Computer Science",
+    title: "Master of Applied Computer Science",
     institution: "Concordia University",
     startDate: "Sept 2023",
     endDate: "Aug 2025",
     description: "Montreal, Quebec, Canada",
     details: [
-      "GPA: 3.62/4.3",
       // Add thesis/coursework here if you want (not listed on the resume)
     ],
     links: [], // add certificate/transcript links when you have them
   },
   {
-    title: "B.E. Electronics and Computer Engineering",
+    title: "B.E. Electronics & Computer Engineering",
     institution: "Thapar Institute of Engineering and Technology",
     startDate: "Jun 2017",
     endDate: "Jun 2021",
     description: "Patiala, Punjab, India",
-    details: ["GPA: 8.96/10"],
+    details: [],
     links: [],
   },
 ];
 
 // Courses data (restructured for cards)
 const coursesForCards = [
-  // -------- Concordia University (M.Sc. Applied Computer Science) --------
+  // -------- Concordia University (Master of Applied Computer Science) --------
   {
     title: "Intro/Theoretical Computer Science",
     code: "COMP 335",
@@ -251,7 +250,8 @@ const coursesForCards = [
   <div class="index-content framed">
     <h1>About Me</h1>
     <p>
-      I'm a backend-leaning developer with an M.Sc. I care about typed schemas,
+      I'm a backend-leaning developer with a Master of Applied Computer Science
+      from Concordia University. I care about typed schemas,
       clean boundaries, and tests that read like specs.
     </p>
     <p>

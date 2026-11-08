@@ -7,12 +7,34 @@ const researchEntries = (await getCollection("research")).sort(
   (a, b) =>
     new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf()
 );
+
+// Peer-reviewed papers as listed on Google Scholar (Nov 2026)
+const publications = [
+  { title: "DIBS: Distance- and Intensity-Based Separation Filter for High-Density Impulse Noise Removal", authors: "P. Satti, V. Shrotriya, B. Garg, V. B. Surya Prasath", venue: "Signal, Image and Video Processing", year: 2023 },
+  { title: "Intensity Bound Limit Filter for High Density Impulse Noise Removal", authors: "P. Satti, V. Shrotriya, B. Garg, D. N. H. Thanh", venue: "Journal of Ambient Intelligence and Humanized Computing", year: 2023 },
+  { title: "Adaptive Radii Selection Based Inpainting Method for Impulse Noise Removal", authors: "R. Mukhopadhyay, P. Gupta, P. Satti, B. Garg", venue: "Multimedia Tools and Applications", year: 2023 },
+  { title: "A Flexible Dynamic Master–User Look-Up Table Approach for Evaluation of Trigonometric Values", authors: "P. Satti, N. Sharma, G. Singh, B. Garg", venue: "Wireless Personal Communications", year: 2022 },
+  { title: "LORAx: A High-Speed Energy-Efficient Lower-Order Rounding-Based Approximate Multiplier", authors: "P. Satti, P. Agrawal, B. Garg", venue: "National Academy Science Letters", year: 2021 },
+  { title: "Min–Max Average Pooling Based Filter for Impulse Noise Removal", authors: "P. Satti, N. Sharma, B. Garg", venue: "IEEE Signal Processing Letters", year: 2020 },
+];
 ---
 
 <BaseLayout title="Research">
   <div class="posts">
     <h1 class="posts-title">Research</h1>
-    <p></p>
+    <h2>Publications</h2>
+    <ol class="publications">
+      {publications.map((pub) => (
+        <li>
+          <strong>{pub.title}</strong><br />
+          {pub.authors}. <em>{pub.venue}</em>, {pub.year}.
+        </li>
+      ))}
+    </ol>
+    <p>
+      Full list and citations on <a href="https://scholar.google.ca/citations?user=eR10c10AAAAJ&hl=en">Google Scholar</a>.
+    </p>
+    <h2>Write-ups</h2>
     {
       researchEntries.length === 0 ? (
         <p>No research posts yet.</p>

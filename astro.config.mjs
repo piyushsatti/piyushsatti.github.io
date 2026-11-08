@@ -9,8 +9,8 @@ export default defineConfig({
   // Only use base path in production (GitHub Pages)
   base: process.env.NODE_ENV === "production" ? "/" : "/",
   integrations: [
-    // /design/ is a sample-copy design proof; keep it out of the sitemap.
-    sitemap({ filter: (page) => !page.endsWith("/design/") }),
+    // /design/ (design proof) and /retro/ (iframes of other pages) stay out of the sitemap.
+    sitemap({ filter: (page) => !/\/(design|retro)\/$/.test(page) }),
     tailwind({
       config: "./tailwind.config.mjs",
       applyBaseStyles: false,

@@ -26,16 +26,16 @@ const enableAnalytics =
 
 const navItems = [
   { label: "Home", href: base },
-  { label: "whoami", href: `${base}about` },
+  { label: "whoami", href: `${base}about/` },
   {
     label: "Resume",
     href: `${base}resume.pdf`,
     external: true,
   },
-  { label: "Projects", href: `${base}projects` },
-  { label: "Research", href: `${base}research` },
-  { label: "Blog", href: `${base}blog` },
-  { label: "Hobbies", href: `${base}hobbies` },
+  { label: "Projects", href: `${base}projects/` },
+  { label: "Research", href: `${base}research/` },
+  { label: "Blog", href: `${base}blog/` },
+  { label: "Hobbies", href: `${base}hobbies/` },
 ];
 ---
 
@@ -107,6 +107,8 @@ const navItems = [
       (() => {
         const storageKey = "terminal-theme-preference";
         const root = document.documentElement;
+        // Inside a retro-mode window: drop the site chrome, the window has its own
+        if (window.self !== window.top) root.classList.add("is-embedded");
 
         try {
           const stored = localStorage.getItem(storageKey);
@@ -165,10 +167,9 @@ const navItems = [
     <div class="container center">
       <SiteHeader navItems={navItems} />
       <div class="availability-banner">
-        <span class="availability-banner__dot"></span>
         <span class="availability-banner__text"
-          >Open to full-time opportunities. <a
-            href="mailto:piyushsatti@outlook.com">Let's connect!</a
+          >Say hi: <a href="mailto:piyushsatti@gmail.com"
+            >piyushsatti@gmail.com</a
           ></span
         >
       </div>

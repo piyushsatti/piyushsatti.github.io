@@ -24,7 +24,9 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.13.2"
+    "astro": "^5.13.2",
+    "three": "^0.187.0",
+    "xp.css": "^0.2.6"
   },
   "devDependencies": {
     "@astrojs/rss": "^4.0.11",
