@@ -3,14 +3,15 @@ import { getAllTags } from "../lib/tags";
 
 export const prerender = true;
 
+// Trailing slashes everywhere, matching the canonical URLs and @astrojs/sitemap
 const basePaths = [
   "",
-  "about",
-  "projects",
-  "research",
-  "blog",
-  "tags",
-  "hobbies",
+  "about/",
+  "projects/",
+  "research/",
+  "blog/",
+  "tags/",
+  "hobbies/",
 ];
 
 const formatDate = (value) =>

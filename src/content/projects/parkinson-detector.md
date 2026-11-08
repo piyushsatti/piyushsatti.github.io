@@ -11,7 +11,6 @@ tags:
     "Torchaudio",
     "scikit-learn",
     "Poetry",
-    "Pcan we rewriteandas",
     "Hugging Face Hub",
   ]
 image: ""

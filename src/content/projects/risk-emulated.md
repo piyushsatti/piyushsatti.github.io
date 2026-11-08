@@ -6,7 +6,7 @@ summary: "Playable RISK backend using Spring Boot + GraphQL with a typed schema 
 tags:
   ["Java", "Spring Boot", "GraphQL", "DDD", "Docker", "PostgreSQL", "Testing"]
 image: ""
-repo: "https://github.com/piyushsatti/risk-emulated"
+repo: "https://github.com/piyushsatti/old-risk-emulated"
 ---
 
 ## Overview
