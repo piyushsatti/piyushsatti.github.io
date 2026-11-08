@@ -4,7 +4,6 @@ interface Course {
   code?: string;
   institution: string;
   semester: string;
-  grade?: string;
   description?: string;
   topics?: string[];
   category?: string;
@@ -83,11 +82,6 @@ const categories = [
 
             <div class="course-card__meta">
               <span class="course-badge">{course.semester}</span>
-              {course.grade && (
-                <span class="course-badge course-badge--grade">
-                  Grade: {course.grade}
-                </span>
-              )}
             </div>
 
             {course.description && (
@@ -309,10 +303,6 @@ const categories = [
     border-radius: var(--radius-pill);
   }
 
-  .course-badge--grade {
-    background: color-mix(in srgb, var(--accent-soft) 20%, transparent);
-    border-color: var(--accent-soft);
-  }
 
   .course-card__description {
     margin: 0.75rem 0;

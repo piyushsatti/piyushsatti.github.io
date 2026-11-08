@@ -10,6 +10,9 @@ export interface Props {
 }
 
 const { navItems } = Astro.props;
+// The Pi Chat widget stays hidden until it has a real backend.
+const SHOW_CHAT = false;
+const CHAT_API_URL = SHOW_CHAT ? "https://pichatwithme.vercel.app" : "";
 // Mark the nav item for the current section (Home only on the home page)
 const path = Astro.url.pathname.replace(/\/$/, "") || "/";
 const isCurrent = (href: string) => {
@@ -28,7 +31,7 @@ const palettes = [
 <header class="header">
   <div class="header__inner">
     <div class="header__logo">
-      <a href={navItems[0]?.href ?? "/"} title="Click here for piChat">
+      <a href={navItems[0]?.href ?? "/"} title={SHOW_CHAT ? "Click here for piChat" : undefined}>
         <div class="logo">Piyush Satti</div>
       </a>
     </div>
@@ -162,6 +165,7 @@ const palettes = [
   </nav>
 </header>
 
+{SHOW_CHAT && (
 <div class="chat-embed" data-chat-overlay hidden>
   <div class="chat-panel" role="region" aria-labelledby="chat-title">
     <div class="chat-header">
@@ -193,8 +197,9 @@ const palettes = [
     </form>
   </div>
 </div>
+)}
 
-<script is:inline>
+<script is:inline define:vars={{ CHAT_API_URL }}>
   (() => {
     const scriptPrev = document.currentScript?.previousElementSibling;
     const header =
@@ -208,7 +213,6 @@ const palettes = [
     const PALETTE_KEY = "terminal-theme-palette";
     const CHAT_SESSION_KEY = "chat-session-token";
     const CHAT_HISTORY_KEY = "chat-history";
-    const CHAT_API_URL = "https://pichatwithme.vercel.app";
     const MAX_CHAT_HISTORY = 50;
     const root = document.documentElement;
     const toggle = header.querySelector(".theme-toggle");
@@ -677,7 +681,7 @@ const palettes = [
     // Load history on page load
     loadChatHistory();
 
-    logoLink?.addEventListener("click", (event) => {
+    if (chatOverlay) logoLink?.addEventListener("click", (event) => {
       event.preventDefault();
       // Toggle chat open/close
       if (

@@ -31,11 +31,11 @@ src/content/blog/my-new-post.mdx
 
 ```md
 ---
-title: "What I Learned Shipping GameOps"
-description: "Operational guardrails that kept a multiplayer game online at scale."
+title: "Example post title"
+description: "One sentence that summarizes the post."
 pubDate: 2024-03-12
 author: "Piyush Satti"
-tags: ["Observability", "Discord", "ETL"]
+tags: ["Tag one", "Tag two"]
 image: "./cover.png" # optional hero image
 externalLink: "" # optional, leave blank to link internally
 ---
@@ -51,12 +51,12 @@ src/content/projects/<slug>.md
 
 ```md
 ---
-title: "GameOps Suite"
-summary: "Automation toolkit that ingests Discord events and streams analytics dashboards."
+title: "Example Project"
+summary: "One sentence about what the project does."
 startDate: "2022-04-01"
 endDate: "2023-02-15" # omit if still active
-tags: ["Python", "MongoDB", "ETL"]
-repo: "https://github.com/piyushsatti/gameops-suite"
+tags: ["Tag one", "Tag two"]
+repo: "https://github.com/your-username/your-repo"
 demo: "https://demo.example.com" # optional
 image: "./architecture.png" # optional
 ---
@@ -72,13 +72,13 @@ src/content/research/<slug>.md
 
 ```md
 ---
-title: "Multi-Agent Motion Planning with Potential Fields"
-journal: "IEEE RA-L"
+title: "Example Paper Title"
+journal: "Journal Name"
 pubDate: "2021-10-01"
-summary: "Potential field heuristics fused with reinforcement learning speed up cooperative routing."
-tags: ["Robotics", "Python", "Optimization"]
+summary: "One sentence that summarizes the paper."
+tags: ["Tag one", "Tag two"]
 paper: "https://doi.org/..."
-repo: "https://github.com/piyushsatti/mmapf" # optional
+repo: "https://github.com/your-username/your-repo" # optional
 slides: "./talk.pdf" # optional
 ---
 

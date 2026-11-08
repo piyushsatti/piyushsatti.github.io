@@ -103,17 +103,17 @@ Project narrative with TL;DR, architecture notes, and media.
 
 ```md
 ---
-title: "Multi-Agent Motion Planning"
-journal: "Robotics & Automation Letters"
+title: "Example Paper Title"
+journal: "Journal Name"
 pubDate: "2022-09-01"
-summary: "Hybrid planner that blends potential fields with reinforcement learning."
-tags: ["Robotics", "Python", "RL"]
-paper: "https://doi.org/10.1109/LRA.2022.xxxxxx"
-repo: "https://github.com/piyushsatti/mmapf" # optional
+summary: "One sentence that summarizes the paper."
+tags: ["Tag one", "Tag two"]
+paper: "https://doi.org/..."
+repo: "https://github.com/your-username/your-repo" # optional
 slides: "./deck.pdf" # optional
 image: "./diagram.png" # optional
-imageAlt: "Flowchart of the multi-agent motion planner" # optional
-imageCaption: "Figure 3 from the IEEE RA-L publication" # optional
+imageAlt: "Describe the image" # optional
+imageCaption: "Image caption" # optional
 ---
 
 Abstract-style explanation and key findings.

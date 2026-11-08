@@ -7,6 +7,7 @@ export const prerender = true;
 const basePaths = [
   "",
   "about/",
+  "courses/",
   "projects/",
   "research/",
   "blog/",

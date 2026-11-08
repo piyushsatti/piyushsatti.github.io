@@ -106,6 +106,7 @@ const henry = "/retro/henry";
       <button class="start" type="button" id="start" aria-haspopup="true" aria-expanded="false">start</button>
       <div class="tasks" id="tasks"></div>
       <div class="tray">
+        <a class="tray__credit" href="https://henryheffernan.com" target="_blank" rel="noopener noreferrer">Desk, CRT and sounds by Henry Heffernan</a>
         <button class="tray__sound" type="button" id="sound" aria-pressed="true">Sound on</button>
         <span id="clock"></span>
       </div>
@@ -186,6 +187,7 @@ const henry = "/retro/henry";
   .tasks button.is-active { background: #1e52b7; box-shadow: inset 1px 1px 2px #0c2f75; }
   .tray { display: flex; align-items: center; gap: 8px; padding: 0 10px; background: linear-gradient(#0c9ae8, #0f8be0 90%, #0a6bc0); border-left: 1px solid #092e8a; color: #fff; flex: none; }
   .taskbar .tray__sound { color: #fff; font-size: 11px; text-decoration: underline dotted; }
+  .taskbar .tray__credit { padding: 1px 6px; border-radius: 3px; background: #fff; color: #0c3daa; font-size: 11px; text-decoration: underline; white-space: nowrap; }
 
   .start-menu { position: absolute; left: 0; bottom: 32px; z-index: 9999; min-width: 220px; padding: 0; border-radius: 8px 8px 0 0; overflow: hidden; background: #fff; border: 1px solid #0c3daa; }
   .start-menu[hidden] { display: none; }
