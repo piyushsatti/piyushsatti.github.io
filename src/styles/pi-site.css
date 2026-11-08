@@ -199,6 +199,8 @@ mark { background: color-mix(in srgb, var(--accent-mark) 28%, transparent); colo
   text-shadow: none;
 }
 .navigation-menu a:hover, .menu__trigger:hover { color: var(--ink); text-shadow: none; }
+/* Links and the Resume trigger share one baseline: flex items, not inline-flex on a text baseline */
+.navigation-menu__inner > li { display: flex; }
 .navigation-menu a::after { background: var(--accent-mark); bottom: -4px; transition: none; }
 .navigation-menu a[aria-current="page"] { color: var(--ink); }
 .navigation-menu a[aria-current="page"]::after { transform: scaleX(1); }
