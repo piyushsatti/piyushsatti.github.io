@@ -1,7 +1,7 @@
 ---
 title: "Memory that survives compaction"
 description: "This post is about two tries at keeping a coding agent on track after its context gets compacted: a plugin I built and closed, and a port of someone else's design that I use now."
-pubDate: "2026-11-08"
+pubDate: "2026-11-06"
 author: "Piyush Satti"
 tags: ["Agent tooling"]
 image: "/blog-images/memory-that-survives-compaction/cover.png"

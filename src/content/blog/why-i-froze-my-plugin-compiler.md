@@ -1,7 +1,7 @@
 ---
 title: "Why I froze my own plugin compiler"
 description: "When the part that differs between targets has to be written by hand anyway, a compiler only adds a step."
-pubDate: "2026-11-08"
+pubDate: "2026-11-07"
 author: "Piyush Satti"
 tags: ["Agent tooling"]
 image: "/blog-images/why-i-froze-my-plugin-compiler/cover.png"
